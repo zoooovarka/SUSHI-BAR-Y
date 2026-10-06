@@ -5,15 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Мяу-суши</title>
+<title>Суши-шеф</title>
 <style>
 /* ===================== БАЗА ===================== */
 :root{
   --ink:#3b2416; --panel:#fff4de; --panel-b:#e0b77a;
-  --wood:#8a5a32; --wood-d:#5e3a1d; --wood-l:#c8894e;
   --red:#e2552b; --red-d:#a9381a; --green:#46a84b; --green-d:#2c7a31;
-  --blue:#3f8fd8; --blue-d:#255f9a; --purple:#8a4fd8; --purple-d:#5c2f9e;
-  --gold:#ffc83d;
+  --blue:#3f8fd8; --blue-d:#255f9a; --purple:#8a4fd8; --purple-d:#5c2f9e; --gold:#ffc83d;
 }
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#1f130c;
@@ -21,52 +19,46 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#1f130c;
   -webkit-tap-highlight-color:transparent;
   font-family:"Trebuchet MS","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink)}
 button{font:inherit;color:inherit}
-#stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden;
-  background:#2b1a10;font-size:30px}
+#stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden;background:#2b1a10;font-size:30px}
 .screen{position:absolute;inset:0;display:none;overflow:hidden}
 .screen.on{display:block}
 
 /* ===================== СПРАЙТЫ ===================== */
-.spr{display:inline-flex;align-items:center;justify-content:center;width:var(--s);height:var(--s);
-  position:relative;flex:none;pointer-events:none;vertical-align:middle}
+.spr{display:inline-flex;align-items:center;justify-content:center;width:var(--s);height:var(--s);position:relative;flex:none;pointer-events:none;vertical-align:middle}
 .spr img{width:100%;height:100%;object-fit:contain;-webkit-user-drag:none}
 .spr .emo{font-size:calc(var(--s) * .78);line-height:1;position:relative;display:inline-block;
   font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
-.spr .badge{position:absolute;right:-.2em;bottom:-.12em;font-size:.46em;font-style:normal;background:#fff;
-  border-radius:50%;width:1.35em;height:1.35em;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.spr .badge{position:absolute;right:-.2em;bottom:-.12em;font-size:.46em;font-style:normal;background:#fff;border-radius:50%;
+  width:1.35em;height:1.35em;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 .emo.burnt{filter:brightness(.3) sepia(1) saturate(.4)}
-.emo.gray{filter:grayscale(1) brightness(.75);opacity:.5}
 .emo.wrong{filter:grayscale(.85) brightness(.8)}
+.emo.gray{filter:grayscale(1) brightness(.75);opacity:.5}
 
 /* ===================== КНОПКИ ===================== */
 .btn{border:none;border-radius:24px;padding:14px 34px;font-size:34px;font-weight:800;color:#fff;cursor:pointer;
   background:linear-gradient(#ff8a4c,var(--red));box-shadow:0 7px 0 var(--red-d),0 10px 18px rgba(0,0,0,.25);
-  display:inline-flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 2px 0 rgba(0,0,0,.2);
-  transition:transform .08s}
+  display:inline-flex;align-items:center;justify-content:center;gap:12px;text-shadow:0 2px 0 rgba(0,0,0,.2);transition:transform .08s}
 .btn:active{transform:translateY(4px);box-shadow:0 3px 0 var(--red-d)}
 .btn.green{background:linear-gradient(#6fd06f,var(--green));box-shadow:0 7px 0 var(--green-d),0 10px 18px rgba(0,0,0,.25)}
 .btn.blue{background:linear-gradient(#69b3f3,var(--blue));box-shadow:0 7px 0 var(--blue-d),0 10px 18px rgba(0,0,0,.25)}
 .btn.ad{background:linear-gradient(#b083f0,var(--purple));box-shadow:0 7px 0 var(--purple-d),0 10px 18px rgba(0,0,0,.25)}
-.btn.gray,.btn.off{background:linear-gradient(#b9aea0,#8f8579);box-shadow:0 7px 0 #625a51}
-.btn.off{opacity:.75;cursor:default}
+.btn.off{background:linear-gradient(#b9aea0,#8f8579);box-shadow:0 7px 0 #625a51;opacity:.8;cursor:default}
 .btn.small{font-size:26px;padding:10px 20px;border-radius:18px}
 .ibtn{width:84px;height:84px;border-radius:24px;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
-  background:linear-gradient(#fff6e6,#f0d7ac);box-shadow:0 6px 0 #b98a4c,0 8px 14px rgba(0,0,0,.25);position:relative}
+  background:linear-gradient(#fff6e6,#f0d7ac);box-shadow:0 6px 0 #b98a4c,0 8px 14px rgba(0,0,0,.25);position:relative;padding:0}
 .ibtn:active{transform:translateY(3px);box-shadow:0 3px 0 #b98a4c}
 .ibtn .dot{position:absolute;right:-6px;top:-6px;width:30px;height:30px;border-radius:50%;background:#ff3b30;color:#fff;
   font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(0,0,0,.4)}
 .pill{background:rgba(40,20,8,.55);color:#fff;border-radius:44px;padding:6px 24px 6px 10px;display:inline-flex;align-items:center;
-  gap:10px;font-size:34px;font-weight:800;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+  gap:10px;font-size:34px;font-weight:800;text-shadow:0 2px 0 rgba(0,0,0,.3);white-space:nowrap}
 .topbar{position:absolute;left:0;right:0;top:0;height:110px;display:flex;align-items:center;gap:18px;padding:0 26px;z-index:5}
 .topbar .grow{flex:1}
-.title-txt{font-size:48px;font-weight:900;color:#fff;text-shadow:0 4px 0 #6b3a17,0 6px 12px rgba(0,0,0,.4)}
+.title-txt{font-size:48px;font-weight:900;color:#fff;text-shadow:0 4px 0 #6b3a17,0 6px 12px rgba(0,0,0,.4);white-space:nowrap}
 
 /* ===================== ЗАГРУЗКА ===================== */
 #scr-loading{background:radial-gradient(circle at 50% 40%,#ffd9a0,#e8955a 60%,#b2552a)}
 #scr-loading .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
-.logo-big{font-size:120px;font-weight:900;color:#fff;letter-spacing:2px;
-  text-shadow:0 8px 0 #a9381a,0 14px 24px rgba(0,0,0,.35)}
+.logo-big{font-size:120px;font-weight:900;color:#fff;letter-spacing:2px;text-shadow:0 8px 0 #a9381a,0 14px 24px rgba(0,0,0,.35)}
 .loadbar{width:600px;height:34px;border-radius:20px;background:rgba(0,0,0,.25);overflow:hidden;border:4px solid #fff}
 .loadbar i{display:block;height:100%;width:0;background:linear-gradient(#ffe27a,#ffb02e);transition:width .2s}
 
@@ -77,12 +69,11 @@ button{font:inherit;color:inherit}
   radial-gradient(ellipse 380px 250px at 920px 640px,#b9dd8a 60%,transparent 62%),
   radial-gradient(ellipse 320px 230px at 1160px 360px,#a8d27a 60%,transparent 62%),
   radial-gradient(ellipse 330px 240px at 1390px 600px,#b9dd8a 60%,transparent 62%),
-  linear-gradient(#7fd0f0,#3f9ad0);background-size:cover}
-#world-map{position:absolute;inset:0}
-#world-path{position:absolute;inset:0;pointer-events:none}
+  linear-gradient(#7fd0f0,#3f9ad0)}
+#scr-world.has-bg,#scr-levels.has-bg,#scr-shop.has-bg{background-size:cover;background-position:center}
+.map-svg{position:absolute;inset:0;pointer-events:none}
 .deco{position:absolute;pointer-events:none;opacity:.9}
-.rnode{position:absolute;width:240px;margin-left:-120px;margin-top:-110px;display:flex;flex-direction:column;align-items:center;
-  cursor:pointer;border:none;background:none;padding:0}
+.rnode{position:absolute;width:240px;margin-left:-120px;margin-top:-110px;display:flex;flex-direction:column;align-items:center;cursor:pointer;border:none;background:none;padding:0}
 .rnode .disc{width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#ffe7c2 60%,#f0be7a);
   border:8px solid #fff;box-shadow:0 10px 0 rgba(0,0,0,.18),0 14px 26px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;position:relative}
 .rnode.locked .disc{filter:grayscale(.85) brightness(.85)}
@@ -90,73 +81,70 @@ button{font:inherit;color:inherit}
 .rnode .name{margin-top:12px;background:#fff;border-radius:20px;padding:6px 18px;font-size:30px;font-weight:900;box-shadow:0 4px 0 rgba(0,0,0,.15);white-space:nowrap}
 .rnode .req{margin-top:6px;font-size:26px;font-weight:800;color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.6);display:flex;align-items:center;gap:4px}
 .rnode.open .disc{animation:pulse 1.6s infinite}
-#world-chef{position:absolute;left:30px;bottom:10px;pointer-events:none}
 
 /* ===================== КАРТА УРОВНЕЙ ===================== */
-#scr-levels{background:linear-gradient(#ffe2b8,#f3b77a);background-size:cover;background-position:center}
-#lv-map{position:absolute;inset:0}
-#lv-path{position:absolute;inset:0;pointer-events:none}
+#scr-levels{background:linear-gradient(#ffe2b8,#f3b77a)}
 .lnode{position:absolute;width:120px;height:120px;margin-left:-60px;margin-top:-60px;border-radius:50%;border:7px solid #fff;cursor:pointer;
   background:radial-gradient(circle at 35% 30%,#ffb27a,#e2552b);color:#fff;font-size:48px;font-weight:900;padding:0;
   box-shadow:0 8px 0 rgba(0,0,0,.2),0 12px 20px rgba(0,0,0,.25);text-shadow:0 3px 0 rgba(0,0,0,.25)}
 .lnode.done{background:radial-gradient(circle at 35% 30%,#8ee08e,#3d9a42)}
 .lnode.locked{background:radial-gradient(circle at 35% 30%,#d9d1c6,#9d9488);cursor:default}
-.lnode.current{animation:pulse 1.2s infinite}
+.lnode.current{animation:pulseN 1.2s infinite}
 .lnode .lst{position:absolute;left:50%;top:104px;transform:translateX(-50%);display:flex;white-space:nowrap}
 .lnode .lck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 
 /* ===================== МАГАЗИН ===================== */
 #scr-shop{background:linear-gradient(#f9e2bd,#e8b880)}
-#shop-cols{position:absolute;left:20px;right:20px;top:118px;bottom:16px;display:flex;gap:18px}
-.scol{flex:1;display:flex;flex-direction:column;gap:10px;min-width:0}
-.scol h3{margin:0 0 2px;font-size:34px;text-align:center;color:#fff;text-shadow:0 3px 0 #8a4a1c}
-.ucard{background:var(--panel);border-radius:22px;padding:8px 12px;display:flex;align-items:center;gap:12px;
-  box-shadow:0 5px 0 #c99a5c;min-height:104px}
+#shop-cols{position:absolute;left:20px;right:20px;top:112px;bottom:12px;display:flex;gap:18px}
+.scol{flex:1;display:flex;flex-direction:column;gap:9px;min-width:0}
+.scol h3{margin:0;font-size:32px;text-align:center;color:#fff;text-shadow:0 3px 0 #8a4a1c}
+.ucard{background:var(--panel);border-radius:22px;padding:8px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 5px 0 #c99a5c;min-height:110px}
 .ucard .ui{width:84px;height:84px;border-radius:18px;background:#ffe7c0;display:flex;align-items:center;justify-content:center;flex:none}
 .ucard .ut{flex:1;min-width:0}
-.ucard .un{font-size:27px;font-weight:900;line-height:1.1}
-.ucard .uv{font-size:24px;color:#7a5236;font-weight:700;margin-top:2px}
+.ucard .un{font-size:26px;font-weight:900;line-height:1.1}
+.ucard .uv{font-size:21px;color:#7a5236;font-weight:700;margin-top:2px;line-height:1.2}
 .ucard .dots{display:flex;gap:6px;margin-top:5px}
-.ucard .dots i{width:22px;height:22px;border-radius:50%;background:#e0cdb0;border:3px solid #c9ab80}
+.ucard .dots i{width:20px;height:20px;border-radius:50%;background:#e0cdb0;border:3px solid #c9ab80}
 .ucard .dots i.on{background:var(--gold);border-color:#d99a1a}
 .ucard .ub{display:flex;gap:8px;align-items:center;flex:none}
+.ucard .btn{min-width:140px}
 .ucard .btn.adi{min-width:0;width:74px;height:62px;padding:0}
-.ucard .btn{min-width:150px}
 
 /* ===================== ЭКРАН УРОВНЯ ===================== */
 #scr-game{background:#3a2618}
-#hud{position:absolute;left:0;top:0;width:1600px;height:80px;display:flex;align-items:center;gap:18px;padding:0 18px;z-index:6;
+#hud{position:absolute;left:0;top:0;width:1600px;height:80px;display:flex;align-items:center;gap:14px;padding:0 16px;z-index:6;
   background:linear-gradient(#6a4222,#4a2d16);color:#fff;box-shadow:0 4px 10px rgba(0,0,0,.35)}
-#hud .pill{font-size:32px;padding:4px 20px 4px 8px}
+#hud .pill{font-size:32px;padding:4px 18px 4px 8px}
 #hud-timer.warn{background:#c62e1e;animation:pulse .6s infinite}
-#hud-goal{flex:1;display:flex;align-items:center;gap:14px;padding-right:22px}
+#hud-goal{flex:1;display:flex;align-items:center;gap:12px;padding-right:20px;min-width:0}
 #goalbar{position:relative;flex:1;height:30px;border-radius:16px;background:rgba(0,0,0,.35);border:3px solid rgba(255,255,255,.6)}
 #goalbar>i{position:absolute;left:0;top:0;bottom:0;border-radius:12px;background:linear-gradient(#ffe27a,#ffad1f);width:0;transition:width .3s}
 #goalbar .mk{position:absolute;top:50%;transform:translate(-50%,-50%);filter:grayscale(1) brightness(.8);transition:filter .3s}
 #goalbar .mk.on{filter:none;animation:pop .4s}
-#hud-lvl{font-size:28px;font-weight:800;opacity:.9;white-space:nowrap}
+#hud-combo{position:relative;overflow:hidden;min-width:120px;justify-content:center;background:linear-gradient(#ff7a2e,#d9381a);visibility:hidden}
+#hud-combo.on{visibility:visible}
+#hud-combo i{position:absolute;left:0;bottom:0;height:6px;background:#fff6a0;width:0}
 #hall{position:absolute;left:0;top:80px;width:1600px;height:380px;overflow:hidden;
-  background:
-   linear-gradient(90deg,rgba(120,70,30,.35) 6px,transparent 6px) 0 0/200px 100%,
-   linear-gradient(rgba(120,70,30,.35) 6px,transparent 6px) 0 0/100% 120px,
-   linear-gradient(#fbecd2,#f1d6ad);background-size:200px 100%,100% 120px,cover;background-position:center}
-#hall.has-bg{background-size:cover}
-#seats{position:absolute;inset:0;display:flex;justify-content:center}
-.seat{width:390px;height:100%;position:relative}
-#counter{position:absolute;left:0;right:0;bottom:0;height:64px;z-index:3;
+  background:linear-gradient(90deg,rgba(120,70,30,.35) 6px,transparent 6px) 0 0/200px 100%,
+   linear-gradient(rgba(120,70,30,.35) 6px,transparent 6px) 0 0/100% 120px,linear-gradient(#fbecd2,#f1d6ad)}
+#hall.has-bg{background-size:cover;background-position:center}
+#people{position:absolute;inset:0}
+#counter{position:absolute;left:0;right:0;bottom:0;height:64px;z-index:20;
   background:linear-gradient(#b0743f,#7a4a24);border-top:8px solid #d39a5e;box-shadow:0 -6px 12px rgba(0,0,0,.25)}
-.guest{position:absolute;inset:0}
-.guest.enter .cat{animation:gin .45s ease-out}
-.guest.enter .bubble{animation:pop .45s ease-out}
-.cat{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:2}
-.guest.happy .cat{animation:hop .5s ease-out}
-.guest.angry .cat{animation:shake .5s}
-.mood{position:absolute;right:-16px;top:-10px}
-.bubble{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:#fff;border-radius:28px;
-  padding:10px 14px 12px;z-index:4;box-shadow:0 6px 0 rgba(0,0,0,.1),0 8px 16px rgba(0,0,0,.2);min-width:150px}
-.bubble:after{content:"";position:absolute;left:50%;bottom:-16px;margin-left:-14px;border-left:14px solid transparent;
-  border-right:14px solid transparent;border-top:16px solid #fff}
-.guest.happy .bubble,.guest.angry .bubble{opacity:0;transition:opacity .3s}
+.vis{position:absolute;left:0;bottom:0;width:200px;height:380px;z-index:5;will-change:transform}
+.vis.walking{z-index:3}
+.vis.out{z-index:2}
+.fig{position:absolute;left:50%;bottom:0;width:200px;height:240px;margin-left:-100px}
+.vis.walking .fig{animation:walk .36s infinite alternate}
+.fig .torso{position:absolute;left:35px;bottom:0;width:130px;height:120px;border-radius:64px 64px 12px 12px;background:var(--shirt);
+  box-shadow:inset 0 -10px 0 rgba(0,0,0,.12)}
+.fig .head{position:absolute;left:50%;bottom:86px;margin-left:-68px}
+.fig .full{position:absolute;left:0;bottom:0}
+.fig .mood{position:absolute;right:0;top:-6px;animation:pop .35s}
+.vis.angry .fig{animation:stomp .25s infinite alternate}
+.bubble{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:#fff;border-radius:28px;padding:10px 14px 12px;z-index:4;
+  box-shadow:0 6px 0 rgba(0,0,0,.1),0 8px 16px rgba(0,0,0,.2);min-width:150px;animation:popB .35s ease-out}
+.bubble:after{content:"";position:absolute;left:50%;bottom:-16px;margin-left:-14px;border-left:14px solid transparent;border-right:14px solid transparent;border-top:16px solid #fff}
 .ord{display:flex;gap:8px;justify-content:center}
 .oi{width:86px;height:86px;border-radius:18px;background:#fff1dc;display:flex;align-items:center;justify-content:center;position:relative}
 .oi.done{background:#d9f5d0}
@@ -165,28 +153,39 @@ button{font:inherit;color:inherit}
 .pat{height:16px;margin-top:8px;border-radius:9px;background:#eadfcf;overflow:hidden}
 .pat i{display:block;height:100%;width:100%;background:#4fbf4f;border-radius:9px}
 
-#kitchen{position:absolute;left:0;top:460px;width:1600px;height:440px;display:flex;justify-content:center;align-items:stretch;
-  gap:16px;padding:16px;
+#kitchen{position:absolute;left:0;top:460px;width:1600px;height:440px;display:flex;justify-content:center;align-items:stretch;gap:16px;padding:16px;
   background:linear-gradient(45deg,#d7cbb6 25%,transparent 25%,transparent 75%,#d7cbb6 75%) 0 0/80px 80px,
    linear-gradient(45deg,#d7cbb6 25%,transparent 25%,transparent 75%,#d7cbb6 75%) 40px 40px/80px 80px,#e9e0cf}
 #kitchen.has-bg{background-size:cover;background-position:center}
-.zone{background:rgba(255,246,230,.93);border-radius:26px;padding:14px;display:flex;gap:12px;
-  box-shadow:0 6px 0 rgba(0,0,0,.12),0 8px 18px rgba(0,0,0,.18)}
+.zone{background:rgba(255,246,230,.93);border-radius:26px;padding:14px;display:flex;gap:12px;box-shadow:0 6px 0 rgba(0,0,0,.12),0 8px 18px rgba(0,0,0,.18)}
 .z-asm{flex-direction:column}
 .irow{display:flex;gap:12px;justify-content:center}
 .ingr{width:120px;height:120px;border-radius:24px;border:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(#c58a52,#94602f);box-shadow:inset 0 0 0 6px #6d4320,0 6px 0 #4e2f14;position:relative}
-.ingr:active,.ingr.tap{transform:translateY(3px) scale(.96)}
+.ingr:active{transform:translateY(3px) scale(.96)}
 .mats{flex:1;display:flex;gap:12px;justify-content:center}
 .mat{width:156px;border-radius:20px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
   background:repeating-linear-gradient(90deg,#b9c97a 0 14px,#9cad5c 14px 16px,#c4d388 16px 30px,#9cad5c 30px 32px);
   box-shadow:inset 0 0 0 5px #7f8f44,0 6px 0 #5d6b2c}
 .mat.has-img{background-size:cover;background-position:center}
+/* Внешний вид оборудования по ступени улучшения: дерево → бронза → серебро → золото */
+.tier-1{--frame:#c07a3a}
+.tier-2{--frame:#b9c3cc}
+.tier-3{--frame:#ffcc33}
+.mat.tier-1,.mat.tier-2,.mat.tier-3{box-shadow:inset 0 0 0 7px var(--frame),0 6px 0 #5d6b2c}
+.mat.tier-2{background:repeating-linear-gradient(90deg,#c7d98a 0 14px,#a9bb68 14px 16px,#d3e29a 16px 30px,#a9bb68 30px 32px)}
+.mat.tier-3{background:repeating-linear-gradient(90deg,#e4d28a 0 14px,#c7b25c 14px 16px,#f0e2a2 16px 30px,#c7b25c 30px 32px)}
+.fryer.tier-1,.fryer.tier-2,.fryer.tier-3{box-shadow:inset 0 0 0 8px var(--frame),0 6px 0 #3a4048}
+.fryer.tier-3{background:linear-gradient(#e3c46a,#b48a2a)}
+.fryer.tier-2{background:linear-gradient(#c8d0d8,#8d97a2)}
+.disp.tier-1,.disp.tier-2,.disp.tier-3{box-shadow:inset 0 0 0 7px var(--frame),0 6px 0 #8f6430}
+.disp.tier-3{background:linear-gradient(#fff3c4,#f2d27a)}
+.tierstars{position:absolute;left:6px;top:4px;font-size:18px;letter-spacing:-2px;z-index:2;pointer-events:none}
 .slot-it{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
 .tops{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);display:flex;gap:2px}
 .rolling .slot-it{animation:roll .5s infinite alternate}
 .ready .slot-it{animation:readyGlow 1s infinite alternate}
-.wrong{box-shadow:inset 0 0 0 5px #c62e1e,0 6px 0 #7d1a10}
+.mat.wrong{box-shadow:inset 0 0 0 5px #c62e1e,0 6px 0 #7d1a10}
 .bar{position:absolute;left:12px;right:12px;bottom:12px;height:14px;border-radius:8px;background:rgba(0,0,0,.3);overflow:hidden;display:none}
 .bar i{display:block;height:100%;width:0;background:#ffd23d;border-radius:8px}
 .bar.on{display:block}
@@ -194,8 +193,9 @@ button{font:inherit;color:inherit}
 .fcol{display:flex;flex-direction:column;gap:12px;align-items:center}
 .tray{display:grid;grid-template-columns:repeat(2,64px);gap:8px;padding:8px;border-radius:18px;background:#d9c3a0;box-shadow:inset 0 3px 6px rgba(0,0,0,.2)}
 .tslot{width:64px;height:64px;border-radius:14px;background:#f4e6cf;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.fryer{display:grid;grid-template-columns:repeat(2,108px);gap:12px;padding:14px;border-radius:24px;
+.fryer{position:relative;display:grid;grid-template-columns:repeat(2,108px);gap:12px;padding:14px;border-radius:24px;
   background:linear-gradient(#9aa3ad,#6c757f);box-shadow:inset 0 0 0 6px #4d555e,0 6px 0 #3a4048}
+.fryer.has-img{background-size:cover;background-position:center}
 .basket{width:108px;height:108px;border-radius:18px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
   background:radial-gradient(circle,#ffd877,#e8a73a);box-shadow:inset 0 0 0 5px #8b6a2e}
 .basket.cook .slot-it{animation:sizzle .25s infinite alternate}
@@ -210,7 +210,7 @@ button{font:inherit;color:inherit}
 .disp .portions{display:flex;gap:2px;min-height:52px;align-items:center}
 .disp .pe{width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.12)}
 .disp .bar{bottom:14px}
-.disp.full{box-shadow:inset 0 0 0 5px #46a84b,0 6px 0 #2c7a31}
+.disp.full{outline:5px solid #46a84b;outline-offset:-5px}
 .trashb{width:150px;height:130px;border-radius:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;
   background:linear-gradient(#d9dde2,#aab0b8);box-shadow:inset 0 0 0 5px #7d848c,0 6px 0 #5a6067}
 .trash-on .trashb{background:linear-gradient(#ff8f7a,#e2402b);box-shadow:inset 0 0 0 5px #a9281a,0 6px 0 #7d1a10;animation:pulse .7s infinite}
@@ -222,25 +222,28 @@ button{font:inherit;color:inherit}
 .ftxt{position:absolute;transform:translate(-50%,-50%);font-size:44px;font-weight:900;color:#ffd23d;white-space:nowrap;
   text-shadow:0 3px 0 #7a3d0a,0 0 10px rgba(0,0,0,.4);animation:floatUp 1.3s ease-out forwards}
 .ftxt.minus{color:#ff5a4a;text-shadow:0 3px 0 #5a0a0a}
-.ftxt.combo{font-size:64px;color:#fff;text-shadow:0 4px 0 #c2401b,0 0 16px rgba(255,120,40,.8)}
 .ftxt.small{font-size:30px}
+.bigcombo{position:absolute;left:800px;top:250px;transform:translate(-50%,-50%);font-size:110px;font-weight:900;color:#fff;white-space:nowrap;
+  text-shadow:0 6px 0 #c2401b,0 0 30px rgba(255,140,40,.9);animation:comboPop 1.1s ease-out forwards;z-index:65}
+.bigcombo small{display:block;font-size:48px;text-align:center;color:#ffe27a}
 #hand{position:absolute;display:none;z-index:70;pointer-events:none;transition:left .25s,top .25s}
 #hand .in{animation:tapHand 1s infinite;transform-origin:30% 10%}
 
 /* ===================== МОДАЛКИ ===================== */
 #modal{position:absolute;inset:0;background:rgba(25,12,4,.62);display:none;align-items:center;justify-content:center;z-index:100}
 #modal.on{display:flex}
-.panel{background:var(--panel);border-radius:40px;padding:34px 48px 40px;min-width:640px;max-width:1240px;text-align:center;
+.panel{background:var(--panel);border-radius:40px;padding:30px 44px 36px;min-width:640px;max-width:1500px;text-align:center;
   border:7px solid var(--panel-b);box-shadow:0 18px 0 rgba(0,0,0,.2),0 24px 40px rgba(0,0,0,.35);animation:pop .3s ease-out;position:relative}
-.panel h2{margin:0 0 14px;font-size:58px;font-weight:900;color:var(--red);text-shadow:0 3px 0 #ffd9b0}
+.panel h2{margin:0 0 12px;font-size:56px;font-weight:900;color:var(--red);text-shadow:0 3px 0 #ffd9b0}
 .panel p{margin:10px 0;font-size:32px}
-.btns{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.btns{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:24px}
 .bigstars{display:flex;justify-content:center;gap:10px;margin:6px 0 10px}
 .bigstars .spr:nth-child(2){transform:translateY(-24px)}
 .bigstars .got{animation:pop .5s ease-out both}
 .row-ico{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0}
-.newdish{background:#fff;border-radius:26px;padding:14px 22px;margin:14px auto 0;display:inline-flex;flex-direction:column;align-items:center;gap:6px;
-  border:4px dashed #ffb02e}
+.resrow{display:flex;justify-content:center;gap:22px;margin:8px 0}
+.resrow div{display:flex;align-items:center;gap:6px;font-size:38px;font-weight:900;background:#fff;border-radius:20px;padding:6px 20px}
+.newdish{background:#fff;border-radius:26px;padding:14px 22px;margin:14px auto 0;display:inline-flex;flex-direction:column;align-items:center;gap:6px;border:4px dashed #ffb02e}
 .newdish b{color:var(--red);font-size:30px}
 .goals{display:flex;gap:26px;justify-content:center;margin:10px 0}
 .goals div{display:flex;align-items:center;gap:6px;font-size:34px;font-weight:900;background:#fff;border-radius:18px;padding:6px 16px}
@@ -250,65 +253,67 @@ button{font:inherit;color:inherit}
 .day.done{background:#d9f5d0;border-color:#8fd08a}
 .day.cur{border-color:var(--red);animation:pulse 1.2s infinite}
 .day .chk{position:absolute;right:-8px;top:-10px;font-size:40px;color:#2c9a31}
-.lb{min-width:720px;max-height:520px;overflow:auto;margin:10px 0}
-.lb .r{display:flex;align-items:center;gap:16px;background:#fff;border-radius:16px;padding:8px 18px;margin:8px 0;font-size:30px;font-weight:800;text-align:left}
+.lb{min-width:760px;margin:10px 0}
+.lb .r{display:flex;align-items:center;gap:16px;background:#fff;border-radius:16px;padding:6px 18px;margin:7px 0;font-size:30px;font-weight:800;text-align:left}
 .lb .r.me{background:#ffe7b0}
 .lb .r .n{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lb .r img{width:48px;height:48px;border-radius:50%}
+.lb .r img{width:44px;height:44px;border-radius:50%}
+.achs{display:grid;grid-template-columns:repeat(3,440px);gap:10px;margin-top:6px;text-align:left}
+.ach{background:#fff;border-radius:18px;padding:8px 12px;display:flex;align-items:center;gap:10px;min-height:112px;border:4px solid #f0dcb8}
+.ach.ready{border-color:#46a84b;background:#efffe9}
+.ach.done{opacity:.7;background:#f3efe8}
+.ach .ai{width:72px;height:72px;border-radius:16px;background:#ffe7c0;display:flex;align-items:center;justify-content:center;flex:none}
+.ach .at{flex:1;min-width:0}
+.ach .an{font-size:23px;font-weight:900;line-height:1.1}
+.ach .ad{font-size:18px;color:#7a5236;line-height:1.15;margin-top:2px}
+.ach .ap{height:12px;border-radius:7px;background:#eadfcf;margin-top:5px;overflow:hidden}
+.ach .ap i{display:block;height:100%;background:#ffb02e}
+.ach .ar{flex:none;display:flex;flex-direction:column;align-items:center;font-size:22px;font-weight:900;gap:2px}
+.ach .btn{padding:8px 12px;font-size:22px;border-radius:14px;min-width:0}
 .closex{position:absolute;right:-24px;top:-24px}
-.adfake{position:absolute;inset:0;background:#111;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:200;font-size:44px;gap:20px}
-#toast{position:absolute;left:50%;top:120px;transform:translateX(-50%);background:rgba(40,20,8,.88);color:#fff;font-size:32px;font-weight:800;
-  padding:14px 32px;border-radius:24px;z-index:150;display:none;white-space:nowrap}
-#toast.on{display:block;animation:pop .25s}
+.adfake{position:absolute;inset:0;background:#111;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;font-size:44px;gap:20px}
+#toast{position:absolute;left:50%;top:120px;transform:translateX(-50%);background:rgba(40,20,8,.9);color:#fff;font-size:32px;font-weight:800;
+  padding:14px 32px;border-radius:24px;z-index:150;display:none;white-space:nowrap;align-items:center;gap:10px}
+#toast.on{display:flex;animation:pop .25s}
 
 /* ===================== ПОВОРОТ ===================== */
-#rotate{position:fixed;inset:0;background:#2b1a10;color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;
-  gap:24px;z-index:1000;text-align:center;font-size:24px;font-weight:800;padding:20px}
+#rotate{position:fixed;inset:0;background:#2b1a10;color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;gap:24px;z-index:1000;text-align:center;font-size:24px;font-weight:800;padding:20px}
 #rotate.on{display:flex}
 #rotate .ph{font-size:90px;animation:rot 1.8s infinite}
 
 /* ===================== АНИМАЦИИ ===================== */
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-.lnode.current{animation-name:pulseN}
 @keyframes pulseN{0%,100%{box-shadow:0 8px 0 rgba(0,0,0,.2),0 0 0 0 rgba(255,255,255,.8)}50%{box-shadow:0 8px 0 rgba(0,0,0,.2),0 0 0 18px rgba(255,255,255,0)}}
 @keyframes pop{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
-.bubble{--tx:-50%}
-.guest.enter .bubble{animation:popB .45s ease-out}
 @keyframes popB{0%{transform:translateX(-50%) scale(.4);opacity:0}100%{transform:translateX(-50%) scale(1);opacity:1}}
-@keyframes gin{0%{transform:translate(-50%,140px)}100%{transform:translate(-50%,0)}}
-@keyframes hop{0%,100%{transform:translate(-50%,0)}40%{transform:translate(-50%,-30px)}}
+@keyframes walk{0%{transform:translateY(0) rotate(-3deg)}100%{transform:translateY(-12px) rotate(3deg)}}
+@keyframes stomp{0%{transform:translateY(0) rotate(-6deg)}100%{transform:translateY(-6px) rotate(6deg)}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
-.guest.angry .cat{animation:shakeC .5s}
-@keyframes shakeC{0%,100%{transform:translateX(-50%)}25%{transform:translateX(calc(-50% - 10px))}75%{transform:translateX(calc(-50% + 10px))}}
 @keyframes roll{0%{transform:scaleX(1) rotate(-4deg)}100%{transform:scaleX(.82) rotate(4deg)}}
 @keyframes sizzle{0%{transform:translateY(0)}100%{transform:translateY(-3px)}}
 @keyframes readyGlow{0%{filter:drop-shadow(0 0 0 #fff6a0)}100%{filter:drop-shadow(0 0 14px #fff6a0)}}
 @keyframes floatUp{0%{opacity:0;margin-top:20px}15%{opacity:1;margin-top:0}100%{opacity:0;margin-top:-110px}}
+@keyframes comboPop{0%{transform:translate(-50%,-50%) scale(.3) rotate(-8deg);opacity:0}20%{transform:translate(-50%,-50%) scale(1.15) rotate(3deg);opacity:1}
+  35%{transform:translate(-50%,-50%) scale(1) rotate(0)}80%{opacity:1}100%{transform:translate(-50%,-70%) scale(1);opacity:0}}
 @keyframes tapHand{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(0,-18px) scale(1.06)}}
 @keyframes rot{0%,20%{transform:rotate(0)}50%,80%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
 </style>
 </head>
 <body>
 <div id="stage">
-  <!-- Загрузка -->
   <div class="screen on" id="scr-loading">
     <div class="center">
       <div id="load-logo"></div>
-      <div class="logo-big" id="load-title">Мяу-суши</div>
+      <div class="logo-big" id="load-title">Суши-шеф</div>
       <div class="loadbar"><i id="load-bar"></i></div>
     </div>
   </div>
-  <!-- Карта мира -->
   <div class="screen" id="scr-world"></div>
-  <!-- Карта уровней ресторана -->
   <div class="screen" id="scr-levels"></div>
-  <!-- Магазин -->
   <div class="screen" id="scr-shop"></div>
-  <!-- Уровень -->
   <div class="screen" id="scr-game">
     <div id="hud"></div>
-    <div id="hall"><div id="seats"></div><div id="counter"></div></div>
+    <div id="hall"><div id="people"></div><div id="counter"></div></div>
     <div id="kitchen"></div>
   </div>
   <div id="fx"><div id="hand"><div class="in"></div></div></div>
@@ -326,7 +331,8 @@ button{font:inherit;color:inherit}
    КОНФИГ: всё содержимое игры описано данными.
    Новый ресторан = новая запись в CONFIG.restaurants.
    ===================================================================== */
-// Наборы меню по мере открытия блюд (используются в описании уровней)
+
+// Наборы меню по мере открытия блюд (используются в описании уровней ниже)
 const M1 = ['roll_salmon'];
 const M2 = [...M1, 'miso'];
 const M3 = [...M2, 'roll_cucumber'];
@@ -337,91 +343,128 @@ const M7 = [...M6, 'tea'];
 
 const CONFIG = {
   imgPath: 'img/',
-  saveKey: 'meow_sushi_save_v1',
-  leaderboard: 'stars',            // техническое имя лидерборда в консоли Яндекс Игр
+  saveKey: 'sushi_chef_save_v1',
+  leaderboard: 'hearts',           // техническое имя лидерборда в консоли Яндекс Игр (сумма сердец)
   dailyRewards: [20, 30, 45, 60, 80, 110, 160], // награды за 7 дней серии
   freeUpgradeCooldownSec: 600,     // «Бесплатное улучшение» раз в 10 минут
   addTimeSec: 20,                  // «+20 секунд» при проигрыше
+  walkSpeed: 750,                  // скорость ходьбы посетителей, px/с
 
-  // Спрайты: ключ -> файл в img/ и эмодзи-заглушка (badge — маленький значок поверх, css — фильтр)
+  // Спрайты: ключ -> файл в img/ и эмодзи-заглушка (badge — значок поверх, css — фильтр)
   sprites: {
-    logo:           { file: 'logo.png',            emoji: '🐱' },
-    chef:           { file: 'cat_chef.png',        emoji: '😺' },
-    coin:           { file: 'coin.png',            emoji: '🪙' },
-    star:           { file: 'star.png',            emoji: '⭐' },
-    star_empty:     { file: 'star_empty.png',      emoji: '⭐', css: 'gray' },
-    lock:           { file: 'lock.png',            emoji: '🔒' },
-    hand:           { file: 'hand.png',            emoji: '👆' },
-    ic_pause:       { file: 'ic_pause.png',        emoji: '⏸️' },
-    ic_sound:       { file: 'ic_sound.png',        emoji: '🔊' },
-    ic_mute:        { file: 'ic_mute.png',         emoji: '🔇' },
-    ic_shop:        { file: 'ic_shop.png',         emoji: '🛒' },
-    ic_gift:        { file: 'ic_gift.png',         emoji: '🎁' },
-    ic_trophy:      { file: 'ic_trophy.png',       emoji: '🏆' },
-    ic_back:        { file: 'ic_back.png',         emoji: '⬅️' },
-    ic_ad:          { file: 'ic_ad.png',           emoji: '📺' },
-    ic_clock:       { file: 'ic_clock.png',        emoji: '⏱️' },
-    ic_close:       { file: 'ic_close.png',        emoji: '✖️' },
-    // фоны (jpg)
-    bg_world:       { file: 'bg_world.jpg',        emoji: '' },
-    bg_levels_sushi:{ file: 'bg_levels_sushi.jpg', emoji: '' },
-    bg_hall_sushi:  { file: 'bg_hall_sushi.jpg',   emoji: '' },
+    logo:            { file: 'logo.png',             emoji: '🍣' },
+    coin:            { file: 'coin.png',             emoji: '🪙' },
+    heart:           { file: 'heart.png',            emoji: '❤️' },
+    star:            { file: 'star.png',             emoji: '⭐' },
+    star_empty:      { file: 'star_empty.png',       emoji: '⭐', css: 'gray' },
+    lock:            { file: 'lock.png',             emoji: '🔒' },
+    hand:            { file: 'hand.png',             emoji: '👆' },
+    combo:           { file: 'combo.png',            emoji: '🔥' },
+    medal:           { file: 'medal.png',            emoji: '🏅' },
+    ic_pause:        { file: 'ic_pause.png',         emoji: '⏸️' },
+    ic_sound:        { file: 'ic_sound.png',         emoji: '🔊' },
+    ic_mute:         { file: 'ic_mute.png',          emoji: '🔇' },
+    ic_shop:         { file: 'ic_shop.png',          emoji: '🛒' },
+    ic_gift:         { file: 'ic_gift.png',          emoji: '🎁' },
+    ic_trophy:       { file: 'ic_trophy.png',        emoji: '🏆' },
+    ic_back:         { file: 'ic_back.png',          emoji: '⬅️' },
+    ic_ad:           { file: 'ic_ad.png',            emoji: '📺' },
+    ic_clock:        { file: 'ic_clock.png',         emoji: '⏱️' },
+    ic_close:        { file: 'ic_close.png',         emoji: '✖️' },
+    // фоны (jpg 1600x900)
+    bg_world:        { file: 'bg_world.jpg',         emoji: '' },
+    bg_levels_sushi: { file: 'bg_levels_sushi.jpg',  emoji: '' },
+    bg_hall_sushi:   { file: 'bg_hall_sushi.jpg',    emoji: '' },
     bg_kitchen_sushi:{ file: 'bg_kitchen_sushi.jpg', emoji: '' },
-    bg_shop:        { file: 'bg_shop.jpg',         emoji: '' },
-    // гости
-    guest_1:        { file: 'guest_1.png',         emoji: '🐱' },
-    guest_2:        { file: 'guest_2.png',         emoji: '😺' },
-    guest_3:        { file: 'guest_3.png',         emoji: '😸' },
-    guest_4:        { file: 'guest_4.png',         emoji: '😼' },
-    guest_5:        { file: 'guest_5.png',         emoji: '🐈' },
-    guest_6:        { file: 'guest_6.png',         emoji: '🐈‍⬛' },
-    mood_happy:     { file: 'mood_happy.png',      emoji: '😻' },
-    mood_angry:     { file: 'mood_angry.png',      emoji: '😾' },
+    bg_shop:         { file: 'bg_shop.jpg',          emoji: '' },
+    // посетители (картинка — фигура целиком; заглушка — лицо + рубашка CSS)
+    visitor_1:       { file: 'visitor_1.png',        emoji: '👩' },
+    visitor_2:       { file: 'visitor_2.png',        emoji: '👨' },
+    visitor_3:       { file: 'visitor_3.png',        emoji: '👵' },
+    visitor_4:       { file: 'visitor_4.png',        emoji: '👴' },
+    visitor_5:       { file: 'visitor_5.png',        emoji: '👧' },
+    visitor_6:       { file: 'visitor_6.png',        emoji: '👦' },
+    visitor_7:       { file: 'visitor_7.png',        emoji: '🧔' },
+    visitor_8:       { file: 'visitor_8.png',        emoji: '👱‍♀️' },
+    mood_happy:      { file: 'mood_happy.png',       emoji: '😊' },
+    mood_angry:      { file: 'mood_angry.png',       emoji: '😠' },
     // ингредиенты и блюда
-    nori:           { file: 'nori_rice.png',       emoji: '🍙' },
-    salmon:         { file: 'salmon.png',          emoji: '🐟' },
-    cucumber:       { file: 'cucumber.png',        emoji: '🥒' },
-    avocado:        { file: 'avocado.png',         emoji: '🥑' },
-    roll_salmon:    { file: 'roll_salmon.png',     emoji: '🍣', badge: '🐟' },
-    roll_cucumber:  { file: 'roll_cucumber.png',   emoji: '🍣', badge: '🥒' },
-    roll_avocado:   { file: 'roll_avocado.png',    emoji: '🍣', badge: '🥑' },
-    roll_mix:       { file: 'roll_mix.png',        emoji: '🍣', badge: '🌈' },
-    roll_wrong:     { file: 'roll_wrong.png',      emoji: '🍣', badge: '❌', css: 'wrong' },
-    shrimp_raw:     { file: 'shrimp_raw.png',      emoji: '🦐' },
-    tempura:        { file: 'tempura.png',         emoji: '🍤' },
-    tempura_burnt:  { file: 'tempura_burnt.png',   emoji: '🍤', css: 'burnt' },
-    miso:           { file: 'miso.png',            emoji: '🍲' },
-    tea:            { file: 'tea.png',             emoji: '🍵' },
-    // станции
-    mat:            { file: 'mat.png',             emoji: '' },
-    pot:            { file: 'miso_pot.png',        emoji: '🥘' },
-    teapot:         { file: 'teapot.png',          emoji: '🫖' },
-    trash:          { file: 'trash.png',           emoji: '🗑️' },
+    nori:            { file: 'nori_rice.png',        emoji: '🍙' },
+    salmon:          { file: 'salmon.png',           emoji: '🐟' },
+    cucumber:        { file: 'cucumber.png',         emoji: '🥒' },
+    avocado:         { file: 'avocado.png',          emoji: '🥑' },
+    roll_salmon:     { file: 'roll_salmon.png',      emoji: '🍣', badge: '🐟' },
+    roll_cucumber:   { file: 'roll_cucumber.png',    emoji: '🍣', badge: '🥒' },
+    roll_avocado:    { file: 'roll_avocado.png',     emoji: '🍣', badge: '🥑' },
+    roll_mix:        { file: 'roll_mix.png',         emoji: '🍣', badge: '🌈' },
+    roll_wrong:      { file: 'roll_wrong.png',       emoji: '🍣', badge: '❌', css: 'wrong' },
+    shrimp_raw:      { file: 'shrimp_raw.png',       emoji: '🦐' },
+    tempura:         { file: 'tempura.png',          emoji: '🍤' },
+    tempura_burnt:   { file: 'tempura_burnt.png',    emoji: '🍤', css: 'burnt' },
+    miso:            { file: 'miso.png',             emoji: '🍲' },
+    tea:             { file: 'tea.png',              emoji: '🍵' },
+    // оборудование: картинка меняется со ступенью улучшения (_0 — базовая, _3 — максимальная)
+    mat_0:           { file: 'mat_0.png',            emoji: '' },
+    mat_1:           { file: 'mat_1.png',            emoji: '' },
+    mat_2:           { file: 'mat_2.png',            emoji: '' },
+    mat_3:           { file: 'mat_3.png',            emoji: '' },
+    fryer_0:         { file: 'fryer_0.png',          emoji: '' },
+    fryer_1:         { file: 'fryer_1.png',          emoji: '' },
+    fryer_2:         { file: 'fryer_2.png',          emoji: '' },
+    fryer_3:         { file: 'fryer_3.png',          emoji: '' },
+    pot_0:           { file: 'pot_0.png',            emoji: '🥘' },
+    pot_1:           { file: 'pot_1.png',            emoji: '🥘' },
+    pot_2:           { file: 'pot_2.png',            emoji: '🥘' },
+    pot_3:           { file: 'pot_3.png',            emoji: '🥘' },
+    teapot_0:        { file: 'teapot_0.png',         emoji: '🫖' },
+    teapot_1:        { file: 'teapot_1.png',         emoji: '🫖' },
+    teapot_2:        { file: 'teapot_2.png',         emoji: '🫖' },
+    teapot_3:        { file: 'teapot_3.png',         emoji: '🫖' },
+    trash:           { file: 'trash.png',            emoji: '🗑️' },
     // рестораны
-    rest_sushi:     { file: 'rest_sushi.png',      emoji: '🍣' },
-    rest_ramen:     { file: 'rest_ramen.png',      emoji: '🍜' },
-    rest_wok:       { file: 'rest_wok.png',        emoji: '🥡' },
-    rest_dimsum:    { file: 'rest_dimsum.png',     emoji: '🥟' },
-    rest_sweets:    { file: 'rest_sweets.png',     emoji: '🍡' },
+    rest_sushi:      { file: 'rest_sushi.png',       emoji: '🍣' },
+    rest_ramen:      { file: 'rest_ramen.png',       emoji: '🍜' },
+    rest_wok:        { file: 'rest_wok.png',         emoji: '🥡' },
+    rest_dimsum:     { file: 'rest_dimsum.png',      emoji: '🥟' },
+    rest_sweets:     { file: 'rest_sweets.png',      emoji: '🍡' },
     // иконки улучшений
-    up_roll_speed:  { file: 'up_roll_speed.png',   emoji: '⚡' },
-    up_mats:        { file: 'up_mats.png',         emoji: '🎋' },
-    up_fryer_speed: { file: 'up_fryer_speed.png',  emoji: '🔥' },
-    up_fryer_slots: { file: 'up_fryer_slots.png',  emoji: '🍳' },
-    up_soup_cap:    { file: 'up_soup_cap.png',     emoji: '🥣' },
-    up_tea_cap:     { file: 'up_tea_cap.png',      emoji: '🫖' },
-    up_price_roll:  { file: 'up_price_roll.png',   emoji: '🍣' },
+    up_roll_speed:   { file: 'up_roll_speed.png',    emoji: '⚡' },
+    up_mats:         { file: 'up_mats.png',          emoji: '🎋' },
+    up_fryer_speed:  { file: 'up_fryer_speed.png',   emoji: '🔥' },
+    up_fryer_slots:  { file: 'up_fryer_slots.png',   emoji: '🍳' },
+    up_soup_cap:     { file: 'up_soup_cap.png',      emoji: '🥣' },
+    up_tea_cap:      { file: 'up_tea_cap.png',       emoji: '🫖' },
+    up_price_roll:   { file: 'up_price_roll.png',    emoji: '🍣' },
     up_price_tempura:{ file: 'up_price_tempura.png', emoji: '🍤' },
-    up_price_soup:  { file: 'up_price_soup.png',   emoji: '🍲' },
-    up_patience:    { file: 'up_patience.png',     emoji: '⌛' },
-    up_tips:        { file: 'up_tips.png',         emoji: '💰' }
+    up_price_soup:   { file: 'up_price_soup.png',    emoji: '🍲' },
+    up_patience:     { file: 'up_patience.png',      emoji: '⌛' },
+    up_tips:         { file: 'up_tips.png',          emoji: '💰' }
   },
 
-  // Декор на карте мира (только эмодзи, без файлов)
+  // Декор на карте мира (только эмодзи)
   worldDeco: [
     { e: '🗻', x: 120, y: 250, s: 110 }, { e: '⛩️', x: 470, y: 760, s: 80 }, { e: '🌸', x: 780, y: 200, s: 70 },
     { e: '🏯', x: 1040, y: 760, s: 90 }, { e: '🎋', x: 1290, y: 230, s: 80 }, { e: '🌸', x: 1500, y: 790, s: 64 },
-    { e: '⛵', x: 860, y: 470, s: 60 }, { e: '🐟', x: 1480, y: 380, s: 50 }
+    { e: '⛵', x: 860, y: 470, s: 60 }, { e: '🐟', x: 1480, y: 380, s: 50 }, { e: '🏮', x: 60, y: 720, s: 70 }
+  ],
+
+  // Достижения: stat — счётчик статистики, goal — сколько нужно, reward — монеты
+  achievements: [
+    { id: 'first',      stat: 'served',        goal: 1,   reward: 20,  icon: 'visitor_1',     name: { ru: 'Первый гость', en: 'First guest' },        desc: { ru: 'Обслужите первого посетителя', en: 'Serve your first visitor' } },
+    { id: 'stars3',     stat: 'threeStars',    goal: 1,   reward: 50,  icon: 'star',          name: { ru: 'Три звезды', en: 'Three stars' },          desc: { ru: 'Получите 3 звезды на уровне', en: 'Get 3 stars on a level' } },
+    { id: 'combo4',     stat: 'maxCombo',      goal: 4,   reward: 60,  icon: 'combo',         name: { ru: 'Комбо x4', en: 'Combo x4' },                desc: { ru: 'Разгоните комбо до x4', en: 'Reach a x4 combo' } },
+    { id: 'guests100',  stat: 'served',        goal: 100, reward: 150, icon: 'visitor_2',     name: { ru: '100 посетителей', en: '100 visitors' },     desc: { ru: 'Обслужите 100 посетителей', en: 'Serve 100 visitors' } },
+    { id: 'guests500',  stat: 'served',        goal: 500, reward: 400, icon: 'visitor_7',     name: { ru: 'Любимое место', en: 'Local favorite' },     desc: { ru: 'Обслужите 500 посетителей', en: 'Serve 500 visitors' } },
+    { id: 'noburn',     stat: 'noBurnLevels',  goal: 1,   reward: 60,  icon: 'tempura',       name: { ru: 'Без пожаров', en: 'No fires' },             desc: { ru: 'Пройдите уровень с фритюром без сгоревших блюд', en: 'Win a fryer level with nothing burnt' } },
+    { id: 'noangry',    stat: 'perfectLevels', goal: 1,   reward: 60,  icon: 'mood_happy',    name: { ru: 'Все довольны', en: 'Everyone happy' },      desc: { ru: 'Пройдите уровень без сердитых посетителей', en: 'Win a level with no angry visitors' } },
+    { id: 'hearts50',   stat: 'hearts',        goal: 50,  reward: 100, icon: 'heart',         name: { ru: 'Сердцеед', en: 'Heartthrob' },              desc: { ru: 'Соберите 50 сердец', en: 'Collect 50 hearts' } },
+    { id: 'hearts300',  stat: 'hearts',        goal: 300, reward: 300, icon: 'heart',         name: { ru: 'Народный шеф', en: 'People\'s chef' },      desc: { ru: 'Соберите 300 сердец', en: 'Collect 300 hearts' } },
+    { id: 'rolls200',   stat: 'rolls',         goal: 200, reward: 150, icon: 'roll_salmon',   name: { ru: 'Мастер роллов', en: 'Roll master' },        desc: { ru: 'Скрутите 200 роллов', en: 'Make 200 rolls' } },
+    { id: 'tempura100', stat: 'tempura',       goal: 100, reward: 150, icon: 'shrimp_raw',    name: { ru: 'Король темпуры', en: 'Tempura king' },      desc: { ru: 'Пожарьте 100 темпур', en: 'Fry 100 tempura' } },
+    { id: 'bigorder',   stat: 'bigOrders',     goal: 10,  reward: 80,  icon: 'roll_mix',      name: { ru: 'Большой аппетит', en: 'Big appetite' },     desc: { ru: 'Выполните 10 заказов из 3 блюд', en: 'Complete 10 three-dish orders' } },
+    { id: 'upgrades10', stat: 'upgrades',      goal: 10,  reward: 150, icon: 'up_roll_speed', name: { ru: 'Новая кухня', en: 'New kitchen' },          desc: { ru: 'Купите 10 улучшений', en: 'Buy 10 upgrades' } },
+    { id: 'stars30',    stat: 'stars',         goal: 30,  reward: 200, icon: 'medal',         name: { ru: 'Звёздный повар', en: 'Star cook' },         desc: { ru: 'Соберите 30 звёзд', en: 'Collect 30 stars' } },
+    { id: 'allLevels',  stat: 'levelsDone',    goal: 20,  reward: 500, icon: 'rest_sushi',    name: { ru: 'Шеф суши-бара', en: 'Sushi bar chef' },     desc: { ru: 'Пройдите все 20 уровней суши-бара', en: 'Beat all 20 sushi bar levels' } }
   ],
 
   restaurants: [
@@ -431,27 +474,30 @@ const CONFIG = {
       icon: 'rest_sushi', bgLevels: 'bg_levels_sushi', bgHall: 'bg_hall_sushi', bgKitchen: 'bg_kitchen_sushi',
       mapPos: { x: 330, y: 560 },
       starsRequired: 0,
-      seats: 4,                         // мест у стойки
-      guests: ['guest_1', 'guest_2', 'guest_3', 'guest_4', 'guest_5', 'guest_6'],
+      seats: 4,                                 // мест у стойки
+      visitors: ['visitor_1', 'visitor_2', 'visitor_3', 'visitor_4', 'visitor_5', 'visitor_6', 'visitor_7', 'visitor_8'],
+      shirts: ['#e2552b', '#3f8fd8', '#46a84b', '#8a4fd8', '#f2a72e', '#d94f8a', '#2fa8a0', '#6b6f7a'],
       tips: [ { above: 0.66, bonus: 0.5 }, { above: 0.33, bonus: 0.2 } ], // чаевые от остатка терпения
-      patiencePerExtraItem: 0.3,       // +30% терпения за каждую позицию заказа после первой
-      patienceRefill: 0.12,            // доля терпения, возвращаемая при подаче блюда
-      combo: { every: 3, bonus: 15 },  // 3 гостя подряд без потерь -> +15 монет
+      heartAbove: 0.5,                          // сердце, если терпение выше 50%
+      patiencePerExtraItem: 0.3,                // +30% терпения за каждую позицию заказа после первой
+      patienceRefill: 0.12,                     // доля терпения, возвращаемая при подаче блюда
+      combo: { window: 3, bonus: [3, 6, 10] },  // подачи с паузой < 3 с: x2, x3, x4 и бонус монет за подачу
 
-      // Блюда: цена, спрайт, улучшение цены (множитель), вес в заказах
+      // Блюда: цена, спрайт, параметр-множитель цены, вес в заказах
       dishes: {
-        roll_salmon:   { name: { ru: 'Ролл с лососем', en: 'Salmon roll' },     price: 10, sprite: 'roll_salmon',   priceUp: 'priceRoll',    weight: 1 },
-        roll_cucumber: { name: { ru: 'Ролл с огурцом', en: 'Cucumber roll' },   price: 8,  sprite: 'roll_cucumber', priceUp: 'priceRoll',    weight: 1 },
-        roll_avocado:  { name: { ru: 'Ролл с авокадо', en: 'Avocado roll' },    price: 12, sprite: 'roll_avocado',  priceUp: 'priceRoll',    weight: 1 },
-        roll_mix:      { name: { ru: 'Ролл ассорти', en: 'Mixed roll' },        price: 22, sprite: 'roll_mix',      priceUp: 'priceRoll',    weight: 0.7 },
-        tempura:       { name: { ru: 'Темпура', en: 'Tempura' },                price: 14, sprite: 'tempura',       priceUp: 'priceTempura', weight: 1 },
-        miso:          { name: { ru: 'Мисо-суп', en: 'Miso soup' },             price: 6,  sprite: 'miso',          priceUp: 'priceSoup',    weight: 1 },
-        tea:           { name: { ru: 'Зелёный чай', en: 'Green tea' },          price: 5,  sprite: 'tea',           priceUp: 'priceSoup',    weight: 0.9 }
+        roll_salmon:   { name: { ru: 'Ролл с лососем', en: 'Salmon roll' },   price: 10, sprite: 'roll_salmon',   priceUp: 'priceRoll',    weight: 1 },
+        roll_cucumber: { name: { ru: 'Ролл с огурцом', en: 'Cucumber roll' }, price: 8,  sprite: 'roll_cucumber', priceUp: 'priceRoll',    weight: 1 },
+        roll_avocado:  { name: { ru: 'Ролл с авокадо', en: 'Avocado roll' },  price: 12, sprite: 'roll_avocado',  priceUp: 'priceRoll',    weight: 1 },
+        roll_mix:      { name: { ru: 'Ролл ассорти', en: 'Mixed roll' },      price: 22, sprite: 'roll_mix',      priceUp: 'priceRoll',    weight: 0.7 },
+        tempura:       { name: { ru: 'Темпура', en: 'Tempura' },              price: 14, sprite: 'tempura',       priceUp: 'priceTempura', weight: 1 },
+        miso:          { name: { ru: 'Мисо-суп', en: 'Miso soup' },           price: 6,  sprite: 'miso',          priceUp: 'priceSoup',    weight: 1 },
+        tea:           { name: { ru: 'Зелёный чай', en: 'Green tea' },        price: 5,  sprite: 'tea',           priceUp: 'priceSoup',    weight: 0.9 }
       },
 
-      // Станции кухни. Числовой параметр можно заменить строкой — тогда он берётся из улучшения с таким id.
+      // Станции кухни. Параметр — число, имя параметра улучшения или массив имён (значения перемножаются).
+      // look — улучшение, от ступени которого зависит картинка оборудования.
       stations: [
-        { id: 'mats', type: 'assembly', slots: 'mats', time: 'rollSpeed', slotSprite: 'mat',
+        { id: 'mats', type: 'assembly', slots: 'mats', time: ['rollTime', 'rollMul'], look: 'mats', sprite: 'mat',
           base: 'nori', toppings: ['salmon', 'cucumber', 'avocado'],
           recipes: [
             { dish: 'roll_salmon',   set: ['salmon'] },
@@ -460,69 +506,85 @@ const CONFIG = {
             { dish: 'roll_mix',      set: ['salmon', 'cucumber', 'avocado'] }
           ],
           wrong: 'roll_wrong' },
-        { id: 'fryer', type: 'fryer', slots: 'fryerSlots', time: 'fryerSpeed', burn: 6, penalty: 5,
+        { id: 'fryer', type: 'fryer', slots: 'fryerSlots', time: 'fryTime', burn: 'burnTime', penalty: 5, look: 'fryerSlots', sprite: 'fryer',
           input: 'shrimp_raw', dish: 'tempura', burnt: 'tempura_burnt' },
-        { id: 'soup', type: 'dispenser', dish: 'miso', fill: 3, cap: 'soupCap', sprite: 'pot' },
-        { id: 'tea',  type: 'dispenser', dish: 'tea',  fill: 3, cap: 'teaCap',  sprite: 'teapot' },
+        { id: 'soup', type: 'dispenser', dish: 'miso', fill: 'soupFill', cap: 'soupCap', look: 'soupCap', sprite: 'pot' },
+        { id: 'tea',  type: 'dispenser', dish: 'tea',  fill: 'teaFill',  cap: 'teaCap',  look: 'teaCap',  sprite: 'teapot' },
         { id: 'trash', type: 'trash', sprite: 'trash' }
       ],
 
-      // Улучшения: values[0] — базовое значение, далее по ступеням; costs — цена каждой ступени
+      // Улучшения: по 3 ступени. params — значения параметров для ступеней 0..3 (0 — без улучшения).
+      // fmt: sec — секунды, count — штуки, mult — надбавка %, time — ускорение %.
       upgrades: [
-        { id: 'rollSpeed',   group: 'kitchen', icon: 'up_roll_speed',   fmt: 'sec',   values: [2, 1.6, 1.3, 1],     costs: [120, 300, 640],
-          name: { ru: 'Быстрая скрутка', en: 'Fast rolling' } },
-        { id: 'mats',        group: 'kitchen', icon: 'up_mats',         fmt: 'count', values: [2, 3, 4],            costs: [240, 680],
-          name: { ru: 'Циновки', en: 'Bamboo mats' } },
-        { id: 'fryerSpeed',  group: 'kitchen', icon: 'up_fryer_speed',  fmt: 'sec',   values: [5, 4.2, 3.5, 2.8],   costs: [180, 400, 760],
-          name: { ru: 'Жаркий фритюр', en: 'Hot fryer' } },
-        { id: 'fryerSlots',  group: 'kitchen', icon: 'up_fryer_slots',  fmt: 'count', values: [2, 3, 4],            costs: [300, 760],
-          name: { ru: 'Корзины фритюра', en: 'Fryer baskets' } },
-        { id: 'soupCap',     group: 'kitchen', icon: 'up_soup_cap',     fmt: 'count', values: [1, 2, 3],            costs: [140, 360],
-          name: { ru: 'Большая кастрюля', en: 'Big soup pot' } },
-        { id: 'teaCap',      group: 'kitchen', icon: 'up_tea_cap',      fmt: 'count', values: [1, 2, 3],            costs: [180, 440],
-          name: { ru: 'Большой чайник', en: 'Big teapot' } },
-        { id: 'priceRoll',   group: 'food',    icon: 'up_price_roll',   fmt: 'mult',  values: [1, 1.2, 1.4, 1.6],   costs: [200, 480, 960],
-          name: { ru: 'Отборная рыба', en: 'Premium rolls' } },
-        { id: 'priceTempura',group: 'food',    icon: 'up_price_tempura',fmt: 'mult',  values: [1, 1.2, 1.4, 1.6],   costs: [220, 520, 1000],
-          name: { ru: 'Хрустящий кляр', en: 'Crispy batter' } },
-        { id: 'priceSoup',   group: 'food',    icon: 'up_price_soup',   fmt: 'mult',  values: [1, 1.25, 1.5, 1.8],  costs: [160, 400, 800],
-          name: { ru: 'Суп и чай люкс', en: 'Deluxe soup & tea' } },
-        { id: 'patience',    group: 'hall',    icon: 'up_patience',     fmt: 'mult',  values: [1, 1.15, 1.3, 1.5],  costs: [200, 500, 960],
-          name: { ru: 'Уютный зал', en: 'Cozy hall' } },
-        { id: 'tips',        group: 'hall',    icon: 'up_tips',         fmt: 'mult',  values: [1, 1.3, 1.6, 2],     costs: [180, 460, 900],
-          name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' } }
+        { id: 'rollSpeed',    group: 'kitchen', icon: 'up_roll_speed',   costs: [120, 300, 640],
+          name: { ru: 'Быстрая скрутка', en: 'Fast rolling' },
+          params: { rollTime: { v: [2, 1.7, 1.4, 1.1], fmt: 'sec' } } },
+        { id: 'mats',         group: 'kitchen', icon: 'up_mats',         costs: [240, 600, 900],
+          name: { ru: 'Циновки', en: 'Bamboo mats' },
+          params: { mats: { v: [2, 3, 4, 4], fmt: 'count' },
+                    rollMul: { v: [1, 1, 1, 0.8], fmt: 'time', label: { ru: 'скрутка', en: 'rolling' } } } },
+        { id: 'fryerSpeed',   group: 'kitchen', icon: 'up_fryer_speed',  costs: [180, 400, 760],
+          name: { ru: 'Жаркий фритюр', en: 'Hot fryer' },
+          params: { fryTime: { v: [5, 4.3, 3.6, 3], fmt: 'sec' } } },
+        { id: 'fryerSlots',   group: 'kitchen', icon: 'up_fryer_slots',  costs: [300, 700, 900],
+          name: { ru: 'Корзины фритюра', en: 'Fryer baskets' },
+          params: { fryerSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    burnTime: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до сгорания', en: 'before burning' } } } },
+        { id: 'soupCap',      group: 'kitchen', icon: 'up_soup_cap',     costs: [140, 360, 600],
+          name: { ru: 'Большая кастрюля', en: 'Big soup pot' },
+          params: { soupCap: { v: [1, 2, 3, 3], fmt: 'count' },
+                    soupFill: { v: [3, 3, 3, 2], fmt: 'sec', label: { ru: 'порция', en: 'portion' } } } },
+        { id: 'teaCap',       group: 'kitchen', icon: 'up_tea_cap',      costs: [180, 440, 700],
+          name: { ru: 'Большой чайник', en: 'Big teapot' },
+          params: { teaCap: { v: [1, 2, 3, 3], fmt: 'count' },
+                    teaFill: { v: [3, 3, 3, 2], fmt: 'sec', label: { ru: 'чашка', en: 'cup' } } } },
+        { id: 'priceRoll',    group: 'food', icon: 'up_price_roll',      costs: [200, 480, 960],
+          name: { ru: 'Отборная рыба', en: 'Premium rolls' },
+          params: { priceRoll: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceTempura', group: 'food', icon: 'up_price_tempura',   costs: [220, 520, 1000],
+          name: { ru: 'Хрустящий кляр', en: 'Crispy batter' },
+          params: { priceTempura: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceSoup',    group: 'food', icon: 'up_price_soup',      costs: [160, 400, 800],
+          name: { ru: 'Суп и чай люкс', en: 'Deluxe soup & tea' },
+          params: { priceSoup: { v: [1, 1.25, 1.5, 1.8], fmt: 'mult' } } },
+        { id: 'patience',     group: 'hall', icon: 'up_patience',        costs: [200, 500, 960],
+          name: { ru: 'Уютный зал', en: 'Cozy hall' },
+          params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
+        { id: 'tips',         group: 'hall', icon: 'up_tips',            costs: [180, 460, 900],
+          name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
+          params: { tips: { v: [1, 1.3, 1.6, 2], fmt: 'mult' } } }
       ],
 
-      // Уровни: time — секунды, goal — пороги на 1/2/3 звезды, every — интервал прихода гостей,
+      // Уровни: time — секунды, goal — пороги монет на 1/2/3 звезды, every — интервал прихода посетителей,
       // patience — терпение (сек), items — размер заказа, seats — сколько мест открыто, intro — новое блюдо
       levels: [
-        { time: 60, seats: 2, every: [7, 9], patience: 30, items: [1, 1], menu: M1, tutorial: true, goal: [60, 90, 115] },
-        { time: 70, seats: 3, every: [6, 8], patience: 28, items: [1, 2], menu: M2, intro: 'miso', tutorial: true, goal: [100, 135, 180] },
-        { time: 75, seats: 3, every: [5.5, 7.5], patience: 27, items: [1, 2], menu: M3, intro: 'roll_cucumber', tutorial: true, goal: [100, 160, 210] },
-        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M3, goal: [150, 235, 330] },
-        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M4, intro: 'tempura', goal: [180, 300, 375] },
-        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M4, goal: [210, 315, 450] },
-        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M5, intro: 'roll_avocado', goal: [220, 360, 465] },
-        { time: 90, seats: 4, every: [4.5, 6], patience: 24, items: [1, 3], menu: M5, goal: [235, 440, 595] },
-        { time: 100, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M6, intro: 'roll_mix', goal: [245, 480, 700] },
-        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M6, goal: [265, 580, 750] },
-        { time: 100, seats: 4, every: [4, 5.5], patience: 23, items: [1, 3], menu: M6, goal: [280, 600, 780] },
-        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M7, intro: 'tea', goal: [290, 490, 640] },
-        { time: 105, seats: 4, every: [3.5, 5.5], patience: 23, items: [1, 3], menu: M7, goal: [305, 670, 875] },
-        { time: 105, seats: 4, every: [3.5, 5], patience: 22, items: [2, 3], menu: M7, goal: [320, 730, 955] },
-        { time: 110, seats: 4, every: [3.5, 5], patience: 22, items: [1, 3], menu: M7, goal: [335, 760, 1000] },
-        { time: 110, seats: 4, every: [3, 4.5], patience: 21, items: [2, 3], menu: M7, goal: [350, 780, 1020] },
-        { time: 115, seats: 4, every: [3, 4.5], patience: 20, items: [2, 3], menu: M7, goal: [360, 820, 1075] },
-        { time: 115, seats: 4, every: [3, 4], patience: 20, items: [2, 3], menu: M7, goal: [375, 840, 1095] },
-        { time: 120, seats: 4, every: [2.5, 4], patience: 19, items: [2, 3], menu: M7, goal: [390, 850, 1110] },
-        { time: 120, seats: 4, every: [2.5, 3.5], patience: 18, items: [2, 3], menu: M7, goal: [400, 870, 1140] }
+        { time: 60, seats: 2, every: [7, 9], patience: 30, items: [1, 1], menu: M1, tutorial: true, goal: [45, 70, 90] },
+        { time: 70, seats: 3, every: [6, 8], patience: 28, items: [1, 2], menu: M2, intro: 'miso', tutorial: true, goal: [80, 110, 140] },
+        { time: 75, seats: 3, every: [5.5, 7.5], patience: 27, items: [1, 2], menu: M3, intro: 'roll_cucumber', tutorial: true, goal: [90, 155, 200] },
+        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M3, goal: [135, 225, 280] },
+        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M4, intro: 'tempura', goal: [175, 285, 360] },
+        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M4, goal: [205, 305, 400] },
+        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M5, intro: 'roll_avocado', goal: [210, 335, 420] },
+        { time: 90, seats: 4, every: [4.5, 6], patience: 24, items: [1, 3], menu: M5, goal: [225, 470, 560] },
+        { time: 100, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M6, intro: 'roll_mix', goal: [240, 495, 670] },
+        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M6, goal: [255, 560, 780] },
+        { time: 100, seats: 4, every: [4, 5.5], patience: 23, items: [1, 3], menu: M6, goal: [265, 600, 800] },
+        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M7, intro: 'tea', goal: [275, 500, 650] },
+        { time: 105, seats: 4, every: [3.5, 5.5], patience: 23, items: [1, 3], menu: M7, goal: [290, 640, 840] },
+        { time: 105, seats: 4, every: [3.5, 5], patience: 22, items: [2, 3], menu: M7, goal: [300, 760, 1000] },
+        { time: 110, seats: 4, every: [3.5, 5], patience: 22, items: [1, 3], menu: M7, goal: [310, 780, 1020] },
+        { time: 110, seats: 4, every: [3, 4.5], patience: 21, items: [2, 3], menu: M7, goal: [320, 850, 1120] },
+        { time: 115, seats: 4, every: [3, 4.5], patience: 20, items: [2, 3], menu: M7, goal: [330, 880, 1160] },
+        { time: 115, seats: 4, every: [3, 4], patience: 20, items: [2, 3], menu: M7, goal: [340, 910, 1200] },
+        { time: 120, seats: 4, every: [2.5, 4], patience: 19, items: [2, 3], menu: M7, goal: [350, 950, 1250] },
+        { time: 120, seats: 4, every: [2.5, 3.5], patience: 18, items: [2, 3], menu: M7, goal: [360, 980, 1300] }
       ]
     },
     // Заглушки будущих ресторанов: только карточка на карте
-    { id: 'ramen',  name: { ru: 'Раменная', en: 'Ramen House' },       icon: 'rest_ramen',  mapPos: { x: 640,  y: 380 }, starsRequired: 40,  comingSoon: true },
-    { id: 'wok',    name: { ru: 'Вок-стрит', en: 'Wok Street' },        icon: 'rest_wok',    mapPos: { x: 920,  y: 620 }, starsRequired: 80,  comingSoon: true },
-    { id: 'dimsum', name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },   icon: 'rest_dimsum', mapPos: { x: 1160, y: 360 }, starsRequired: 120, comingSoon: true },
-    { id: 'sweets', name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' }, icon: 'rest_sweets', mapPos: { x: 1390, y: 600 }, starsRequired: 160, comingSoon: true }
+    { id: 'ramen',  name: { ru: 'Раменная', en: 'Ramen House' },             icon: 'rest_ramen',  mapPos: { x: 640,  y: 380 }, starsRequired: 40,  comingSoon: true },
+    { id: 'wok',    name: { ru: 'Вок-стрит', en: 'Wok Street' },              icon: 'rest_wok',    mapPos: { x: 920,  y: 620 }, starsRequired: 80,  comingSoon: true },
+    { id: 'dimsum', name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },         icon: 'rest_dimsum', mapPos: { x: 1160, y: 360 }, starsRequired: 120, comingSoon: true },
+    { id: 'sweets', name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' },  icon: 'rest_sweets', mapPos: { x: 1390, y: 600 }, starsRequired: 160, comingSoon: true }
   ]
 };
 
@@ -531,36 +593,36 @@ const CONFIG = {
    ===================================================================== */
 const TEXT = {
   ru: {
-    title: 'Мяу-суши', loading: 'Загрузка…', rotate: 'Поверните устройство горизонтально',
-    level: 'Уровень {0}', goal: 'Цель', play: 'Играть', back: 'Назад', shop: 'Магазин', next: 'Далее',
-    retry: 'Заново', toMap: 'На карту', resume: 'Продолжить', pause: 'Пауза', sound: 'Звук',
-    win: 'Отлично!', lose: 'Не хватило монет', earned: 'Заработано: {0}', needCoins: 'Нужно {0}, у вас {1}',
-    doubleCoins: 'Удвоить монеты', doubled: 'Монеты удвоены!', addTime: '+{0} секунд', menu: 'Меню',
+    title: 'Суши-шеф', rotate: 'Поверните устройство горизонтально',
+    level: 'Уровень {0}', goal: 'Цель', play: 'Играть', shop: 'Магазин', next: 'Далее',
+    retry: 'Заново', toMap: 'На карту', resume: 'Продолжить', pause: 'Пауза',
+    win: 'Отлично!', lose: 'Не хватило монет', needCoins: 'Нужно {0}, у вас {1}',
+    doubleCoins: 'Удвоить монеты', addTime: '+{0} секунд', menu: 'Меню',
     newDish: 'Новое блюдо!', best: 'Рекорд', locked: 'Нужно {0} ⭐', comingSoon: 'Скоро открытие!',
     levelLocked: 'Сначала пройдите предыдущий уровень',
     kitchen: 'Кухня', food: 'Продукты', hall: 'Зал', upgrades: 'Улучшения', max: 'МАКС',
-    free: 'Бесплатно', freeReady: 'Бесплатное улучшение за рекламу!', freeIn: 'Бесплатно через {0}', notEnough: 'Не хватает монет',
+    freeReady: 'Бесплатное улучшение за рекламу!', freeIn: 'Бесплатно через {0}', notEnough: 'Не хватает монет',
     bought: 'Улучшено!', daily: 'Ежедневная награда', day: 'День {0}', claim: 'Забрать',
-    claimed: 'Возвращайтесь завтра!', leaderboard: 'Лидеры', lbUnavailable: 'Таблица лидеров доступна в Яндекс Играх',
-    you: 'Вы', loadingLb: 'Загрузка…', combo: 'Комбо! +{0}', tips: 'чаевые +{0}', adError: 'Реклама недоступна',
-    adFake: 'Реклама (тестовая заглушка)', sec: '{0} с', stars: 'Звёзды', burnt: 'Сгорело! -{0}',
-    noAdYet: 'Подождите немного', totalStars: 'Всего звёзд: {0}'
+    claimed: 'Возвращайтесь завтра!', leaderboard: 'Лидеры по сердцам', lbUnavailable: 'Таблица лидеров доступна в Яндекс Играх',
+    you: 'Вы', loadingLb: 'Загрузка…', combo: 'КОМБО x{0}', tips: 'чаевые +{0}', adError: 'Реклама недоступна',
+    adFake: 'Реклама (тестовая заглушка)', sec: '{0} с', burnt: 'Сгорело! -{0}', noAdYet: 'Подождите немного',
+    achievements: 'Достижения', achUnlocked: 'Достижение: {0}', bestCombo: 'Лучшее комбо'
   },
   en: {
-    title: 'Meow Sushi', loading: 'Loading…', rotate: 'Please rotate your device',
-    level: 'Level {0}', goal: 'Goal', play: 'Play', back: 'Back', shop: 'Shop', next: 'Next',
-    retry: 'Retry', toMap: 'Map', resume: 'Resume', pause: 'Pause', sound: 'Sound',
-    win: 'Great job!', lose: 'Not enough coins', earned: 'Earned: {0}', needCoins: 'Need {0}, you have {1}',
-    doubleCoins: 'Double coins', doubled: 'Coins doubled!', addTime: '+{0} seconds', menu: 'Menu',
+    title: 'Sushi Chef', rotate: 'Please rotate your device',
+    level: 'Level {0}', goal: 'Goal', play: 'Play', shop: 'Shop', next: 'Next',
+    retry: 'Retry', toMap: 'Map', resume: 'Resume', pause: 'Pause',
+    win: 'Great job!', lose: 'Not enough coins', needCoins: 'Need {0}, you have {1}',
+    doubleCoins: 'Double coins', addTime: '+{0} seconds', menu: 'Menu',
     newDish: 'New dish!', best: 'Best', locked: 'Need {0} ⭐', comingSoon: 'Opening soon!',
     levelLocked: 'Complete the previous level first',
     kitchen: 'Kitchen', food: 'Food', hall: 'Hall', upgrades: 'Upgrades', max: 'MAX',
-    free: 'Free', freeReady: 'Free upgrade for watching an ad!', freeIn: 'Free in {0}', notEnough: 'Not enough coins',
+    freeReady: 'Free upgrade for watching an ad!', freeIn: 'Free in {0}', notEnough: 'Not enough coins',
     bought: 'Upgraded!', daily: 'Daily reward', day: 'Day {0}', claim: 'Claim',
-    claimed: 'Come back tomorrow!', leaderboard: 'Leaders', lbUnavailable: 'Leaderboard is available on Yandex Games',
-    you: 'You', loadingLb: 'Loading…', combo: 'Combo! +{0}', tips: 'tip +{0}', adError: 'Ad is not available',
-    adFake: 'Ad (test stub)', sec: '{0} s', stars: 'Stars', burnt: 'Burnt! -{0}',
-    noAdYet: 'Please wait a bit', totalStars: 'Total stars: {0}'
+    claimed: 'Come back tomorrow!', leaderboard: 'Top hearts', lbUnavailable: 'Leaderboard is available on Yandex Games',
+    you: 'You', loadingLb: 'Loading…', combo: 'COMBO x{0}', tips: 'tip +{0}', adError: 'Ad is not available',
+    adFake: 'Ad (test stub)', sec: '{0} s', burnt: 'Burnt! -{0}', noAdYet: 'Please wait a bit',
+    achievements: 'Achievements', achUnlocked: 'Achievement: {0}', bestCombo: 'Best combo'
   }
 };
 
@@ -571,7 +633,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const byId = id => document.getElementById(id);
 const rnd = (a, b) => a + Math.random() * (b - a);
 const rndInt = (a, b) => Math.floor(rnd(a, b + 1));
-const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const pick = arr => arr[rndInt(0, arr.length - 1)];
 const fmtTime = s => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 const dayStr = d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
 const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
@@ -584,7 +646,6 @@ function t(key, ...args) {
   return s;
 }
 const tr = o => (o ? (o[LANG] || o.ru) : '');
-
 const DEBUG = /[?&]debug/.test(location.search);
 
 /* =====================================================================
@@ -611,13 +672,14 @@ function spr(key, size, cls = '') {
     : `<span class="emo ${d.css || ''}">${d.emoji || ''}${d.badge ? `<i class="badge">${d.badge}</i>` : ''}</span>`;
   return `<span class="spr ${cls}" style="--s:${size}px">${inner}</span>`;
 }
-// Фон из спрайта (если файл загрузился)
+const sprUrl = key => `url("${CONFIG.imgPath}${CONFIG.sprites[key].file}")`;
+// Фон экрана/зоны из спрайта (если файл загрузился)
 function applyBg(el, key) {
-  if (key && SPR_OK[key]) { el.style.backgroundImage = `url("${CONFIG.imgPath}${CONFIG.sprites[key].file}")`; el.classList.add('has-bg'); }
+  if (key && SPR_OK[key]) { el.style.backgroundImage = sprUrl(key); el.classList.add('has-bg'); }
 }
 
 /* =====================================================================
-   ЗВУК: синтезированные эффекты (WebAudio), без файлов
+   ЗВУК: синтезированные эффекты WebAudio (без файлов)
    ===================================================================== */
 const Sound = {
   ctx: null, master: null,
@@ -633,7 +695,7 @@ const Sound = {
     }
     this.sync();
   },
-  // Звук играет только если включён и игра не на паузе по внешней причине (реклама, свёрнутая вкладка)
+  // Звук работает только если включён и нет внешней паузы (реклама, свёрнутая вкладка)
   sync() {
     if (!this.ctx) return;
     const want = Save.data.sound && pauseReasons.size === 0;
@@ -650,7 +712,7 @@ const Sound = {
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     o.connect(g); g.connect(this.master); o.start(t0); o.stop(t0 + dur + 0.02);
   },
-  play(name) {
+  play(name, arg) {
     if (!this.ctx || !Save.data.sound || this.ctx.state !== 'running') return;
     try {
       switch (name) {
@@ -660,14 +722,16 @@ const Sound = {
         case 'ready': this.tone(880, 0.1, 'sine', 0.25); this.tone(1175, 0.15, 'sine', 0.2, 0.08); break;
         case 'serve': this.tone(523, 0.1, 'triangle', 0.3); this.tone(784, 0.14, 'triangle', 0.25, 0.06); break;
         case 'coin':  this.tone(988, 0.08, 'square', 0.12); this.tone(1319, 0.2, 'square', 0.12, 0.07); break;
-        case 'combo': [523, 659, 784, 1047].forEach((f, i) => this.tone(f, 0.15, 'triangle', 0.25, i * 0.07)); break;
+        case 'heart': this.tone(784, 0.1, 'sine', 0.25); this.tone(1047, 0.18, 'sine', 0.25, 0.09); break;
+        case 'combo': { const base = 440 * Math.pow(1.19, arg || 2); [0, 0.07, 0.14].forEach((d, i) => this.tone(base * [1, 1.26, 1.5][i], 0.14, 'triangle', 0.25, d)); break; }
         case 'bad':   this.tone(200, 0.15, 'square', 0.12, 0, 150); break;
         case 'trash': this.tone(180, 0.18, 'sawtooth', 0.12, 0, 90); break;
         case 'burn':  this.tone(140, 0.4, 'sawtooth', 0.15, 0, 70); break;
         case 'angry': this.tone(330, 0.2, 'square', 0.15, 0, 220); this.tone(220, 0.3, 'square', 0.15, 0.18, 160); break;
-        case 'meow':  this.tone(700, 0.25, 'sine', 0.2, 0, 1000); this.tone(1000, 0.2, 'sine', 0.15, 0.2, 650); break;
+        case 'bell':  this.tone(1568, 0.3, 'sine', 0.15); this.tone(2093, 0.4, 'sine', 0.1, 0.05); break;
         case 'win':   [523, 659, 784, 1047, 1319].forEach((f, i) => this.tone(f, 0.22, 'triangle', 0.25, i * 0.11)); break;
         case 'lose':  [392, 330, 262].forEach((f, i) => this.tone(f, 0.3, 'triangle', 0.25, i * 0.18)); break;
+        case 'ach':   [659, 784, 988, 1319].forEach((f, i) => this.tone(f, 0.18, 'sine', 0.22, i * 0.08)); break;
         case 'tick':  this.tone(1200, 0.04, 'square', 0.08); break;
       }
     } catch (e) {}
@@ -675,7 +739,7 @@ const Sound = {
 };
 
 /* =====================================================================
-   ПАУЗА ПО ВНЕШНИМ ПРИЧИНАМ (реклама, свёрнутая вкладка, поворот, SDK)
+   ВНЕШНИЕ ПРИЧИНЫ ПАУЗЫ: реклама, свёрнутая вкладка, поворот, SDK
    ===================================================================== */
 const pauseReasons = new Set();
 function addPause(r) { pauseReasons.add(r); syncGameplay(); }
@@ -702,7 +766,7 @@ const SDK = {
     return (navigator.language || 'ru').slice(0, 2);
   },
   ready() { try { this.ysdk && this.ysdk.features.LoadingAPI && this.ysdk.features.LoadingAPI.ready(); } catch (e) {} },
-  // GameplayAPI.start / stop — вызываем только при смене состояния
+  // GameplayAPI.start / stop — только при смене состояния
   gameplay(on) {
     if (on === this.gameplayOn) return;
     this.gameplayOn = on;
@@ -711,16 +775,14 @@ const SDK = {
       if (api) on ? api.start() : api.stop();
     } catch (e) {}
   },
-  // Полноэкранная реклама: только между уровнями
+  // Полноэкранная реклама (только между уровнями)
   showFullscreen(done) {
     if (!this.ysdk) { done && done(); return; }
     let fin = false;
     const finish = () => { if (fin) return; fin = true; removePause('ad'); done && done(); };
     addPause('ad');
     try {
-      this.ysdk.adv.showFullscreenAdv({ callbacks: {
-        onClose: () => finish(), onError: () => finish(), onOffline: () => finish()
-      } });
+      this.ysdk.adv.showFullscreenAdv({ callbacks: { onClose: () => finish(), onError: () => finish(), onOffline: () => finish() } });
     } catch (e) { finish(); }
   },
   // Реклама за вознаграждение: награда выдаётся ТОЛЬКО в onRewarded
@@ -738,7 +800,7 @@ const SDK = {
       } });
     } catch (e) { toast(t('adError')); close(); }
   },
-  // Локальная заглушка ролика: имитирует показ, затем onRewarded и onClose
+  // Локальная заглушка ролика
   fakeRewarded(onReward, onDone) {
     addPause('ad');
     const d = document.createElement('div');
@@ -747,7 +809,6 @@ const SDK = {
     byId('stage').appendChild(d);
     setTimeout(() => { d.remove(); onReward(); removePause('ad'); onDone && onDone(); }, DEBUG ? 50 : 1200);
   },
-  // Сохранения в облаке игрока
   async getData() {
     if (!this.player) return null;
     try { const d = await withTimeout(this.player.getData(['save']), 5000); return d && d.save ? d.save : null; } catch (e) { return null; }
@@ -756,7 +817,7 @@ const SDK = {
     if (!this.player) return;
     try { this.player.setData({ save }, true).catch(() => {}); } catch (e) {}
   },
-  // Лидерборд: новый API ysdk.leaderboards, с откатом на старый getLeaderboards()
+  // Лидерборд: новый API ysdk.leaderboards с откатом на getLeaderboards()
   async lb() {
     if (!this.ysdk) return null;
     if (this.ysdk.leaderboards) return { v2: true, o: this.ysdk.leaderboards };
@@ -775,7 +836,7 @@ const SDK = {
   async getEntries() {
     try {
       const lb = await this.lb(); if (!lb) return null;
-      const opts = { quantityTop: 10, includeUser: true, quantityAround: 3 };
+      const opts = { quantityTop: 5, includeUser: true, quantityAround: 2 };
       return lb.v2 ? await lb.o.getEntries(CONFIG.leaderboard, opts) : await lb.o.getLeaderboardEntries(CONFIG.leaderboard, opts);
     } catch (e) { return null; }
   }
@@ -786,15 +847,21 @@ const SDK = {
    ===================================================================== */
 const Save = {
   data: null,
-  fresh() { return { v: 1, ts: 0, coins: 0, sound: true, rest: {}, daily: { last: '', streak: 0 }, freeUpAt: 0 }; },
+  fresh() {
+    return { v: 1, ts: 0, coins: 0, sound: true, rest: {}, daily: { last: '', streak: 0 }, freeUpAt: 0, ach: {},
+      stats: { served: 0, hearts: 0, rolls: 0, tempura: 0, maxCombo: 0, noBurnLevels: 0, perfectLevels: 0, threeStars: 0, bigOrders: 0, upgrades: 0 } };
+  },
   async load() {
-    let local = null, cloud = null;
+    let local = null;
     try { local = JSON.parse(localStorage.getItem(CONFIG.saveKey) || 'null'); } catch (e) {}
-    cloud = await SDK.getData();
+    const cloud = await SDK.getData();
     let best = local;
     if (cloud && (!best || (cloud.ts || 0) > (best.ts || 0))) best = cloud;
-    this.data = Object.assign(this.fresh(), best || {});
+    const f = this.fresh();
+    this.data = Object.assign(f, best || {});
+    this.data.stats = Object.assign(this.fresh().stats, (best && best.stats) || {});
     if (!this.data.daily) this.data.daily = { last: '', streak: 0 };
+    if (!this.data.ach) this.data.ach = {};
   },
   write() {
     this.data.ts = Date.now();
@@ -814,37 +881,73 @@ function totalStars() {
   for (const id in Save.data.rest) (Save.data.rest[id].stars || []).forEach(v => { s += v || 0; });
   return s;
 }
-function restStars(id) { return (restSave(id).stars || []).reduce((a, b) => a + (b || 0), 0); }
+const restStars = id => (restSave(id).stars || []).reduce((a, b) => a + (b || 0), 0);
 const restById = id => CONFIG.restaurants.find(r => r.id === id);
 
 /* =====================================================================
-   УЛУЧШЕНИЯ: значения берутся из CONFIG по текущей ступени
+   УЛУЧШЕНИЯ: параметры станций берутся из текущей ступени
    ===================================================================== */
-function upTier(R, id) { return restSave(R.id).up[id] || 0; }
-function upDef(R, id) { return R.upgrades.find(u => u.id === id); }
-function upVal(R, id) { const u = upDef(R, id); return u ? u.values[Math.min(upTier(R, id), u.values.length - 1)] : 1; }
-// Параметр станции: число или id улучшения
-function pv(R, v) { return typeof v === 'string' ? upVal(R, v) : v; }
-function dishPrice(R, dish) {
-  const d = R.dishes[dish];
-  return Math.round(d.price * (d.priceUp ? upVal(R, d.priceUp) : 1));
+const upTier = (R, id) => restSave(R.id).up[id] || 0;
+const upDef = (R, id) => R.upgrades.find(u => u.id === id);
+// Индекс «имя параметра -> улучшение» (строится один раз на ресторан)
+function paramIndex(R) {
+  if (!R._params) {
+    R._params = {};
+    R.upgrades.forEach(u => Object.entries(u.params).forEach(([name, p]) => { R._params[name] = { up: u, p }; }));
+  }
+  return R._params;
 }
-function fmtUp(u, v) {
-  if (u.fmt === 'sec') return t('sec', v);
-  if (u.fmt === 'mult') return '+' + Math.round((v - 1) * 100) + '%';
+function paramVal(R, name) {
+  const e = paramIndex(R)[name];
+  if (!e) return 1;
+  return e.p.v[Math.min(upTier(R, e.up.id), e.p.v.length - 1)];
+}
+// Параметр станции: число, имя параметра или массив имён (перемножаются)
+function pv(R, v) {
+  if (typeof v === 'number') return v;
+  if (Array.isArray(v)) return v.reduce((a, n) => a * pv(R, n), 1);
+  return paramVal(R, v);
+}
+const dishPrice = (R, dish) => { const d = R.dishes[dish]; return Math.round(d.price * (d.priceUp ? paramVal(R, d.priceUp) : 1)); };
+function fmtParam(p, v) {
+  if (p.fmt === 'sec') return t('sec', Math.round(v * 10) / 10);
+  if (p.fmt === 'mult') return '+' + Math.round((v - 1) * 100) + '%';
+  if (p.fmt === 'time') return v >= 1 ? '0%' : '−' + Math.round((1 - v) * 100) + '%';
   return String(v);
 }
 
 /* =====================================================================
-   МАСШТАБ, ПОВОРОТ, ВВОД
+   СТАТИСТИКА И ДОСТИЖЕНИЯ
+   ===================================================================== */
+function statValue(id) {
+  if (id === 'stars') return totalStars();
+  if (id === 'levelsDone') { const R = CONFIG.restaurants[0]; return restSave(R.id).stars.filter(s => s > 0).length; }
+  return Save.data.stats[id] || 0;
+}
+function stat(id, add) { Save.data.stats[id] = (Save.data.stats[id] || 0) + add; checkAch(); }
+function statMax(id, v) { if (v > (Save.data.stats[id] || 0)) { Save.data.stats[id] = v; checkAch(); } }
+// Открываем достижения, цель которых выполнена; награду игрок забирает сам
+function checkAch() {
+  for (const a of CONFIG.achievements) {
+    if (Save.data.ach[a.id]) continue;
+    if (statValue(a.stat) >= a.goal) {
+      Save.data.ach[a.id] = 'ready';
+      toast(t('achUnlocked', tr(a.name)), 'medal');
+      Sound.play('ach');
+    }
+  }
+}
+const achReadyCount = () => CONFIG.achievements.filter(a => Save.data.ach[a.id] === 'ready').length;
+
+/* =====================================================================
+   МАСШТАБ, ПОВОРОТ
    ===================================================================== */
 const stage = byId('stage');
 let SCALE = 1;
 function fit() {
   const W = window.innerWidth, H = window.innerHeight;
   SCALE = Math.min(W / 1600, H / 900);
-  const x = (W - 1600 * SCALE) / 2, y = (H - 900 * SCALE) / 2;
-  stage.style.transform = `translate(${x}px,${y}px) scale(${SCALE})`;
+  stage.style.transform = `translate(${(W - 1600 * SCALE) / 2}px,${(H - 900 * SCALE) / 2}px) scale(${SCALE})`;
   checkRotate();
 }
 const isTouch = () => ('ontouchstart' in window) || (window.matchMedia && matchMedia('(pointer:coarse)').matches);
@@ -865,6 +968,7 @@ function stageRect(el) {
    ===================================================================== */
 let screen = 'loading';
 let curRest = 'sushi';
+const modalOpen = () => byId('modal').classList.contains('on');
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === 'scr-' + id));
   screen = id;
@@ -874,9 +978,11 @@ function show(id) {
 function openModal(html) { const m = byId('modal'); m.innerHTML = `<div class="panel">${html}</div>`; m.classList.add('on'); }
 function closeModal() { const m = byId('modal'); m.classList.remove('on'); m.innerHTML = ''; }
 let toastT = 0;
-function toast(msg) {
-  const el = byId('toast'); el.textContent = msg; el.classList.remove('on'); void el.offsetWidth; el.classList.add('on');
-  clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 1800);
+function toast(msg, icon) {
+  const el = byId('toast');
+  el.innerHTML = (icon ? spr(icon, 44) : '') + `<span>${esc(msg)}</span>`;
+  el.classList.remove('on'); void el.offsetWidth; el.classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 2000);
 }
 function shake(el) { if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 420); }
 function floatText(x, y, text, cls = '') {
@@ -884,12 +990,20 @@ function floatText(x, y, text, cls = '') {
   d.style.left = x + 'px'; d.style.top = y + 'px';
   byId('fx').appendChild(d); setTimeout(() => d.remove(), 1350);
 }
-// Полёт блюда от станции к гостю
-function fly(fromEl, toEl, key) {
+// Крупная надпись комбо по центру зала
+function bigCombo(mult, bonus) {
+  document.querySelectorAll('.bigcombo').forEach(e => e.remove());
+  const d = document.createElement('div'); d.className = 'bigcombo';
+  d.innerHTML = `${esc(t('combo', mult))}<small>+${bonus}</small>`;
+  d.style.fontSize = (90 + mult * 12) + 'px';
+  byId('fx').appendChild(d); setTimeout(() => d.remove(), 1150);
+}
+// Полёт спрайта от элемента к элементу
+function fly(fromEl, toEl, key, size = 84) {
   if (!fromEl || !toEl) return;
   const a = stageRect(fromEl), b = stageRect(toEl);
-  const d = document.createElement('div'); d.className = 'flyer'; d.innerHTML = spr(key, 84);
-  d.style.left = (a.x + a.w / 2 - 42) + 'px'; d.style.top = (a.y + a.h / 2 - 42) + 'px';
+  const d = document.createElement('div'); d.className = 'flyer'; d.innerHTML = spr(key, size);
+  d.style.left = (a.x + a.w / 2 - size / 2) + 'px'; d.style.top = (a.y + a.h / 2 - size / 2) + 'px';
   byId('fx').appendChild(d);
   requestAnimationFrame(() => requestAnimationFrame(() => {
     d.style.transform = `translate(${b.x + b.w / 2 - a.x - a.w / 2}px,${b.y + b.h / 2 - a.y - a.h / 2}px) scale(.8)`;
@@ -897,8 +1011,9 @@ function fly(fromEl, toEl, key) {
   }));
   setTimeout(() => d.remove(), 420);
 }
-function soundBtn() { return `<button class="ibtn" data-act="sound">${spr(Save.data.sound ? 'ic_sound' : 'ic_mute', 56)}</button>`; }
-function coinPill(id) { return `<div class="pill">${spr('coin', 50)}<span id="${id}">${Save.data.coins}</span></div>`; }
+const soundBtn = () => `<button class="ibtn" data-act="sound">${spr(Save.data.sound ? 'ic_sound' : 'ic_mute', 56)}</button>`;
+const coinPill = () => `<div class="pill">${spr('coin', 50)}<span>${Save.data.coins}</span></div>`;
+const heartPill = () => `<div class="pill">${spr('heart', 46)}<span>${Save.data.stats.hearts}</span></div>`;
 function starsRow(n, size, total = 3) {
   let h = ''; for (let i = 0; i < total; i++) h += spr(i < n ? 'star' : 'star_empty', size, i < n ? 'got' : ''); return h;
 }
@@ -906,41 +1021,39 @@ function starsRow(n, size, total = 3) {
 /* =====================================================================
    КАРТА МИРА
    ===================================================================== */
-function dailyAvailable() { return Save.data.daily.last !== dayStr(new Date()); }
+const dailyAvailable = () => Save.data.daily.last !== dayStr(new Date());
 function renderWorld() {
   const el = byId('scr-world');
   applyBg(el, 'bg_world');
   const pts = CONFIG.restaurants.map(r => r.mapPos);
   let path = '';
   for (let i = 1; i < pts.length; i++) {
-    const a = pts[i - 1], b = pts[i], mx = (a.x + b.x) / 2, my = Math.min(a.y, b.y) - 60;
-    path += (i === 1 ? `M${a.x},${a.y}` : '') + ` Q${mx},${my} ${b.x},${b.y}`;
+    const a = pts[i - 1], b = pts[i];
+    path += (i === 1 ? `M${a.x},${a.y}` : '') + ` Q${(a.x + b.x) / 2},${Math.min(a.y, b.y) - 60} ${b.x},${b.y}`;
   }
   const stars = totalStars();
-  let nodes = '';
-  CONFIG.restaurants.forEach(r => {
+  const nodes = CONFIG.restaurants.map(r => {
     const unlocked = stars >= r.starsRequired;
     const cls = unlocked ? (r.comingSoon ? '' : 'open') : 'locked';
-    nodes += `<button class="rnode ${cls}" style="left:${r.mapPos.x}px;top:${r.mapPos.y}px" data-act="rest" data-arg="${r.id}">
+    return `<button class="rnode ${cls}" style="left:${r.mapPos.x}px;top:${r.mapPos.y}px" data-act="rest" data-arg="${r.id}">
       <div class="disc">${spr(r.icon, 120)}${unlocked ? '' : `<span class="lockb">${spr('lock', 64)}</span>`}</div>
       <div class="name">${esc(tr(r.name))}</div>
       ${unlocked
         ? (r.comingSoon ? `<div class="req">${esc(t('comingSoon'))}</div>` : `<div class="req">${spr('star', 34)} ${restStars(r.id)}/${r.levels.length * 3}</div>`)
         : `<div class="req">${spr('star', 34)} ${r.starsRequired}</div>`}
     </button>`;
-  });
+  }).join('');
   const deco = CONFIG.worldDeco.map(d => `<div class="deco" style="left:${d.x}px;top:${d.y}px;font-size:${d.s}px">${d.e}</div>`).join('');
-  el.innerHTML = `
-    <div id="world-map">${deco}
-      <svg id="world-path" viewBox="0 0 1600 900" width="1600" height="900"><path d="${path}" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="4 26" stroke-linecap="round" opacity=".9"/></svg>
-      ${nodes}
-    </div>
-    <div id="world-chef">${spr('chef', 230)}</div>
+  const achN = achReadyCount();
+  el.innerHTML = `${deco}
+    <svg class="map-svg" viewBox="0 0 1600 900" width="1600" height="900"><path d="${path}" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="4 26" stroke-linecap="round" opacity=".9"/></svg>
+    ${nodes}
     <div class="topbar">
-      ${spr('logo', 90)}<div class="title-txt">${esc(t('title'))}</div><div class="grow"></div>
-      <div class="pill">${spr('star', 50)}<span>${stars}</span></div>
-      ${coinPill('w-coins')}
+      ${spr('logo', 84)}<div class="title-txt">${esc(t('title'))}</div><div class="grow"></div>
+      <div class="pill">${spr('star', 48)}<span>${stars}</span></div>
+      ${heartPill()}${coinPill()}
       <button class="ibtn" data-act="daily">${spr('ic_gift', 56)}${dailyAvailable() ? '<span class="dot">!</span>' : ''}</button>
+      <button class="ibtn" data-act="achs">${spr('medal', 56)}${achN ? `<span class="dot">${achN}</span>` : ''}</button>
       <button class="ibtn" data-act="leaders">${spr('ic_trophy', 56)}</button>
       ${soundBtn()}
     </div>`;
@@ -954,34 +1067,30 @@ function levelPos(i) {
   const row = Math.floor(i / 5); let col = i % 5; if (row % 2) col = 4 - col;
   return { x: 280 + col * 260, y: 240 + row * 165 };
 }
-function levelUnlocked(R, i) { return i === 0 || (restSave(R.id).stars[i - 1] || 0) > 0; }
-function renderLevels(focusIdx) {
+const levelUnlocked = (R, i) => i === 0 || (restSave(R.id).stars[i - 1] || 0) > 0;
+function renderLevels() {
   const R = restById(curRest), rs = restSave(R.id);
   const el = byId('scr-levels');
   applyBg(el, R.bgLevels);
-  let d = '', nodes = '';
-  let current = R.levels.findIndex((_, i) => levelUnlocked(R, i) && !(rs.stars[i] > 0));
-  if (current < 0) current = -1;
-  R.levels.forEach((L, i) => {
+  const current = R.levels.findIndex((_, i) => levelUnlocked(R, i) && !(rs.stars[i] > 0));
+  let d = '';
+  const nodes = R.levels.map((L, i) => {
     const p = levelPos(i);
     d += (i ? ' L' : 'M') + p.x + ',' + p.y;
     const st = rs.stars[i] || 0, un = levelUnlocked(R, i);
     const cls = !un ? 'locked' : (st > 0 ? 'done' : '') + (i === current ? ' current' : '');
-    nodes += `<button class="lnode ${cls}" style="left:${p.x}px;top:${p.y}px" data-act="lvl" data-arg="${i}">
+    return `<button class="lnode ${cls}" style="left:${p.x}px;top:${p.y}px" data-act="lvl" data-arg="${i}">
       ${un ? (i + 1) : `<span class="lck">${spr('lock', 60)}</span>`}
-      ${un ? `<span class="lst">${starsRow(st, 34)}</span>` : ''}
-    </button>`;
-  });
+      ${un ? `<span class="lst">${starsRow(st, 34)}</span>` : ''}</button>`;
+  }).join('');
   el.innerHTML = `
-    <div id="lv-map">
-      <svg id="lv-path" viewBox="0 0 1600 900" width="1600" height="900"><path d="${d}" fill="none" stroke="#fff" stroke-width="16" stroke-dasharray="2 30" stroke-linecap="round" opacity=".85"/></svg>
-      ${nodes}
-    </div>
+    <svg class="map-svg" viewBox="0 0 1600 900" width="1600" height="900"><path d="${d}" fill="none" stroke="#fff" stroke-width="16" stroke-dasharray="2 30" stroke-linecap="round" opacity=".85"/></svg>
+    ${nodes}
     <div class="topbar">
       <button class="ibtn" data-act="world">${spr('ic_back', 56)}</button>
       ${spr(R.icon, 80)}<div class="title-txt">${esc(tr(R.name))}</div><div class="grow"></div>
-      <div class="pill">${spr('star', 50)}<span>${restStars(R.id)}/${R.levels.length * 3}</span></div>
-      ${coinPill('l-coins')}
+      <div class="pill">${spr('star', 48)}<span>${restStars(R.id)}/${R.levels.length * 3}</span></div>
+      ${coinPill()}
       <button class="ibtn" data-act="shop">${spr('ic_shop', 56)}</button>
       ${soundBtn()}
     </div>`;
@@ -990,18 +1099,17 @@ function goLevels() { renderLevels(); show('levels'); }
 
 // Окно перед стартом уровня
 function stationOfDish(R, dish) {
-  return (R.stations || []).find(s =>
-    (s.type === 'assembly' && s.recipes.some(r => r.dish === dish)) || ((s.type === 'fryer' || s.type === 'dispenser') && s.dish === dish));
+  return R.stations.find(s => (s.type === 'assembly' && s.recipes.some(r => r.dish === dish)) ||
+    ((s.type === 'fryer' || s.type === 'dispenser') && s.dish === dish));
 }
 function recipeHTML(R, dish) {
-  const st = stationOfDish(R, dish); const arrow = '<b style="font-size:44px">→</b>';
-  if (!st) return spr(R.dishes[dish].sprite, 90);
+  const st = stationOfDish(R, dish), arrow = '<b style="font-size:44px">→</b>', out = spr(R.dishes[dish].sprite, 96);
   if (st.type === 'assembly') {
     const rec = st.recipes.find(r => r.dish === dish);
-    return `<div class="row-ico">${spr(st.base, 76)}<b>+</b>${rec.set.map(x => spr(x, 64)).join('')}${arrow}${spr(R.dishes[dish].sprite, 96)}</div>`;
+    return `<div class="row-ico">${spr(st.base, 76)}<b>+</b>${rec.set.map(x => spr(x, 64)).join('')}${arrow}${out}</div>`;
   }
-  if (st.type === 'fryer') return `<div class="row-ico">${spr(st.input, 76)}${arrow}${spr(R.dishes[dish].sprite, 96)}</div>`;
-  return `<div class="row-ico">${spr(st.sprite, 76)}${arrow}${spr(R.dishes[dish].sprite, 96)}</div>`;
+  if (st.type === 'fryer') return `<div class="row-ico">${spr(st.input, 76)}${arrow}${out}</div>`;
+  return `<div class="row-ico">${spr(st.sprite + '_0', 76)}${arrow}${out}</div>`;
 }
 function openLevelIntro(i) {
   const R = restById(curRest), L = R.levels[i], best = restSave(R.id).stars[i] || 0;
@@ -1020,18 +1128,23 @@ function openLevelIntro(i) {
 /* =====================================================================
    МАГАЗИН УЛУЧШЕНИЙ
    ===================================================================== */
-let shopBack = 'levels';
-function freeUpLeft() { return Math.max(0, CONFIG.freeUpgradeCooldownSec - (Date.now() - (Save.data.freeUpAt || 0)) / 1000); }
+const freeUpLeft = () => Math.max(0, CONFIG.freeUpgradeCooldownSec - (Date.now() - (Save.data.freeUpAt || 0)) / 1000);
+// Строки «было → станет»: показываем только параметры, которые меняются на следующей ступени
+function upgradeLines(u, tier) {
+  const ps = Object.values(u.params);
+  if (tier >= u.costs.length) return fmtParam(ps[0], ps[0].v[tier]);
+  return ps.filter(p => p.v[tier + 1] !== p.v[tier])
+    .map(p => (p.label ? esc(tr(p.label)) + ': ' : '') + fmtParam(p, p.v[tier]) + ' → <b>' + fmtParam(p, p.v[tier + 1]) + '</b>')
+    .join('<br>');
+}
 function renderShop() {
-  const R = restById(curRest);
-  const el = byId('scr-shop');
+  const R = restById(curRest), el = byId('scr-shop');
   applyBg(el, 'bg_shop');
   const left = freeUpLeft();
   const groups = [['kitchen', t('kitchen')], ['food', t('food')], ['hall', t('hall')]];
   const cols = groups.map(([g, title]) => {
     const cards = R.upgrades.filter(u => u.group === g).map(u => {
-      const tier = upTier(R, u.id), max = u.costs.length, isMax = tier >= max;
-      const cur = u.values[tier], nxt = isMax ? null : u.values[tier + 1], cost = isMax ? 0 : u.costs[tier];
+      const tier = upTier(R, u.id), isMax = tier >= u.costs.length, cost = isMax ? 0 : u.costs[tier];
       const dots = u.costs.map((_, k) => `<i class="${k < tier ? 'on' : ''}"></i>`).join('');
       let btns = '';
       if (isMax) btns = `<button class="btn small off">${esc(t('max'))}</button>`;
@@ -1040,9 +1153,7 @@ function renderShop() {
         if (left <= 0) btns += `<button class="btn small ad adi" data-act="freeup" data-arg="${u.id}">${spr('ic_ad', 40)}</button>`;
       }
       return `<div class="ucard"><div class="ui">${spr(u.icon, 70)}</div>
-        <div class="ut"><div class="un">${esc(tr(u.name))}</div>
-          <div class="uv">${fmtUp(u, cur)}${isMax ? '' : ' → <b>' + fmtUp(u, nxt) + '</b>'}</div>
-          <div class="dots">${dots}</div></div>
+        <div class="ut"><div class="un">${esc(tr(u.name))}</div><div class="uv">${upgradeLines(u, tier)}</div><div class="dots">${dots}</div></div>
         <div class="ub">${btns}</div></div>`;
     }).join('');
     return `<div class="scol"><h3>${esc(title)}</h3>${cards}</div>`;
@@ -1050,22 +1161,22 @@ function renderShop() {
   el.innerHTML = `
     <div class="topbar">
       <button class="ibtn" data-act="shopback">${spr('ic_back', 56)}</button>
-      ${spr(R.icon, 80)}<div class="title-txt">${esc(t('upgrades'))} — ${esc(tr(R.name))}</div><div class="grow"></div>
+      ${spr(R.icon, 76)}<div class="title-txt">${esc(t('upgrades'))}</div><div class="grow"></div>
       <div class="pill" style="font-size:26px">${spr('ic_ad', 40)}${esc(left > 0 ? t('freeIn', fmtTime(left)) : t('freeReady'))}</div>
-      ${coinPill('s-coins')}
+      ${coinPill()}
     </div>
     <div id="shop-cols">${cols}</div>`;
 }
-function goShop(back) { shopBack = back || 'levels'; renderShop(); show('shop'); }
+function goShop() { renderShop(); show('shop'); }
 function buyUpgrade(id, free) {
-  const R = restById(curRest), u = upDef(R, id), rs = restSave(R.id);
-  const tier = rs.up[id] || 0;
+  const R = restById(curRest), u = upDef(R, id), rs = restSave(R.id), tier = rs.up[id] || 0;
   if (tier >= u.costs.length) return;
   if (!free) {
     if (Save.data.coins < u.costs[tier]) { toast(t('notEnough')); Sound.play('bad'); return; }
     Save.data.coins -= u.costs[tier];
   } else Save.data.freeUpAt = Date.now();
   rs.up[id] = tier + 1;
+  stat('upgrades', 1);
   Save.write();
   Sound.play('coin'); toast(t('bought'));
   renderShop();
@@ -1076,24 +1187,20 @@ function buyUpgrade(id, free) {
    ===================================================================== */
 function dailyNextDay() {
   const d = Save.data.daily, y = new Date(); y.setDate(y.getDate() - 1);
-  if (d.last === dayStr(y)) return (d.streak % 7) + 1; // серия продолжается
-  return 1;                                               // серия прервалась
+  return d.last === dayStr(y) ? (d.streak % 7) + 1 : 1; // серия продолжается или начинается заново
 }
 function openDaily() {
   const avail = dailyAvailable();
   const next = avail ? dailyNextDay() : (Save.data.daily.streak || 1);
   const cells = CONFIG.dailyRewards.map((r, i) => {
-    const day = i + 1;
-    const done = avail ? day < next : day <= next;
-    const cur = avail && day === next;
+    const day = i + 1, done = avail ? day < next : day <= next, cur = avail && day === next;
     return `<div class="day ${done ? 'done' : ''} ${cur ? 'cur' : ''}">${esc(t('day', day))}${spr(day === 7 ? 'ic_gift' : 'coin', 60)}${r}${done ? '<span class="chk">✔</span>' : ''}</div>`;
   }).join('');
   openModal(`
     <button class="ibtn closex" data-act="close">${spr('ic_close', 48)}</button>
     <h2>${esc(t('daily'))}</h2>
     <div class="days">${cells}</div>
-    <div class="btns">${avail ? `<button class="btn green" data-act="claim">${esc(t('claim'))} ${spr('coin', 44)}${CONFIG.dailyRewards[next - 1]}</button>`
-      : `<p>${esc(t('claimed'))}</p>`}</div>`);
+    <div class="btns">${avail ? `<button class="btn green" data-act="claim">${esc(t('claim'))} ${spr('coin', 44)}${CONFIG.dailyRewards[next - 1]}</button>` : `<p>${esc(t('claimed'))}</p>`}</div>`);
 }
 function claimDaily() {
   if (!dailyAvailable()) return;
@@ -1101,41 +1208,67 @@ function claimDaily() {
   Save.data.coins += reward;
   Save.data.daily = { last: dayStr(new Date()), streak: next };
   Save.write();
-  Sound.play('combo');
-  closeModal(); renderWorld(); toast('+' + reward);
+  Sound.play('coin');
+  closeModal(); renderWorld(); toast('+' + reward, 'coin');
 }
 
 /* =====================================================================
-   ЛИДЕРБОРД
+   ДОСТИЖЕНИЯ (окно)
+   ===================================================================== */
+function openAchs() {
+  const cards = CONFIG.achievements.map(a => {
+    const st = Save.data.ach[a.id], val = Math.min(a.goal, statValue(a.stat));
+    let right;
+    if (st === 'ready') right = `<button class="btn green" data-act="achclaim" data-arg="${a.id}">${spr('coin', 28)}${a.reward}</button>`;
+    else if (st === 'done') right = `<span style="font-size:40px;color:#2c9a31">✔</span>`;
+    else right = `<span>${spr('coin', 30)}${a.reward}</span>`;
+    return `<div class="ach ${st || ''}"><div class="ai">${spr(a.icon, 58)}</div>
+      <div class="at"><div class="an">${esc(tr(a.name))}</div><div class="ad">${esc(tr(a.desc))}</div>
+        ${st ? '' : `<div class="ap"><i style="width:${val / a.goal * 100}%"></i></div><div class="ad">${val} / ${a.goal}</div>`}</div>
+      <div class="ar">${right}</div></div>`;
+  }).join('');
+  openModal(`<button class="ibtn closex" data-act="close">${spr('ic_close', 48)}</button>
+    <h2>${esc(t('achievements'))}</h2><div class="achs">${cards}</div>`);
+}
+function claimAch(id) {
+  const a = CONFIG.achievements.find(x => x.id === id);
+  if (!a || Save.data.ach[id] !== 'ready') return;
+  Save.data.ach[id] = 'done';
+  Save.data.coins += a.reward;
+  Save.write();
+  Sound.play('coin');
+  openAchs(); renderWorld();
+}
+
+/* =====================================================================
+   ЛИДЕРБОРД (сумма сердец)
    ===================================================================== */
 async function openLeaders() {
   openModal(`<button class="ibtn closex" data-act="close">${spr('ic_close', 48)}</button>
     <h2>${esc(t('leaderboard'))}</h2><div class="lb" id="lb-list"><p>${esc(t('loadingLb'))}</p></div>`);
   const res = await SDK.getEntries();
   const box = byId('lb-list'); if (!box) return;
-  const my = totalStars();
+  const my = Save.data.stats.hearts;
   if (!res || !res.entries) {
-    box.innerHTML = `<p>${esc(t('lbUnavailable'))}</p><div class="r me"><span>—</span><span class="n">${esc(t('you'))}</span>${spr('star', 40)}${my}</div>`;
+    box.innerHTML = `<p>${esc(t('lbUnavailable'))}</p><div class="r me"><span>—</span><span class="n">${esc(t('you'))}</span>${spr('heart', 40)}${my}</div>`;
     return;
   }
-  box.innerHTML = res.entries.map(e => {
+  box.innerHTML = res.entries.slice(0, 9).map(e => {
     const me = res.userRank && e.rank === res.userRank;
     let av = '';
     try { const src = e.player.getAvatarSrc && e.player.getAvatarSrc('small'); if (src) av = `<img src="${esc(src)}" alt="">`; } catch (er) {}
     const name = (e.player && e.player.publicName) || '—';
-    return `<div class="r ${me ? 'me' : ''}"><span>#${e.rank}</span>${av}<span class="n">${esc(name)}</span>${spr('star', 40)}${e.score}</div>`;
-  }).join('') || `<p>—</p>`;
+    return `<div class="r ${me ? 'me' : ''}"><span>#${e.rank}</span>${av}<span class="n">${esc(name)}</span>${spr('heart', 40)}${e.score}</div>`;
+  }).join('') || '<p>—</p>';
 }
 
 /* =====================================================================
-   ИГРОВОЙ УРОВЕНЬ: состояние
+   УРОВЕНЬ: состояние
    ===================================================================== */
 let G = null;
-function isRunning() {
-  return screen === 'game' && G && G.state === 'play' && !G.paused && pauseReasons.size === 0 && !byId('modal').classList.contains('on');
-}
+const isRunning = () => screen === 'game' && G && G.state === 'play' && !G.paused && pauseReasons.size === 0 && !modalOpen();
 function syncGameplay() { SDK.gameplay(isRunning()); Sound.sync(); }
-// Автопауза уровня (свернули вкладку, повернули телефон, SDK попросил)
+// Автопауза: свернули вкладку, повернули телефон, SDK попросил
 function autoPauseLevel() { if (screen === 'game' && G && G.state === 'play' && !G.paused) openPause(); }
 
 function stationActive(st, menu) {
@@ -1143,20 +1276,24 @@ function stationActive(st, menu) {
   if (st.type === 'fryer' || st.type === 'dispenser') return menu.includes(st.dish);
   return true; // мусорка
 }
+// Позиции мест у стойки (по центру зала)
+function seatX(i, n) { return 800 + (i - (n - 1) / 2) * 360; }
 
 function startLevel(idx) {
   const R = restById(curRest), L = R.levels[idx];
+  const nSeats = L.seats || R.seats;
   G = {
-    R, L, idx, time: L.time, coins: 0, streak: 0, served: 0, lost: 0, gid: 0,
-    guests: new Array(L.seats || R.seats).fill(null), spawnT: 1.2,
+    R, L, idx, time: L.time, elapsed: 0, coins: 0, hearts: 0, served: 0, angry: 0, burnt: 0, vid: 0,
+    seats: new Array(nSeats).fill(null), vis: [], spawnT: 0.8,
+    comboN: 0, lastServe: -99, bestCombo: 0,
     st: {}, stations: [], dishStation: {}, trash: false,
     state: 'play', paused: false, addUsed: false, finalized: false, doubled: false,
-    introServed: false, hintT: 0, botT: 0, lastTick: 99
+    introServed: false, hintT: 0, botT: 0, lastTick: 99, hasFryer: false
   };
   // Активные станции и параметры с учётом улучшений
   for (const st of R.stations) {
     if (!stationActive(st, L.menu)) continue;
-    const s = { cfg: st };
+    const s = { tier: st.look ? upTier(R, st.look) : 0 };
     if (st.type === 'assembly') {
       s.n = pv(R, st.slots); s.time = pv(R, st.time);
       s.slots = new Array(s.n).fill(null);
@@ -1166,7 +1303,7 @@ function startLevel(idx) {
     } else if (st.type === 'fryer') {
       s.n = pv(R, st.slots); s.time = pv(R, st.time); s.burn = pv(R, st.burn);
       s.slots = new Array(s.n).fill(null); s.tray = new Array(s.n).fill(null);
-      G.dishStation[st.dish] = st;
+      G.dishStation[st.dish] = st; G.hasFryer = true;
     } else if (st.type === 'dispenser') {
       s.cap = pv(R, st.cap); s.fill = pv(R, st.fill); s.count = 0; s.t = 0;
       G.dishStation[st.dish] = st;
@@ -1176,49 +1313,52 @@ function startLevel(idx) {
   closeModal();
   buildGameDOM();
   show('game');
-  Sound.play('meow');
 }
 
 /* =====================================================================
-   ИГРОВОЙ УРОВЕНЬ: построение DOM
+   УРОВЕНЬ: построение DOM
    ===================================================================== */
+function tierMark(tier) { return tier ? `<span class="tierstars">${'⭐'.repeat(tier)}</span>` : ''; }
 function buildGameDOM() {
   const R = G.R, L = G.L;
   byId('hud').innerHTML = `
     <div class="pill" id="hud-timer">${spr('ic_clock', 46)}<span id="hud-time">${fmtTime(G.time)}</span></div>
     <div class="pill">${spr('coin', 46)}<span id="hud-coins">0</span></div>
-    <div id="hud-goal"><span style="font-weight:800">${esc(t('goal'))}: ${L.goal[0]}</span>
-      <div id="goalbar"><i id="goal-fill"></i>${L.goal.map((g, k) => `<span class="mk" id="mk${k}" style="left:${g / L.goal[2] * 100}%">${spr('star', 46)}</span>`).join('')}</div></div>
-    <div id="hud-lvl">${esc(t('level', G.idx + 1))}</div>
+    <div class="pill" id="hud-hearts">${spr('heart', 42)}<span id="hud-hearts-n">0</span></div>
+    <div id="hud-goal"><span style="font-weight:800;white-space:nowrap">${esc(t('goal'))}: ${L.goal[0]}</span>
+      <div id="goalbar"><i id="goal-fill"></i>${L.goal.map((g, k) => `<span class="mk" id="mk${k}" style="left:${g / L.goal[2] * 100}%">${spr('star', 44)}</span>`).join('')}</div></div>
+    <div class="pill" id="hud-combo">${spr('combo', 40)}<span id="hud-combo-n">x2</span><i></i></div>
     <button class="ibtn" data-act="pause" style="width:64px;height:64px">${spr('ic_pause', 44)}</button>`;
   applyBg(byId('hall'), R.bgHall);
   applyBg(byId('kitchen'), R.bgKitchen);
-  byId('seats').innerHTML = G.guests.map((_, i) => `<div class="seat" id="seat-${i}"></div>`).join('');
+  byId('people').innerHTML = '';
 
-  // Кухня: зоны строятся по типам станций
-  let asm = '', fry = '', side = '', disp = '';
+  // Кухня строится по типам станций; внешний вид зависит от ступени улучшения (tier)
+  let asm = '', fry = '', disp = '', side = '';
   for (const st of G.stations) {
-    const s = G.st[st.id], k = 'k-' + st.id;
+    const s = G.st[st.id], k = 'k-' + st.id, look = st.sprite ? st.sprite + '_' + s.tier : '';
     if (st.type === 'assembly') {
+      const img = SPR_OK[look] ? `style="background-image:${sprUrl(look)}"` : '';
       asm += `<div class="zone z-asm">
         <div class="irow">
           <button class="ingr" id="${k}-base" data-g="base:${st.id}">${spr(st.base, 96)}</button>
           ${s.tops.map(tp => `<button class="ingr" id="${k}-top-${tp}" data-g="top:${st.id}:${tp}">${spr(tp, 90)}</button>`).join('')}
         </div>
-        <div class="mats">${s.slots.map((_, i) => `<div class="mat ${SPR_OK[st.slotSprite] ? 'has-img' : ''}" id="${k}-s${i}" data-g="slot:${st.id}:${i}"
-          ${SPR_OK[st.slotSprite] ? `style="background-image:url('${CONFIG.imgPath}${CONFIG.sprites[st.slotSprite].file}')"` : ''}>
-          <div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div>
+        <div class="mats">${s.slots.map((_, i) => `<div class="mat tier-${s.tier} ${img ? 'has-img' : ''}" id="${k}-s${i}" data-g="slot:${st.id}:${i}" ${img}>
+          ${tierMark(s.tier)}<div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div>
       </div>`;
     } else if (st.type === 'fryer') {
+      const img = SPR_OK[look] ? `style="background-image:${sprUrl(look)}"` : '';
       fry += `<div class="zone z-fry">
         <div class="fcol">
           <button class="ingr" id="${k}-in" data-g="fry:${st.id}">${spr(st.input, 96)}</button>
           <div class="tray">${s.tray.map((_, i) => `<div class="tslot" id="${k}-t${i}" data-g="tray:${st.id}:${i}"></div>`).join('')}</div>
         </div>
-        <div class="fryer">${s.slots.map((_, i) => `<div class="basket" id="${k}-s${i}" data-g="fslot:${st.id}:${i}"><div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div>
+        <div class="fryer tier-${s.tier} ${img ? 'has-img' : ''}" ${img}>${tierMark(s.tier)}${s.slots.map((_, i) =>
+          `<div class="basket" id="${k}-s${i}" data-g="fslot:${st.id}:${i}"><div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div>
       </div>`;
     } else if (st.type === 'dispenser') {
-      disp += `<div class="disp" id="${k}" data-g="disp:${st.id}">${spr(st.sprite, 120)}<div class="portions"></div><div class="bar"><i></i></div></div>`;
+      disp += `<div class="disp tier-${s.tier}" id="${k}" data-g="disp:${st.id}">${tierMark(s.tier)}${spr(look, 120)}<div class="portions"></div><div class="bar"><i></i></div></div>`;
     } else if (st.type === 'trash') {
       side += `<div class="trashb" id="k-trash" data-g="trash:${st.id}">${spr(st.sprite, 100)}</div>`;
     }
@@ -1229,7 +1369,7 @@ function buildGameDOM() {
 }
 
 /* =====================================================================
-   ИГРОВОЙ УРОВЕНЬ: логика
+   УРОВЕНЬ: логика
    ===================================================================== */
 function pickDish() {
   const R = G.R, L = G.L;
@@ -1239,99 +1379,128 @@ function pickDish() {
   for (const m of L.menu) { r -= (R.dishes[m].weight || 1); if (r <= 0) return m; }
   return L.menu[0];
 }
-function spawnGuest(seat) {
+// Посетитель входит слева и идёт к свободному месту
+function spawnVisitor(seat) {
   const R = G.R, L = G.L;
   const n = rndInt(L.items[0], L.items[1]);
   const order = []; for (let i = 0; i < n; i++) order.push({ dish: pickDish(), done: false });
-  const max = L.patience * upVal(R, 'patience') * (1 + (n - 1) * R.patiencePerExtraItem);
-  G.guests[seat] = { id: ++G.gid, seat, skin: R.guests[rndInt(0, R.guests.length - 1)], order, pat: max, max, state: 'wait', t: 0 };
-  Sound.play('meow');
+  const max = L.patience * paramVal(R, 'patience') * (1 + (n - 1) * R.patiencePerExtraItem);
+  const v = { id: ++G.vid, seat, x: -140, tx: seatX(seat, G.seats.length), state: 'in', mood: 'wait',
+    skin: pick(R.visitors), shirt: pick(R.shirts), order, pat: max, max };
+  G.seats[seat] = v.id;
+  G.vis.push(v);
 }
 function update(dt) {
   if (!G || G.state !== 'play') return;
   const L = G.L;
-  G.time -= dt;
-  // Приход гостей (за 5 секунд до конца новые не приходят)
+  G.time -= dt; G.elapsed += dt;
+  // Приход посетителей (за 5 секунд до конца новые не приходят)
   if (G.time > 5) {
     G.spawnT -= dt;
     if (G.spawnT <= 0) {
-      const free = []; G.guests.forEach((g, i) => { if (!g) free.push(i); });
-      if (free.length) { spawnGuest(free[rndInt(0, free.length - 1)]); G.spawnT = rnd(L.every[0], L.every[1]); }
+      const free = []; G.seats.forEach((id, i) => { if (!id) free.push(i); });
+      if (free.length) { spawnVisitor(pick(free)); G.spawnT = rnd(L.every[0], L.every[1]); }
       else G.spawnT = 0.6;
     }
   }
-  // Терпение гостей
-  G.guests.forEach((g, i) => {
-    if (!g) return;
-    g.t += dt;
-    if (g.state === 'wait') {
-      g.pat -= dt;
-      if (g.pat <= 0) { g.pat = 0; guestAngry(g); }
-    } else if (g.t > 1.1) G.guests[i] = null;
-  });
+  // Посетители: ходьба и терпение
+  const sp = CONFIG.walkSpeed * dt;
+  for (const v of G.vis) {
+    if (v.state === 'in') {
+      v.x = Math.min(v.tx, v.x + sp);
+      if (v.x >= v.tx) { v.state = 'wait'; Sound.play('bell'); }
+    } else if (v.state === 'wait') {
+      v.pat -= dt;
+      if (v.pat <= 0) { v.pat = 0; visitorLeave(v, false); }
+    } else if (v.state === 'out') {
+      v.x += v.dir * sp;
+    }
+  }
+  G.vis = G.vis.filter(v => !(v.state === 'out' && (v.x < -220 || v.x > 1820)));
   // Станции
   for (const st of G.stations) {
     const s = G.st[st.id];
     if (st.type === 'assembly') {
       s.slots.forEach(it => {
-        if (it && it.state === 'roll') { it.t += dt; if (it.t >= s.time) { it.state = it.dish ? 'ready' : 'wrong'; Sound.play(it.dish ? 'ready' : 'bad'); } }
+        if (it && it.state === 'roll') {
+          it.t += dt;
+          if (it.t >= s.time) {
+            it.state = it.dish ? 'ready' : 'wrong';
+            Sound.play(it.dish ? 'ready' : 'bad');
+            if (it.dish) stat('rolls', 1);
+          }
+        }
       });
     } else if (st.type === 'fryer') {
       s.slots.forEach(it => {
         if (!it) return;
         it.t += dt;
-        if (it.state === 'cook' && it.t >= s.time) { it.state = 'ready'; it.t = 0; Sound.play('ready'); }
-        else if (it.state === 'ready' && it.t >= s.burn) { it.state = 'burnt'; it.t = 0; Sound.play('burn'); }
+        if (it.state === 'cook' && it.t >= s.time) { it.state = 'ready'; it.t = 0; Sound.play('ready'); stat('tempura', 1); }
+        else if (it.state === 'ready' && it.t >= s.burn) { it.state = 'burnt'; it.t = 0; G.burnt++; Sound.play('burn'); }
       });
     } else if (st.type === 'dispenser') {
       if (s.count < s.cap) { s.t += dt; if (s.t >= s.fill) { s.count++; s.t = 0; } } else s.t = 0;
     }
   }
-  // Тиканье последних секунд
   const sec = Math.ceil(G.time);
-  if (sec <= 5 && sec !== G.lastTick && sec > 0) { G.lastTick = sec; Sound.play('tick'); }
+  if (sec <= 5 && sec > 0 && sec !== G.lastTick) { G.lastTick = sec; Sound.play('tick'); }
   if (G.time <= 0) { G.time = 0; endLevel(); }
 }
-function guestAngry(g) {
-  g.state = 'angry'; g.t = 0; G.streak = 0; G.lost++;
-  Sound.play('angry');
+// Уход: довольный — направо, сердитый — налево
+function visitorLeave(v, happy) {
+  v.state = 'out'; v.mood = happy ? 'happy' : 'angry'; v.dir = happy ? 1 : -1;
+  G.seats[v.seat] = null;
+  if (!happy) { G.angry++; Sound.play('angry'); }
 }
-// Подать блюдо первому подходящему гостю (по порядку прихода)
+// Подать блюдо первому подходящему посетителю (по порядку прихода)
 function serveDish(dish, fromEl) {
-  const cands = G.guests.filter(g => g && g.state === 'wait' && g.order.some(o => !o.done && o.dish === dish)).sort((a, b) => a.id - b.id);
+  const cands = G.vis.filter(v => v.state === 'wait' && v.order.some(o => !o.done && o.dish === dish)).sort((a, b) => a.id - b.id);
   if (!cands.length) return false;
-  const g = cands[0];
-  const j = g.order.findIndex(o => !o.done && o.dish === dish);
-  g.order[j].done = true;
-  g.pat = Math.min(g.max, g.pat + g.max * G.R.patienceRefill);
-  fly(fromEl, $(`#seat-${g.seat} [data-oi="${j}"]`), G.R.dishes[dish].sprite);
+  const v = cands[0], R = G.R;
+  const j = v.order.findIndex(o => !o.done && o.dish === dish);
+  v.order[j].done = true;
+  v.pat = Math.min(v.max, v.pat + v.max * R.patienceRefill);
+  fly(fromEl, $(`#vis-${v.id} [data-oi="${j}"]`), R.dishes[dish].sprite);
   Sound.play('serve');
   if (G.L.intro === dish) G.introServed = true;
-  if (g.order.every(o => o.done)) payGuest(g);
+  // Комбо: подачи подряд с паузой меньше окна наращивают множитель x2..x4
+  G.comboN = (G.elapsed - G.lastServe <= R.combo.window) ? G.comboN + 1 : 1;
+  G.lastServe = G.elapsed;
+  const mult = Math.min(R.combo.bonus.length + 1, G.comboN);
+  if (mult >= 2) {
+    const bonus = R.combo.bonus[mult - 2];
+    G.coins += bonus;
+    bigCombo(mult, bonus);
+    Sound.play('combo', mult);
+    if (mult > G.bestCombo) G.bestCombo = mult;
+    statMax('maxCombo', mult);
+  }
+  if (v.order.every(o => o.done)) payVisitor(v);
   return true;
 }
-function payGuest(g) {
+function payVisitor(v) {
   const R = G.R;
-  const base = g.order.reduce((a, o) => a + dishPrice(R, o.dish), 0);
-  const ratio = g.pat / g.max;
+  const base = v.order.reduce((a, o) => a + dishPrice(R, o.dish), 0);
+  const ratio = v.pat / v.max;
   const tier = R.tips.find(x => ratio > x.above);
-  const tip = tier ? Math.round(base * tier.bonus * upVal(R, 'tips')) : 0;
+  const tip = tier ? Math.round(base * tier.bonus * paramVal(R, 'tips')) : 0;
   const sum = base + tip;
-  G.coins += sum; G.served++; G.streak++;
-  g.state = 'happy'; g.t = 0;
-  const r = stageRect(byId('seat-' + g.seat));
-  floatText(r.x + r.w / 2, r.y + 120, '+' + sum);
-  if (tip) setTimeout(() => floatText(r.x + r.w / 2, r.y + 170, t('tips', tip), 'small'), 150);
+  G.coins += sum; G.served++;
+  stat('served', 1);
+  if (v.order.length >= 3) stat('bigOrders', 1);
+  const x = v.x;
+  floatText(x, 230, '+' + sum);
+  if (tip) setTimeout(() => floatText(x, 290, t('tips', tip), 'small'), 150);
   Sound.play('coin');
-  if (G.streak % R.combo.every === 0) {
-    G.coins += R.combo.bonus;
-    setTimeout(() => { floatText(800, 300, t('combo', R.combo.bonus), 'combo'); Sound.play('combo'); }, 250);
+  // Сердце за быстрое обслуживание
+  if (ratio > R.heartAbove) {
+    G.hearts++; stat('hearts', 1);
+    const el = byId('vis-' + v.id);
+    setTimeout(() => { fly(el, byId('hud-hearts'), 'heart', 70); Sound.play('heart'); }, 200);
   }
+  visitorLeave(v, true);
 }
-function discard(el) {
-  fly(el, byId('k-trash'), 'trash');
-  Sound.play('trash');
-}
+function discard(el) { fly(el, byId('k-trash'), 'trash'); Sound.play('trash'); }
 
 // Обработка тапа по кухне
 function gameTap(el) {
@@ -1339,8 +1508,7 @@ function gameTap(el) {
   const st = G.R.stations.find(s => s.id === sid), s = G.st[sid];
   if (kind === 'trash') { G.trash = !G.trash; Sound.play('click'); renderGame(); return; }
   const wasTrash = G.trash;
-  // Режим мусорки сбрасывается любым тапом
-  G.trash = false;
+  G.trash = false; // режим мусорки сбрасывается любым тапом
   if (kind === 'base') {
     const i = s.slots.findIndex(x => !x);
     if (i < 0) { shake(el); Sound.play('bad'); return; }
@@ -1352,11 +1520,11 @@ function gameTap(el) {
     it.tops.push(arg); Sound.play('place');
   } else if (kind === 'slot') {
     const i = +arg, it = s.slots[i];
-    if (!it) { if (wasTrash) renderGame(); return; }
+    if (!it) { renderGame(); return; }
     if (wasTrash || it.state === 'wrong') { s.slots[i] = null; discard(el); }
     else if (it.state === 'base') {
       if (!it.tops.length) { shake(el); Sound.play('bad'); return; }
-      // Ищем рецепт с точным совпадением начинок; иначе получится «неправильный» ролл
+      // Рецепт с точным совпадением начинок; иначе получится «неправильный» ролл
       const rec = st.recipes.find(r => r.set.length === it.tops.length && r.set.every(x => it.tops.includes(x)));
       it.dish = rec ? rec.dish : null; it.state = 'roll'; it.t = 0;
       Sound.play('roll');
@@ -1369,7 +1537,7 @@ function gameTap(el) {
     s.slots[i] = { state: 'cook', t: 0 }; Sound.play('place');
   } else if (kind === 'fslot') {
     const i = +arg, it = s.slots[i];
-    if (!it) { if (wasTrash) renderGame(); return; }
+    if (!it) { renderGame(); return; }
     if (it.state === 'burnt' || wasTrash) {
       if (it.state === 'burnt') {
         G.coins = Math.max(0, G.coins - st.penalty);
@@ -1377,16 +1545,17 @@ function gameTap(el) {
       }
       s.slots[i] = null; discard(el);
     } else if (it.state === 'ready') {
-      // Снимаем с огня: сразу гостю, иначе на поднос
+      // Снимаем с огня: сразу посетителю, иначе на поднос
       if (serveDish(st.dish, el)) s.slots[i] = null;
       else {
         const k = s.tray.findIndex(x => !x);
         if (k >= 0) { s.tray[k] = st.dish; s.slots[i] = null; fly(el, byId(`k-${sid}-t${k}`), G.R.dishes[st.dish].sprite); Sound.play('place'); }
         else { shake(el); Sound.play('bad'); }
       }
-    } else { shake(el); }
+    } else shake(el);
   } else if (kind === 'tray') {
-    const i = +arg; if (!s.tray[i]) { if (wasTrash) renderGame(); return; }
+    const i = +arg;
+    if (!s.tray[i]) { renderGame(); return; }
     if (wasTrash) { s.tray[i] = null; discard(el); }
     else if (serveDish(s.tray[i], el)) s.tray[i] = null; else { shake(el); Sound.play('bad'); }
   } else if (kind === 'disp') {
@@ -1397,9 +1566,20 @@ function gameTap(el) {
 }
 
 /* =====================================================================
-   ИГРОВОЙ УРОВЕНЬ: отрисовка (обновляем DOM только при изменении ключа)
+   УРОВЕНЬ: отрисовка (DOM меняется только при смене ключа состояния)
    ===================================================================== */
 function setKey(el, key, html) { if (el._k === key) return false; el._k = key; el.innerHTML = html; return true; }
+function visitorHTML(v) {
+  const R = G.R;
+  const fig = SPR_OK[v.skin]
+    ? `<span class="full">${spr(v.skin, 200)}</span>`
+    : `<div class="torso" style="--shirt:${v.shirt}"></div><span class="head">${spr(v.skin, 136)}</span>`;
+  const bubble = v.state === 'wait' ? `<div class="bubble"><div class="ord">${v.order.map((o, j) =>
+    `<div class="oi ${o.done ? 'done' : ''}" data-oi="${j}">${spr(R.dishes[o.dish].sprite, 70)}${o.done ? '<b class="ok">✓</b>' : ''}</div>`).join('')}</div>
+    <div class="pat"><i></i></div></div>` : '';
+  const mood = v.mood !== 'wait' ? `<span class="mood">${spr('mood_' + v.mood, 70)}</span>` : '';
+  return `${bubble}<div class="fig">${fig}${mood}</div>`;
+}
 function renderGame(force) {
   if (!G) return;
   const R = G.R, L = G.L;
@@ -1408,53 +1588,62 @@ function renderGame(force) {
   byId('hud-time').textContent = fmtTime(G.time);
   byId('hud-timer').classList.toggle('warn', G.time <= 10 && G.state === 'play');
   byId('hud-coins').textContent = G.coins;
+  byId('hud-hearts-n').textContent = G.hearts;
   byId('goal-fill').style.width = Math.min(100, G.coins / L.goal[2] * 100) + '%';
   L.goal.forEach((g, k) => byId('mk' + k).classList.toggle('on', G.coins >= g));
-  // Гости
-  G.guests.forEach((g, i) => {
-    const seat = byId('seat-' + i);
-    if (!g) { setKey(seat, '', ''); return; }
-    const mood = g.state;
-    const key = g.id + '|' + mood + '|' + g.order.map(o => o.done ? 1 : 0).join('');
-    const isNew = seat._gid !== g.id;
-    if (setKey(seat, key, `
-      <div class="guest ${mood} ${isNew ? 'enter' : ''}">
-        <div class="bubble"><div class="ord">${g.order.map((o, j) =>
-          `<div class="oi ${o.done ? 'done' : ''}" data-oi="${j}">${spr(R.dishes[o.dish].sprite, 70)}${o.done ? '<b class="ok">✓</b>' : ''}</div>`).join('')}</div>
-          <div class="pat"><i></i></div></div>
-        <div class="cat">${spr(g.skin, 170)}${mood !== 'wait' ? `<div class="mood">${spr('mood_' + mood, 72)}</div>` : ''}</div>
-      </div>`)) { seat._gid = g.id; seat._pat = seat.querySelector('.pat i'); }
-    if (seat._pat) {
-      const r = g.pat / g.max;
-      seat._pat.style.width = (r * 100) + '%';
-      seat._pat.style.background = r > 0.66 ? '#4fbf4f' : r > 0.33 ? '#f2b630' : '#e2402b';
+  const since = G.elapsed - G.lastServe, comboOn = G.comboN >= 2 && since <= R.combo.window;
+  const cEl = byId('hud-combo');
+  cEl.classList.toggle('on', comboOn);
+  if (comboOn) {
+    byId('hud-combo-n').textContent = 'x' + Math.min(R.combo.bonus.length + 1, G.comboN);
+    cEl.lastElementChild.style.width = Math.max(0, 100 - since / R.combo.window * 100) + '%';
+  }
+  // Посетители
+  const box = byId('people'), alive = new Set();
+  for (const v of G.vis) {
+    alive.add('vis-' + v.id);
+    let el = byId('vis-' + v.id);
+    if (!el) { el = document.createElement('div'); el.id = 'vis-' + v.id; el.className = 'vis'; box.appendChild(el); }
+    const key = v.state + '|' + v.mood + '|' + v.order.map(o => (o.done ? 1 : 0)).join('');
+    if (setKey(el, key, visitorHTML(v))) {
+      el.className = 'vis ' + (v.state === 'wait' ? '' : 'walking ') + (v.state === 'out' ? 'out ' : '') + (v.mood === 'angry' ? 'angry' : '');
+      el._pat = el.querySelector('.pat i');
     }
-  });
+    el.style.transform = `translateX(${v.x - 100}px)`;
+    if (el._pat) {
+      const r = v.pat / v.max;
+      el._pat.style.width = (r * 100) + '%';
+      el._pat.style.background = r > 0.66 ? '#4fbf4f' : r > 0.33 ? '#f2b630' : '#e2402b';
+    }
+  }
+  [...box.children].forEach(c => { if (!alive.has(c.id)) c.remove(); });
   // Станции
   for (const st of G.stations) {
     const s = G.st[st.id], k = 'k-' + st.id;
     if (st.type === 'assembly') {
       s.slots.forEach((it, i) => {
-        const el = byId(`${k}-s${i}`), box = el.firstElementChild, bar = el.lastElementChild;
+        const el = byId(`${k}-s${i}`), box2 = el.querySelector('.slot-it'), bar = el.querySelector('.bar');
         const state = it ? it.state : 'empty';
-        if (setKey(box, it ? state + '|' + it.tops.join(',') + '|' + it.dish : 'empty', !it ? '' :
+        if (setKey(box2, it ? state + '|' + it.tops.join(',') + '|' + it.dish : 'empty', !it ? '' :
           (state === 'ready' ? spr(R.dishes[it.dish].sprite, 124)
             : state === 'wrong' ? spr(st.wrong, 124)
             : `${spr(st.base, 116)}<div class="tops">${it.tops.map(tp => spr(tp, 52)).join('')}</div>`))) {
-          el.className = `mat ${SPR_OK[st.slotSprite] ? 'has-img' : ''} ${state === 'roll' ? 'rolling' : state}`;
+          el.classList.remove('rolling', 'ready', 'wrong', 'base');
+          if (state !== 'empty') el.classList.add(state === 'roll' ? 'rolling' : state);
         }
         bar.classList.toggle('on', state === 'roll');
         if (state === 'roll') bar.firstElementChild.style.width = Math.min(100, it.t / s.time * 100) + '%';
       });
     } else if (st.type === 'fryer') {
       s.slots.forEach((it, i) => {
-        const el = byId(`${k}-s${i}`), box = el.firstElementChild, bar = el.lastElementChild;
+        const el = byId(`${k}-s${i}`), box2 = el.firstElementChild, bar = el.lastElementChild;
         const state = it ? it.state : 'empty';
-        if (setKey(box, state, !it ? '' : spr(state === 'cook' ? st.input : state === 'ready' ? R.dishes[st.dish].sprite : st.burnt, 92)))
+        if (setKey(box2, state, !it ? '' : spr(state === 'cook' ? st.input : state === 'ready' ? R.dishes[st.dish].sprite : st.burnt, 92)))
           el.className = 'basket ' + state;
         bar.classList.toggle('on', state === 'cook' || state === 'ready');
-        if (state === 'cook') { bar.firstElementChild.style.width = Math.min(100, it.t / s.time * 100) + '%'; bar.firstElementChild.style.background = '#ffd23d'; }
-        else if (state === 'ready') { bar.firstElementChild.style.width = Math.max(0, 100 - it.t / s.burn * 100) + '%'; bar.firstElementChild.style.background = it.t / s.burn > 0.6 ? '#e2402b' : '#3fbf3f'; }
+        const fill = bar.firstElementChild;
+        if (state === 'cook') { fill.style.width = Math.min(100, it.t / s.time * 100) + '%'; fill.style.background = '#ffd23d'; }
+        else if (state === 'ready') { fill.style.width = Math.max(0, 100 - it.t / s.burn * 100) + '%'; fill.style.background = it.t / s.burn > 0.6 ? '#e2402b' : '#3fbf3f'; }
       });
       s.tray.forEach((d, i) => setKey(byId(`${k}-t${i}`), d || '', d ? spr(R.dishes[d].sprite, 56) : ''));
     } else if (st.type === 'dispenser') {
@@ -1470,7 +1659,7 @@ function renderGame(force) {
 }
 
 /* =====================================================================
-   ПОДСКАЗКИ: рука-указатель (обучение) — ищет следующее полезное действие
+   ПОДСКАЗКИ: рука-указатель ищет следующее полезное действие
    ===================================================================== */
 function readySources(dish) {
   const out = [];
@@ -1493,13 +1682,13 @@ function computeHint() {
     if (st.type === 'assembly') { const i = s.slots.findIndex(x => x && x.state === 'wrong'); if (i >= 0) return byId(`${k}-s${i}`); }
   }
   const needs = [];
-  G.guests.filter(g => g && g.state === 'wait').sort((a, b) => a.id - b.id)
-    .forEach(g => g.order.forEach(o => { if (!o.done) needs.push(o.dish); }));
+  G.vis.filter(v => v.state === 'wait').sort((a, b) => a.id - b.id)
+    .forEach(v => v.order.forEach(o => { if (!o.done) needs.push(o.dish); }));
   // 2. Подать готовое
   for (const d of needs) { const r = readySources(d); if (r.length) return r[0]; }
   // 3. Начать или продолжить готовку
   const used = new Set(); let blocked = null;
-  const toTrash = (sid, i) => G.trash ? byId(`k-${sid}-s${i}`) : trashEl;
+  const toTrash = (sid, i) => (G.trash ? byId(`k-${sid}-s${i}`) : trashEl);
   for (const d of needs) {
     const st = G.dishStation[d]; if (!st) continue;
     const s = G.st[st.id], k = 'k-' + st.id;
@@ -1511,15 +1700,11 @@ function computeHint() {
       if (i >= 0) {
         const it = s.slots[i], miss = rec.filter(tp => !it.tops.includes(tp));
         if (!miss.length) return byId(`${k}-s${i}`);
-        const tp = miss[0];
-        const land = s.slots.findIndex(x => x && x.state === 'base' && !x.tops.includes(tp));
-        if (land === i) return byId(`${k}-top-${tp}`);
+        const land = s.slots.findIndex(x => x && x.state === 'base' && !x.tops.includes(miss[0]));
+        if (land === i) return byId(`${k}-top-${miss[0]}`);
         return toTrash(st.id, land); // начинка ляжет не туда — убираем мешающую основу
       }
-      if (s.slots.some(x => !x)) {
-        // Новая основа: проверим, что первая начинка ляжет на неё
-        return byId(`${k}-base`);
-      }
+      if (s.slots.some(x => !x)) return byId(`${k}-base`);
       blocked = blocked || st;
     } else if (st.type === 'fryer') {
       const i = s.slots.findIndex((x, j) => x && x.state === 'cook' && !used.has(k + j));
@@ -1535,21 +1720,21 @@ function computeHint() {
   }
   return null;
 }
-function hintsOn() { return G && (G.L.tutorial || (G.L.intro && !G.introServed)); }
+const hintsOn = () => G && (G.L.tutorial || (G.L.intro && !G.introServed));
 function updateHand() {
   const hand = byId('hand');
   const target = isRunning() && hintsOn() ? computeHint() : null;
   if (!target) { hand.style.display = 'none'; return; }
   const r = stageRect(target);
   if (hand.style.display !== 'block') { hand.style.display = 'block'; hand.firstElementChild.innerHTML = spr('hand', 96); }
-  hand.style.left = (r.x + r.w / 2 - 34) + 'px';
-  hand.style.top = (r.y + r.h / 2 - 6) + 'px';
+  hand.style.left = (r.x + r.w / 2 - 30) + 'px';
+  hand.style.top = (r.y + r.h / 2) + 'px';
 }
 
 /* =====================================================================
    КОНЕЦ УРОВНЯ, ПАУЗА, РЕЗУЛЬТАТЫ
    ===================================================================== */
-function calcStars() { let s = 0; G.L.goal.forEach(g => { if (G.coins >= g) s++; }); return s; }
+const calcStars = () => G.L.goal.filter(g => G.coins >= g).length;
 function endLevel() {
   G.state = 'end'; G.trash = false;
   renderGame();
@@ -1558,23 +1743,30 @@ function endLevel() {
   showResult();
   syncGameplay();
 }
-// Зачисление монет и звёзд (один раз за попытку)
+// Зачисление монет, звёзд и статистики (один раз за попытку)
 function finalize() {
   if (G.finalized) return;
   G.finalized = true;
   const rs = restSave(G.R.id), stars = calcStars();
   if (stars > (rs.stars[G.idx] || 0)) rs.stars[G.idx] = stars;
+  if (stars > 0) {
+    if (G.angry === 0) Save.data.stats.perfectLevels++;
+    if (G.hasFryer && G.burnt === 0) Save.data.stats.noBurnLevels++;
+    if (stars === 3) Save.data.stats.threeStars++;
+  }
   Save.data.coins += G.coins;
+  checkAch();
   Save.write();
-  SDK.setScore(totalStars());
+  SDK.setScore(Save.data.stats.hearts);
 }
 function showResult() {
   const stars = calcStars(), win = stars > 0;
+  const info = `<div class="resrow"><div>${spr('coin', 50)}${G.coins * (G.doubled ? 2 : 1)}</div><div>${spr('heart', 46)}${G.hearts}</div>
+    ${G.bestCombo >= 2 ? `<div>${spr('combo', 46)}x${G.bestCombo}</div>` : ''}</div>`;
   if (win) {
     openModal(`
       <h2>${esc(t('win'))}</h2>
-      <div class="bigstars">${starsRow(stars, 130)}</div>
-      <p style="font-size:40px;font-weight:900">${spr('coin', 56)} ${esc(t('earned', G.coins * (G.doubled ? 2 : 1)))}</p>
+      <div class="bigstars">${starsRow(stars, 130)}</div>${info}
       <div class="btns">
         ${!G.doubled && G.coins > 0 ? `<button class="btn ad" data-act="double">${spr('ic_ad', 48)}${esc(t('doubleCoins'))}</button>` : ''}
         <button class="btn blue" data-act="res" data-arg="retry">${esc(t('retry'))}</button>
@@ -1585,7 +1777,7 @@ function showResult() {
     openModal(`
       <h2>${esc(t('lose'))}</h2>
       <div class="bigstars">${starsRow(0, 110)}</div>
-      <p>${esc(t('needCoins', G.L.goal[0], G.coins))}</p>
+      <p>${esc(t('needCoins', G.L.goal[0], G.coins))}</p>${info}
       <div class="btns">
         ${!G.addUsed ? `<button class="btn ad" data-act="addtime">${spr('ic_ad', 48)}${esc(t('addTime', CONFIG.addTimeSec))}</button>` : ''}
         <button class="btn blue" data-act="res" data-arg="retry">${esc(t('retry'))}</button>
@@ -1593,7 +1785,7 @@ function showResult() {
       </div>`);
   }
 }
-// Выход с экрана результата: зачисляем монеты, показываем полноэкранную рекламу, затем переходим
+// Выход с экрана результата: зачисление, полноэкранная реклама, переход
 function leaveResult(dest) {
   finalize();
   const idx = G.idx;
@@ -1602,7 +1794,7 @@ function leaveResult(dest) {
   syncGameplay();
   SDK.showFullscreen(() => {
     if (dest === 'retry') startLevel(idx);
-    else if (dest === 'shop') goShop('levels');
+    else if (dest === 'shop') goShop();
     else goLevels();
   });
 }
@@ -1621,10 +1813,13 @@ function openPause() {
 }
 
 /* =====================================================================
-   ОБРАБОТЧИКИ КНОПОК (data-act)
+   КНОПКИ ИНТЕРФЕЙСА (data-act)
    ===================================================================== */
 const ACT = {
-  sound() { Save.data.sound = !Save.data.sound; Save.write(); Sound.sync(); document.querySelectorAll('[data-act="sound"]').forEach(b => { b.innerHTML = spr(Save.data.sound ? 'ic_sound' : 'ic_mute', 56); }); },
+  sound() {
+    Save.data.sound = !Save.data.sound; Save.write(); Sound.sync();
+    document.querySelectorAll('[data-act="sound"]').forEach(b => { b.innerHTML = spr(Save.data.sound ? 'ic_sound' : 'ic_mute', 56); });
+  },
   close() { closeModal(); syncGameplay(); },
   world() { goWorld(); },
   rest(id) {
@@ -1634,13 +1829,12 @@ const ACT = {
     curRest = id; goLevels();
   },
   lvl(i) {
-    const R = restById(curRest);
-    if (!levelUnlocked(R, +i)) { toast(t('levelLocked')); Sound.play('bad'); return; }
+    if (!levelUnlocked(restById(curRest), +i)) { toast(t('levelLocked')); Sound.play('bad'); return; }
     openLevelIntro(+i);
   },
   start(i) { startLevel(+i); },
-  shop() { goShop('levels'); },
-  shopback() { shopBack === 'world' ? goWorld() : goLevels(); },
+  shop() { goShop(); },
+  shopback() { goLevels(); },
   buy(id) { buyUpgrade(id, false); },
   freeup(id) {
     if (freeUpLeft() > 0) { toast(t('noAdYet')); return; }
@@ -1648,11 +1842,13 @@ const ACT = {
   },
   daily() { openDaily(); },
   claim() { claimDaily(); },
+  achs() { openAchs(); },
+  achclaim(id) { claimAch(id); },
   leaders() { openLeaders(); },
   pause() { if (G && G.state === 'play') openPause(); },
   resume() { G.paused = false; closeModal(); syncGameplay(); },
   restart() { const i = G.idx; G.state = 'done'; closeModal(); startLevel(i); },
-  quit() { G.state = 'done'; closeModal(); goLevels(); },
+  quit() { G.state = 'done'; closeModal(); Save.write(); goLevels(); },
   double() {
     if (G.doubled) return;
     SDK.showRewarded(() => {
@@ -1679,7 +1875,7 @@ const SPEED = DEBUG ? (+((location.search.match(/speed=(\d+)/) || [])[1]) || 1) 
 let BOT = DEBUG && /bot/.test(location.search);
 const BOT_DT = DEBUG ? (+((location.search.match(/botdt=([\d.]+)/) || [])[1]) || 0.35) : 0.35;
 function loop(now) {
-  let dt = Math.min(0.1, (now - lastT) / 1000); lastT = now;
+  const dt = Math.min(0.1, (now - lastT) / 1000); lastT = now;
   if (screen === 'game' && G) {
     if (isRunning()) {
       let rem = dt * SPEED;
@@ -1689,29 +1885,28 @@ function loop(now) {
         if (BOT && G.state === 'play') { G.botT -= step; if (G.botT <= 0) { G.botT = BOT_DT; const h = computeHint(); if (h) gameTap(h); } }
       }
     }
-    if (G) renderGame();
+    renderGame();
     G.hintT -= dt;
     if (G.hintT <= 0) { G.hintT = 0.2; updateHand(); }
   }
-  // Раз в секунду обновляем таймер бесплатного улучшения в магазине
+  // Раз в секунду обновляем таймер бесплатного улучшения
   secT += dt;
-  if (secT >= 1) { secT = 0; if (screen === 'shop' && !byId('modal').classList.contains('on')) renderShop(); }
+  if (secT >= 1) { secT = 0; if (screen === 'shop' && !modalOpen()) renderShop(); }
   requestAnimationFrame(loop);
 }
 
 /* =====================================================================
-   СОБЫТИЯ ВВОДА
+   ВВОД И СОБЫТИЯ
    ===================================================================== */
-// Кухня: реагируем сразу на касание (pointerdown) — быстрее и надёжнее на телефоне
+// Кухня реагирует на касание сразу (pointerdown): быстро и работает мультитач
 stage.addEventListener('pointerdown', e => {
   Sound.unlock();
   const el = e.target.closest('[data-g]');
   if (!el) return;
   e.preventDefault();
-  if (!isRunning()) return;
-  gameTap(el);
+  if (isRunning()) gameTap(el);
 });
-// Кнопки интерфейса: обычный click
+// Кнопки интерфейса — обычный click
 stage.addEventListener('click', e => {
   const b = e.target.closest('[data-act]');
   if (!b) return;
@@ -1733,7 +1928,6 @@ document.addEventListener('gesturestart', e => e.preventDefault());
    ===================================================================== */
 async function boot() {
   fit();
-  byId('load-logo').innerHTML = spr('logo', 160);
   const bar = byId('load-bar');
   await SDK.init();
   const l = String(SDK.lang() || 'ru').toLowerCase();
@@ -1746,11 +1940,11 @@ async function boot() {
   await Promise.all([Save.load(), preloadSprites(p => { bar.style.width = (20 + p * 80) + '%'; })]);
   byId('load-logo').innerHTML = spr('logo', 160);
   bar.style.width = '100%';
-  SDK.ready();       // LoadingAPI.ready() — игра готова к взаимодействию
+  SDK.ready(); // LoadingAPI.ready() — игра готова к взаимодействию
   goWorld();
-  if (dailyAvailable()) setTimeout(() => { if (screen === 'world' && !byId('modal').classList.contains('on')) openDaily(); }, 400);
+  if (dailyAvailable()) setTimeout(() => { if (screen === 'world' && !modalOpen()) openDaily(); }, 400);
   requestAnimationFrame(t0 => { lastT = t0; requestAnimationFrame(loop); });
-  if (DEBUG) window.MEOW = { get G() { return G; }, startLevel, Save, computeHint, setBot(v) { BOT = v; }, goLevels, restById };
+  if (DEBUG) window.GAME = { get G() { return G; }, startLevel, Save, computeHint, setBot(v) { BOT = v; }, restById, goLevels };
 }
 boot();
 </script>
