@@ -64,11 +64,11 @@ button{font:inherit;color:inherit}
 
 /* ===================== КАРТА МИРА ===================== */
 #scr-world{background:
-  radial-gradient(ellipse 380px 260px at 330px 600px,#b9dd8a 60%,transparent 62%),
-  radial-gradient(ellipse 330px 240px at 640px 380px,#a8d27a 60%,transparent 62%),
-  radial-gradient(ellipse 380px 250px at 920px 640px,#b9dd8a 60%,transparent 62%),
-  radial-gradient(ellipse 320px 230px at 1160px 360px,#a8d27a 60%,transparent 62%),
-  radial-gradient(ellipse 330px 240px at 1390px 600px,#b9dd8a 60%,transparent 62%),
+  radial-gradient(ellipse 330px 230px at 250px 250px,#b9dd8a 60%,transparent 62%),
+  radial-gradient(ellipse 330px 230px at 830px 270px,#a8d27a 60%,transparent 62%),
+  radial-gradient(ellipse 300px 230px at 1400px 330px,#b9dd8a 60%,transparent 62%),
+  radial-gradient(ellipse 340px 230px at 400px 620px,#a8d27a 60%,transparent 62%),
+  radial-gradient(ellipse 340px 230px at 1215px 720px,#b9dd8a 60%,transparent 62%),
   linear-gradient(#7fd0f0,#3f9ad0)}
 #scr-world.has-bg,#scr-levels.has-bg,#scr-shop.has-bg{background-size:cover;background-position:center}
 .map-svg{position:absolute;inset:0;pointer-events:none}
@@ -81,6 +81,13 @@ button{font:inherit;color:inherit}
 .rnode .name{margin-top:12px;background:#fff;border-radius:20px;padding:6px 18px;font-size:30px;font-weight:900;box-shadow:0 4px 0 rgba(0,0,0,.15);white-space:nowrap}
 .rnode .req{margin-top:6px;font-size:26px;font-weight:800;color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.6);display:flex;align-items:center;gap:4px}
 .rnode.open .disc{animation:pulse 1.6s infinite}
+/* Карта-картинка: домики нарисованы на фоне, узел — прозрачная зона с табличкой */
+.rnode.pic{width:320px;height:300px;margin-left:-160px;margin-top:-170px;justify-content:flex-end}
+.rnode.pic .tag{display:flex;align-items:center;gap:6px;background:#fff;border-radius:22px;padding:6px 18px;font-size:30px;font-weight:900;
+  box-shadow:0 5px 0 rgba(0,0,0,.25);white-space:nowrap;border:4px solid #ffd27a}
+.rnode.pic.locked .tag{background:#e6ded2;border-color:#b9ab98;color:#6b5a48}
+.rnode.pic.open .tag{animation:pulse 1.6s infinite;border-color:#ff9a3d}
+.rnode.pic .req{background:rgba(40,20,8,.7);border-radius:16px;padding:2px 14px;margin-top:6px}
 
 /* ===================== КАРТА УРОВНЕЙ ===================== */
 #scr-levels{background:linear-gradient(#ffe2b8,#f3b77a)}
@@ -129,6 +136,7 @@ button{font:inherit;color:inherit}
    linear-gradient(rgba(120,70,30,.35) 6px,transparent 6px) 0 0/100% 120px,linear-gradient(#fbecd2,#f1d6ad)}
 #hall.has-bg{background-size:cover;background-position:center}
 #people{position:absolute;inset:0}
+#counter.has-bg{height:77px;border-top:0;background-size:100% 100%;box-shadow:0 -4px 12px rgba(0,0,0,.3)}
 #counter{position:absolute;left:0;right:0;bottom:0;height:64px;z-index:20;
   background:linear-gradient(#b0743f,#7a4a24);border-top:8px solid #d39a5e;box-shadow:0 -6px 12px rgba(0,0,0,.25)}
 .vis{position:absolute;left:0;bottom:0;width:200px;height:380px;z-index:5;will-change:transform}
@@ -193,10 +201,12 @@ button{font:inherit;color:inherit}
 .fcol{display:flex;flex-direction:column;gap:12px;align-items:center}
 .tray{display:grid;grid-template-columns:repeat(2,64px);gap:8px;padding:8px;border-radius:18px;background:#d9c3a0;box-shadow:inset 0 3px 6px rgba(0,0,0,.2)}
 .tslot{width:64px;height:64px;border-radius:14px;background:#f4e6cf;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.fryer{position:relative;display:grid;grid-template-columns:repeat(2,108px);gap:12px;padding:14px;border-radius:24px;
+.fryer{position:relative;display:grid;grid-template-columns:repeat(2,96px);gap:12px;padding:14px;border-radius:24px;
   background:linear-gradient(#9aa3ad,#6c757f);box-shadow:inset 0 0 0 6px #4d555e,0 6px 0 #3a4048}
 .fryer.has-img{background-size:cover;background-position:center}
-.basket{width:108px;height:108px;border-radius:18px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
+.fcol2{display:flex;flex-direction:column;align-items:center;gap:4px}
+.fryer-img{height:150px;width:auto;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 6px 6px rgba(0,0,0,.3))}
+.basket{width:96px;height:96px;border-radius:18px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
   background:radial-gradient(circle,#ffd877,#e8a73a);box-shadow:inset 0 0 0 5px #8b6a2e}
 .basket.cook .slot-it{animation:sizzle .25s infinite alternate}
 .basket.ready{background:radial-gradient(circle,#c7f59a,#6cc04a)}
@@ -349,6 +359,7 @@ const CONFIG = {
   freeUpgradeCooldownSec: 600,     // «Бесплатное улучшение» раз в 10 минут
   addTimeSec: 20,                  // «+20 секунд» при проигрыше
   walkSpeed: 750,                  // скорость ходьбы посетителей, px/с
+  handTip: [0.62, 0.95],           // где кончик пальца на картинке руки (доли от рамки 96x96)
 
   // Спрайты: ключ -> файл в img/ и эмодзи-заглушка (badge — значок поверх, css — фильтр)
   sprites: {
@@ -377,6 +388,7 @@ const CONFIG = {
     bg_hall_sushi:   { file: 'bg_hall_sushi.jpg',    emoji: '' },
     bg_kitchen_sushi:{ file: 'bg_kitchen_sushi.jpg', emoji: '' },
     bg_shop:         { file: 'bg_shop.jpg',          emoji: '' },
+    counter_sushi:   { file: 'counter_sushi.jpg',    emoji: '' },   // стойка: передний план поверх посетителей
     // посетители (картинка — фигура целиком; заглушка — лицо + рубашка CSS)
     visitor_1:       { file: 'visitor_1.png',        emoji: '👦' },   // парень в жёлтом худи
     visitor_1_angry: { file: 'visitor_1_angry.png',  emoji: '😠' },
@@ -407,23 +419,24 @@ const CONFIG = {
     tempura_burnt:   { file: 'tempura_burnt.png',    emoji: '🍤', css: 'burnt' },
     miso:            { file: 'miso.png',             emoji: '🍲' },
     tea:             { file: 'tea.png',              emoji: '🍵' },
-    // оборудование: картинка меняется со ступенью улучшения (_0 — базовая, _3 — максимальная)
-    mat_0:           { file: 'mat_0.png',            emoji: '' },
-    mat_1:           { file: 'mat_1.png',            emoji: '' },
-    mat_2:           { file: 'mat_2.png',            emoji: '' },
-    mat_3:           { file: 'mat_3.png',            emoji: '' },
-    fryer_0:         { file: 'fryer_0.png',          emoji: '' },
-    fryer_1:         { file: 'fryer_1.png',          emoji: '' },
-    fryer_2:         { file: 'fryer_2.png',          emoji: '' },
-    fryer_3:         { file: 'fryer_3.png',          emoji: '' },
-    pot_0:           { file: 'pot_0.png',            emoji: '🥘' },
-    pot_1:           { file: 'pot_1.png',            emoji: '🥘' },
-    pot_2:           { file: 'pot_2.png',            emoji: '🥘' },
-    pot_3:           { file: 'pot_3.png',            emoji: '🥘' },
-    teapot_0:        { file: 'teapot_0.png',         emoji: '🫖' },
-    teapot_1:        { file: 'teapot_1.png',         emoji: '🫖' },
-    teapot_2:        { file: 'teapot_2.png',         emoji: '🫖' },
-    teapot_3:        { file: 'teapot_3.png',         emoji: '🫖' },
+    // оборудование: ключ по ступени улучшения (_0 — базовая, _3 — максимальная); несколько ступеней могут делить файл,
+    // а без картинок ступень видна по рамке: дерево → бронза → серебро → золото
+    mat_0:           { file: 'mat.png',              emoji: '' },
+    mat_1:           { file: 'mat.png',              emoji: '' },
+    mat_2:           { file: 'mat.png',              emoji: '' },
+    mat_3:           { file: 'mat.png',              emoji: '' },
+    fryer_0:         { file: 'fryer.png',             emoji: '' },
+    fryer_1:         { file: 'fryer.png',             emoji: '' },
+    fryer_2:         { file: 'fryer_gold.png',        emoji: '' },
+    fryer_3:         { file: 'fryer_gold.png',        emoji: '' },
+    pot_0:           { file: 'pot.png',              emoji: '🥘' },
+    pot_1:           { file: 'pot.png',              emoji: '🥘' },
+    pot_2:           { file: 'pot.png',              emoji: '🥘' },
+    pot_3:           { file: 'pot.png',              emoji: '🥘' },
+    teapot_0:        { file: 'teapot.png',           emoji: '🫖' },
+    teapot_1:        { file: 'teapot.png',           emoji: '🫖' },
+    teapot_2:        { file: 'teapot.png',           emoji: '🫖' },
+    teapot_3:        { file: 'teapot.png',           emoji: '🫖' },
     trash:           { file: 'trash.png',            emoji: '🗑️' },
     // рестораны
     rest_sushi:      { file: 'rest_sushi.png',       emoji: '🍣' },
@@ -475,8 +488,8 @@ const CONFIG = {
     {
       id: 'sushi',
       name: { ru: 'Суши-бар', en: 'Sushi Bar' },
-      icon: 'rest_sushi', bgLevels: 'bg_levels_sushi', bgHall: 'bg_hall_sushi', bgKitchen: 'bg_kitchen_sushi',
-      mapPos: { x: 330, y: 560 },
+      icon: 'rest_sushi', bgLevels: 'bg_levels_sushi', bgHall: 'bg_hall_sushi', bgKitchen: 'bg_kitchen_sushi', bgCounter: 'counter_sushi',
+      mapPos: { x: 250, y: 210 },
       starsRequired: 0,
       seats: 4,                                 // мест у стойки
       // Посетители: весёлый и злой спрайт; shirt — цвет одежды для заглушки без картинок
@@ -593,10 +606,10 @@ const CONFIG = {
       ]
     },
     // Заглушки будущих ресторанов: только карточка на карте
-    { id: 'ramen',  name: { ru: 'Раменная', en: 'Ramen House' },             icon: 'rest_ramen',  mapPos: { x: 640,  y: 380 }, starsRequired: 40,  comingSoon: true },
-    { id: 'wok',    name: { ru: 'Вок-стрит', en: 'Wok Street' },              icon: 'rest_wok',    mapPos: { x: 920,  y: 620 }, starsRequired: 80,  comingSoon: true },
-    { id: 'dimsum', name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },         icon: 'rest_dimsum', mapPos: { x: 1160, y: 360 }, starsRequired: 120, comingSoon: true },
-    { id: 'sweets', name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' },  icon: 'rest_sweets', mapPos: { x: 1390, y: 600 }, starsRequired: 160, comingSoon: true }
+    { id: 'ramen',  name: { ru: 'Раменная', en: 'Ramen House' },             icon: 'rest_ramen',  mapPos: { x: 830,  y: 230 }, starsRequired: 40,  comingSoon: true },
+    { id: 'wok',    name: { ru: 'Вок-стрит', en: 'Wok Street' },              icon: 'rest_wok',    mapPos: { x: 1400, y: 290 }, starsRequired: 80,  comingSoon: true },
+    { id: 'sweets', name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' },  icon: 'rest_sweets', mapPos: { x: 1215, y: 680 }, starsRequired: 120, comingSoon: true },
+    { id: 'dimsum', name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },         icon: 'rest_dimsum', mapPos: { x: 400,  y: 580 }, starsRequired: 160, comingSoon: true }
   ]
 };
 
@@ -684,7 +697,7 @@ function spr(key, size, cls = '') {
     : `<span class="emo ${d.css || ''}">${d.emoji || ''}${d.badge ? `<i class="badge">${d.badge}</i>` : ''}</span>`;
   return `<span class="spr ${cls}" style="--s:${size}px">${inner}</span>`;
 }
-const sprUrl = key => `url("${CONFIG.imgPath}${CONFIG.sprites[key].file}")`;
+const sprUrl = key => `url('${CONFIG.imgPath}${CONFIG.sprites[key].file}')`; // одинарные кавычки: строка вставляется и в атрибут style="…"
 // Фон экрана/зоны из спрайта (если файл загрузился)
 function applyBg(el, key) {
   if (key && SPR_OK[key]) { el.style.backgroundImage = sprUrl(key); el.classList.add('has-bg'); }
@@ -1036,6 +1049,8 @@ function starsRow(n, size, total = 3) {
 const dailyAvailable = () => Save.data.daily.last !== dayStr(new Date());
 function renderWorld() {
   const el = byId('scr-world');
+  // Если фон-карта загрузился, домики и дорожка уже нарисованы на нём
+  const pic = !!SPR_OK.bg_world;
   applyBg(el, 'bg_world');
   const pts = CONFIG.restaurants.map(r => r.mapPos);
   let path = '';
@@ -1047,18 +1062,20 @@ function renderWorld() {
   const nodes = CONFIG.restaurants.map(r => {
     const unlocked = stars >= r.starsRequired;
     const cls = unlocked ? (r.comingSoon ? '' : 'open') : 'locked';
+    const req = unlocked
+      ? (r.comingSoon ? `<div class="req">${esc(t('comingSoon'))}</div>` : `<div class="req">${spr('star', 34)} ${restStars(r.id)}/${r.levels.length * 3}</div>`)
+      : `<div class="req">${spr('star', 34)} ${r.starsRequired}</div>`;
+    if (pic) return `<button class="rnode pic ${cls}" style="left:${r.mapPos.x}px;top:${r.mapPos.y}px" data-act="rest" data-arg="${r.id}">
+      <div class="tag">${unlocked ? '' : spr('lock', 40)}<span>${esc(tr(r.name))}</span></div>${req}</button>`;
     return `<button class="rnode ${cls}" style="left:${r.mapPos.x}px;top:${r.mapPos.y}px" data-act="rest" data-arg="${r.id}">
       <div class="disc">${spr(r.icon, 120)}${unlocked ? '' : `<span class="lockb">${spr('lock', 64)}</span>`}</div>
-      <div class="name">${esc(tr(r.name))}</div>
-      ${unlocked
-        ? (r.comingSoon ? `<div class="req">${esc(t('comingSoon'))}</div>` : `<div class="req">${spr('star', 34)} ${restStars(r.id)}/${r.levels.length * 3}</div>`)
-        : `<div class="req">${spr('star', 34)} ${r.starsRequired}</div>`}
+      <div class="name">${esc(tr(r.name))}</div>${req}
     </button>`;
   }).join('');
-  const deco = CONFIG.worldDeco.map(d => `<div class="deco" style="left:${d.x}px;top:${d.y}px;font-size:${d.s}px">${d.e}</div>`).join('');
+  const deco = pic ? '' : CONFIG.worldDeco.map(d => `<div class="deco" style="left:${d.x}px;top:${d.y}px;font-size:${d.s}px">${d.e}</div>`).join('');
   const achN = achReadyCount();
   el.innerHTML = `${deco}
-    <svg class="map-svg" viewBox="0 0 1600 900" width="1600" height="900"><path d="${path}" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="4 26" stroke-linecap="round" opacity=".9"/></svg>
+    ${pic ? '' : `<svg class="map-svg" viewBox="0 0 1600 900" width="1600" height="900"><path d="${path}" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="4 26" stroke-linecap="round" opacity=".9"/></svg>`}
     ${nodes}
     <div class="topbar">
       ${spr('logo', 84)}<div class="title-txt">${esc(t('title'))}</div><div class="grow"></div>
@@ -1343,6 +1360,7 @@ function buildGameDOM() {
     <button class="ibtn" data-act="pause" style="width:64px;height:64px">${spr('ic_pause', 44)}</button>`;
   applyBg(byId('hall'), R.bgHall);
   applyBg(byId('kitchen'), R.bgKitchen);
+  applyBg(byId('counter'), R.bgCounter);
   byId('people').innerHTML = '';
 
   // Кухня строится по типам станций; внешний вид зависит от ступени улучшения (tier)
@@ -1360,14 +1378,14 @@ function buildGameDOM() {
           ${tierMark(s.tier)}<div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div>
       </div>`;
     } else if (st.type === 'fryer') {
-      const img = SPR_OK[look] ? `style="background-image:${sprUrl(look)}"` : '';
       fry += `<div class="zone z-fry">
         <div class="fcol">
           <button class="ingr" id="${k}-in" data-g="fry:${st.id}">${spr(st.input, 96)}</button>
           <div class="tray">${s.tray.map((_, i) => `<div class="tslot" id="${k}-t${i}" data-g="tray:${st.id}:${i}"></div>`).join('')}</div>
         </div>
-        <div class="fryer tier-${s.tier} ${img ? 'has-img' : ''}" ${img}>${tierMark(s.tier)}${s.slots.map((_, i) =>
-          `<div class="basket" id="${k}-s${i}" data-g="fslot:${st.id}:${i}"><div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div>
+        <div class="fcol2">${SPR_OK[look] ? `<img class="fryer-img" src="${CONFIG.imgPath}${CONFIG.sprites[look].file}" alt="" draggable="false">` : ''}
+        <div class="fryer tier-${s.tier}">${tierMark(s.tier)}${s.slots.map((_, i) =>
+          `<div class="basket" id="${k}-s${i}" data-g="fslot:${st.id}:${i}"><div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div></div>
       </div>`;
     } else if (st.type === 'dispenser') {
       disp += `<div class="disp tier-${s.tier}" id="${k}" data-g="disp:${st.id}">${tierMark(s.tier)}${spr(look, 120)}<div class="portions"></div><div class="bar"><i></i></div></div>`;
@@ -1666,7 +1684,7 @@ function renderGame(force) {
       s.slots.forEach((it, i) => {
         const el = byId(`${k}-s${i}`), box2 = el.firstElementChild, bar = el.lastElementChild;
         const state = it ? it.state : 'empty';
-        if (setKey(box2, state, !it ? '' : spr(state === 'cook' ? st.input : state === 'ready' ? R.dishes[st.dish].sprite : st.burnt, 92)))
+        if (setKey(box2, state, !it ? '' : spr(state === 'cook' ? st.input : state === 'ready' ? R.dishes[st.dish].sprite : st.burnt, 80)))
           el.className = 'basket ' + state;
         bar.classList.toggle('on', state === 'cook' || state === 'ready');
         const fill = bar.firstElementChild;
@@ -1755,8 +1773,11 @@ function updateHand() {
   if (!target) { hand.style.display = 'none'; return; }
   const r = stageRect(target);
   if (hand.style.display !== 'block') { hand.style.display = 'block'; hand.firstElementChild.innerHTML = spr('hand', 96); }
-  hand.style.left = (r.x + r.w / 2 - 30) + 'px';
-  hand.style.top = (r.y + r.h / 2) + 'px';
+  const cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+  // Кончик пальца: у картинки (палец вниз) — снизу, у эмодзи 👆 — сверху слева
+  const tip = SPR_OK.hand ? CONFIG.handTip : [0.3, 0.05];
+  hand.style.left = (cx - tip[0] * 96) + 'px';
+  hand.style.top = (cy - tip[1] * 96) + 'px';
 }
 
 /* =====================================================================

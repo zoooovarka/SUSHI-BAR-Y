@@ -40,94 +40,97 @@ python3 -m http.server 8000
 
 ## Спрайты
 
-Все файлы необязательны. Фоны — `.jpg`, остальное — `.png` с прозрачностью. ✅ — файл уже лежит в `img/`.
+Все файлы необязательны: если картинки нет, игра рисует эмодзи-заглушку. Фоны в `.jpg`, остальное в `.png` с прозрачностью (палитра 256 цветов, чтобы архив был лёгким).
 
-Посетитель показывается весёлым при входе и ожидании, злым — когда терпения меньше 33% и при сердитом уходе. Низ фигуры прячется за стойкой, поэтому рисовать достаточно по пояс.
+Исходные листы художника лежат в `art/`. В архив для Яндекс Игр они не нужны: игра берёт только `index.html` и `img/`. Из листов нарезаны спрайты: свечение вокруг предметов убрано, соседние фигуры разделены по контуру.
 
-| Ключ | Файл в img/ | Назначение | Размер | Заглушка |
-|---|---|---|---|---|
-| logo | `logo.png` | Логотип | 128×128 | 🍣 |
-| coin | `coin.png` | Монета | 128×128 | 🪙 |
-| heart | `heart.png` | Сердце | 128×128 | ❤️ |
-| star | `star.png` | Звезда | 128×128 | ⭐ |
-| star_empty | `star_empty.png` | Пустая звезда | 128×128 | ⭐ |
-| lock | `lock.png` | Замок | 128×128 | 🔒 |
-| hand | `hand.png` | Рука-указатель обучения | 128×128 | 👆 |
-| combo | `combo.png` | Значок комбо | 128×128 | 🔥 |
-| medal | `medal.png` | Достижения | 128×128 | 🏅 |
-| ic_pause | `ic_pause.png` | Пауза | 128×128 | ⏸️ |
-| ic_sound | `ic_sound.png` | Звук вкл. | 128×128 | 🔊 |
-| ic_mute | `ic_mute.png` | Звук выкл. | 128×128 | 🔇 |
-| ic_shop | `ic_shop.png` | Магазин | 128×128 | 🛒 |
-| ic_gift | `ic_gift.png` | Ежедневная награда | 128×128 | 🎁 |
-| ic_trophy | `ic_trophy.png` | Лидеры | 128×128 | 🏆 |
-| ic_back | `ic_back.png` | Назад | 128×128 | ⬅️ |
-| ic_ad | `ic_ad.png` | Реклама | 128×128 | 📺 |
-| ic_clock | `ic_clock.png` | Таймер | 128×128 | ⏱️ |
-| ic_close | `ic_close.png` | Закрыть окно | 128×128 | ✖️ |
-| bg_world | `bg_world.jpg` | Фон карты мира | 1600×900 | CSS |
-| bg_levels_sushi | `bg_levels_sushi.jpg` | Фон карты уровней | 1600×900 | CSS |
-| bg_hall_sushi | `bg_hall_sushi.jpg` | Фон зала (верх экрана уровня) | 1600×900 | CSS |
-| bg_kitchen_sushi | `bg_kitchen_sushi.jpg` | Фон кухни (низ экрана уровня) | 1600×900 | CSS |
-| bg_shop | `bg_shop.jpg` | Фон магазина | 1600×900 | CSS |
-| visitor_1 | `visitor_1.png` | Посетитель: парень в жёлтом худи, весёлый ✅ | по пояс, ~260×400 | 👦 |
-| visitor_1_angry | `visitor_1_angry.png` | Посетитель: парень в жёлтом худи, злой ✅ | по пояс, ~240×400 | 😠 |
-| visitor_2 | `visitor_2.png` | Посетитель: девушка в синем пиджаке, весёлый ✅ | по пояс, ~260×400 | 👩 |
-| visitor_2_angry | `visitor_2_angry.png` | Посетитель: девушка в синем пиджаке, злой ✅ | по пояс, ~240×400 | 😠 |
-| visitor_3 | `visitor_3.png` | Посетитель: дедушка в кепке, весёлый ✅ | по пояс, ~260×400 | 👴 |
-| visitor_3_angry | `visitor_3_angry.png` | Посетитель: дедушка в кепке, злой ✅ | по пояс, ~240×400 | 😠 |
-| visitor_4 | `visitor_4.png` | Посетитель: девушка с розовыми волосами, весёлый ✅ | по пояс, ~260×400 | 👧 |
-| visitor_4_angry | `visitor_4_angry.png` | Посетитель: девушка с розовыми волосами, злой ✅ | по пояс, ~240×400 | 😠 |
-| visitor_5 | `visitor_5.png` | Посетитель: турист в шляпе, весёлый ✅ | по пояс, ~260×400 | 🧔 |
-| visitor_5_angry | `visitor_5_angry.png` | Посетитель: турист в шляпе, злой ✅ | по пояс, ~240×400 | 😠 |
-| visitor_6 | `visitor_6.png` | Посетитель: бабушка, весёлый ✅ | по пояс, ~260×400 | 👵 |
-| visitor_6_angry | `visitor_6_angry.png` | Посетитель: бабушка, злой ✅ | по пояс, ~240×400 | 😠 |
-| mood_happy | `mood_happy.png` | Значок настроения (только для заглушки без картинок) | 128×128 | 😊 |
-| mood_angry | `mood_angry.png` | Значок настроения (только для заглушки без картинок) | 128×128 | 😠 |
-| nori | `nori_rice.png` | Основа: нори с рисом | 128×128 | 🍙 |
-| salmon | `salmon.png` | Лосось | 128×128 | 🐟 |
-| cucumber | `cucumber.png` | Огурец | 128×128 | 🥒 |
-| avocado | `avocado.png` | Авокадо | 128×128 | 🥑 |
-| roll_salmon | `roll_salmon.png` | Ролл с лососем | 128×128 | 🍣 + 🐟 |
-| roll_cucumber | `roll_cucumber.png` | Ролл с огурцом | 128×128 | 🍣 + 🥒 |
-| roll_avocado | `roll_avocado.png` | Ролл с авокадо | 128×128 | 🍣 + 🥑 |
-| roll_mix | `roll_mix.png` | Ролл ассорти | 128×128 | 🍣 + 🌈 |
-| roll_wrong | `roll_wrong.png` | Неправильный ролл | 128×128 | 🍣 + ❌ |
-| shrimp_raw | `shrimp_raw.png` | Сырая креветка | 128×128 | 🦐 |
-| tempura | `tempura.png` | Темпура | 128×128 | 🍤 |
-| tempura_burnt | `tempura_burnt.png` | Сгоревшая темпура | 128×128 | 🍤 |
-| miso | `miso.png` | Порция мисо-супа | 128×128 | 🍲 |
-| tea | `tea.png` | Чашка чая | 128×128 | 🍵 |
-| mat_0 | `mat_0.png` | Циновка (фон слота), ступень 0 | 156×230 | CSS |
-| mat_1 | `mat_1.png` | Циновка (фон слота), ступень 1 | 156×230 | CSS |
-| mat_2 | `mat_2.png` | Циновка (фон слота), ступень 2 | 156×230 | CSS |
-| mat_3 | `mat_3.png` | Циновка (фон слота), ступень 3 | 156×230 | CSS |
-| fryer_0 | `fryer_0.png` | Фритюрница (фон корзин), ступень 0 | 260×260 | CSS |
-| fryer_1 | `fryer_1.png` | Фритюрница (фон корзин), ступень 1 | 260×260 | CSS |
-| fryer_2 | `fryer_2.png` | Фритюрница (фон корзин), ступень 2 | 260×260 | CSS |
-| fryer_3 | `fryer_3.png` | Фритюрница (фон корзин), ступень 3 | 260×260 | CSS |
-| pot_0 | `pot_0.png` | Кастрюля мисо, ступень 0 | 128×128 | 🥘 |
-| pot_1 | `pot_1.png` | Кастрюля мисо, ступень 1 | 128×128 | 🥘 |
-| pot_2 | `pot_2.png` | Кастрюля мисо, ступень 2 | 128×128 | 🥘 |
-| pot_3 | `pot_3.png` | Кастрюля мисо, ступень 3 | 128×128 | 🥘 |
-| teapot_0 | `teapot_0.png` | Чайник, ступень 0 | 128×128 | 🫖 |
-| teapot_1 | `teapot_1.png` | Чайник, ступень 1 | 128×128 | 🫖 |
-| teapot_2 | `teapot_2.png` | Чайник, ступень 2 | 128×128 | 🫖 |
-| teapot_3 | `teapot_3.png` | Чайник, ступень 3 | 128×128 | 🫖 |
-| trash | `trash.png` | Мусорка | 128×128 | 🗑️ |
-| rest_sushi | `rest_sushi.png` | Суши-бар | 128×128 | 🍣 |
-| rest_ramen | `rest_ramen.png` | Раменная | 128×128 | 🍜 |
-| rest_wok | `rest_wok.png` | Вок-стрит | 128×128 | 🥡 |
-| rest_dimsum | `rest_dimsum.png` | Димсам-хаус | 128×128 | 🥟 |
-| rest_sweets | `rest_sweets.png` | Чайная сладостей | 128×128 | 🍡 |
-| up_roll_speed | `up_roll_speed.png` | Улучшение: скорость скрутки | 128×128 | ⚡ |
-| up_mats | `up_mats.png` | Улучшение: циновки | 128×128 | 🎋 |
-| up_fryer_speed | `up_fryer_speed.png` | Улучшение: скорость фритюра | 128×128 | 🔥 |
-| up_fryer_slots | `up_fryer_slots.png` | Улучшение: корзины фритюра | 128×128 | 🍳 |
-| up_soup_cap | `up_soup_cap.png` | Улучшение: кастрюля | 128×128 | 🥣 |
-| up_tea_cap | `up_tea_cap.png` | Улучшение: чайник | 128×128 | 🫖 |
-| up_price_roll | `up_price_roll.png` | Улучшение: цена роллов | 128×128 | 🍣 |
-| up_price_tempura | `up_price_tempura.png` | Улучшение: цена темпуры | 128×128 | 🍤 |
-| up_price_soup | `up_price_soup.png` | Улучшение: цена супа и чая | 128×128 | 🍲 |
-| up_patience | `up_patience.png` | Улучшение: терпение | 128×128 | ⌛ |
-| up_tips | `up_tips.png` | Улучшение: чаевые | 128×128 | 💰 |
+- Картинка суши-бара разрезана на три слоя: `bg_hall_sushi.jpg` (зал позади посетителей), `counter_sushi.jpg` (стойка поверх посетителей) и `bg_kitchen_sushi.jpg` (столешница под кухней). Из неё же сделаны размытые фоны карты уровней и магазина.
+- Карта островов — `bg_world.jpg`. Если она загрузилась, рестораны показываются табличками над нарисованными домиками (координаты в `mapPos`), иначе — кругами с эмодзи.
+- Оборудование выбирается по ступени улучшения: `mat_0…3` → `mat.png`, `fryer_0…1` → `fryer.png`, `fryer_2…3` → `fryer_gold.png`. Рамка вокруг циновок, фритюра, кастрюли и чайника тоже меняется: дерево → бронза → серебро → золото.
+- `roll_wrong.png` (неправильный ролл) собран из ролла-ассорти: обесцвечен и перечёркнут.
+- Рука-указатель на картинке смотрит вниз; где у неё кончик пальца, задаёт `CONFIG.handTip`.
+
+### Уже в `img/` (51)
+
+| Файл | Ключи в CONFIG | Заглушка |
+|---|---|---|
+| `coin.png` | coin | 🪙 |
+| `heart.png` | heart | ❤️ |
+| `star.png` | star | ⭐ |
+| `star_empty.png` | star_empty | ⭐ |
+| `lock.png` | lock | 🔒 |
+| `hand.png` | hand | 👆 |
+| `ic_pause.png` | ic_pause | ⏸️ |
+| `ic_gift.png` | ic_gift | 🎁 |
+| `bg_world.jpg` | bg_world | CSS |
+| `bg_levels_sushi.jpg` | bg_levels_sushi | CSS |
+| `bg_hall_sushi.jpg` | bg_hall_sushi | CSS |
+| `bg_kitchen_sushi.jpg` | bg_kitchen_sushi | CSS |
+| `bg_shop.jpg` | bg_shop | CSS |
+| `counter_sushi.jpg` | counter_sushi | CSS |
+| `visitor_1.png` | visitor_1 | 👦 |
+| `visitor_1_angry.png` | visitor_1_angry | 😠 |
+| `visitor_2.png` | visitor_2 | 👩 |
+| `visitor_2_angry.png` | visitor_2_angry | 😠 |
+| `visitor_3.png` | visitor_3 | 👴 |
+| `visitor_3_angry.png` | visitor_3_angry | 😠 |
+| `visitor_4.png` | visitor_4 | 👧 |
+| `visitor_4_angry.png` | visitor_4_angry | 😠 |
+| `visitor_5.png` | visitor_5 | 🧔 |
+| `visitor_5_angry.png` | visitor_5_angry | 😠 |
+| `visitor_6.png` | visitor_6 | 👵 |
+| `visitor_6_angry.png` | visitor_6_angry | 😠 |
+| `nori_rice.png` | nori | 🍙 |
+| `salmon.png` | salmon | 🐟 |
+| `cucumber.png` | cucumber | 🥒 |
+| `avocado.png` | avocado | 🥑 |
+| `roll_salmon.png` | roll_salmon | 🍣 + 🐟 |
+| `roll_cucumber.png` | roll_cucumber | 🍣 + 🥒 |
+| `roll_avocado.png` | roll_avocado | 🍣 + 🥑 |
+| `roll_mix.png` | roll_mix | 🍣 + 🌈 |
+| `roll_wrong.png` | roll_wrong | 🍣 + ❌ |
+| `shrimp_raw.png` | shrimp_raw | 🦐 |
+| `tempura.png` | tempura | 🍤 |
+| `tempura_burnt.png` | tempura_burnt | 🍤 |
+| `miso.png` | miso | 🍲 |
+| `tea.png` | tea | 🍵 |
+| `mat.png` | mat_0, mat_1, mat_2, mat_3 | CSS |
+| `fryer.png` | fryer_0, fryer_1 | CSS |
+| `fryer_gold.png` | fryer_2, fryer_3 | CSS |
+| `pot.png` | pot_0, pot_1, pot_2, pot_3 | 🥘 |
+| `teapot.png` | teapot_0, teapot_1, teapot_2, teapot_3 | 🫖 |
+| `trash.png` | trash | 🗑️ |
+| `up_roll_speed.png` | up_roll_speed | ⚡ |
+| `up_mats.png` | up_mats | 🎋 |
+| `up_price_roll.png` | up_price_roll | 🍣 |
+| `up_patience.png` | up_patience | ⌛ |
+| `up_tips.png` | up_tips | 💰 |
+
+### Пока нет — рисуется эмодзи-заглушка (24)
+
+| Файл | Ключи в CONFIG | Заглушка |
+|---|---|---|
+| `logo.png` | logo | 🍣 |
+| `combo.png` | combo | 🔥 |
+| `medal.png` | medal | 🏅 |
+| `ic_sound.png` | ic_sound | 🔊 |
+| `ic_mute.png` | ic_mute | 🔇 |
+| `ic_shop.png` | ic_shop | 🛒 |
+| `ic_trophy.png` | ic_trophy | 🏆 |
+| `ic_back.png` | ic_back | ⬅️ |
+| `ic_ad.png` | ic_ad | 📺 |
+| `ic_clock.png` | ic_clock | ⏱️ |
+| `ic_close.png` | ic_close | ✖️ |
+| `mood_happy.png` | mood_happy | 😊 |
+| `mood_angry.png` | mood_angry | 😠 |
+| `rest_sushi.png` | rest_sushi | 🍣 |
+| `rest_ramen.png` | rest_ramen | 🍜 |
+| `rest_wok.png` | rest_wok | 🥡 |
+| `rest_dimsum.png` | rest_dimsum | 🥟 |
+| `rest_sweets.png` | rest_sweets | 🍡 |
+| `up_fryer_speed.png` | up_fryer_speed | 🔥 |
+| `up_fryer_slots.png` | up_fryer_slots | 🍳 |
+| `up_soup_cap.png` | up_soup_cap | 🥣 |
+| `up_tea_cap.png` | up_tea_cap | 🫖 |
+| `up_price_tempura.png` | up_price_tempura | 🍤 |
+| `up_price_soup.png` | up_price_soup | 🍲 |
