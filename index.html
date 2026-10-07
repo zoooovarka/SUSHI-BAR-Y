@@ -110,6 +110,7 @@ button{font:inherit;color:inherit}
 .ucard .ut{flex:1;min-width:0}
 .ucard .un{font-size:26px;font-weight:900;line-height:1.1}
 .ucard .uv{font-size:21px;color:#7a5236;font-weight:700;margin-top:2px;line-height:1.2}
+.ucard .ud{font-size:19px;color:#8a6a4c;line-height:1.15;margin-top:2px}
 .ucard .dots{display:flex;gap:6px;margin-top:5px}
 .ucard .dots i{width:20px;height:20px;border-radius:50%;background:#e0cdb0;border:3px solid #c9ab80}
 .ucard .dots i.on{background:var(--gold);border-color:#d99a1a}
@@ -487,7 +488,8 @@ const CONFIG = {
     up_price_tempura:{ file: 'up_price_tempura.png', emoji: '🍤' },
     up_price_soup:   { file: 'up_price_soup.png',    emoji: '🍲' },
     up_patience:     { file: 'up_patience.png',      emoji: '⌛' },
-    up_tips:         { file: 'up_tips.png',          emoji: '💰' }
+    up_tips:         { file: 'up_tips.png',          emoji: '💰' },
+    up_auto_serve:   { file: 'up_auto_serve.png',    emoji: '🛎️' }
   },
 
   // Декор на карте мира (только эмодзи)
@@ -512,8 +514,8 @@ const CONFIG = {
     { id: 'tempura100', stat: 'tempura',       goal: 100, reward: 150, icon: 'shrimp_raw',    name: { ru: 'Король темпуры', en: 'Tempura king' },      desc: { ru: 'Пожарьте 100 темпур', en: 'Fry 100 tempura' } },
     { id: 'bigorder',   stat: 'bigOrders',     goal: 10,  reward: 80,  icon: 'roll_mix',      name: { ru: 'Большой аппетит', en: 'Big appetite' },     desc: { ru: 'Выполните 10 заказов из 3 блюд', en: 'Complete 10 three-dish orders' } },
     { id: 'upgrades10', stat: 'upgrades',      goal: 10,  reward: 150, icon: 'up_roll_speed', name: { ru: 'Новая кухня', en: 'New kitchen' },          desc: { ru: 'Купите 10 улучшений', en: 'Buy 10 upgrades' } },
-    { id: 'stars30',    stat: 'stars',         goal: 30,  reward: 200, icon: 'medal',         name: { ru: 'Звёздный повар', en: 'Star cook' },         desc: { ru: 'Соберите 30 звёзд', en: 'Collect 30 stars' } },
-    { id: 'allLevels',  stat: 'levelsDone',    goal: 20,  reward: 500, icon: 'rest_sushi',    name: { ru: 'Шеф суши-бара', en: 'Sushi bar chef' },     desc: { ru: 'Пройдите все 20 уровней суши-бара', en: 'Beat all 20 sushi bar levels' } }
+    { id: 'stars20',    stat: 'stars',         goal: 20,  reward: 200, icon: 'medal',         name: { ru: 'Звёздный повар', en: 'Star cook' },         desc: { ru: 'Соберите 20 звёзд', en: 'Collect 20 stars' } },
+    { id: 'allLevels',  stat: 'levelsDone',    goal: 10,  reward: 500, icon: 'rest_sushi',    name: { ru: 'Шеф суши-бара', en: 'Sushi bar chef' },     desc: { ru: 'Пройдите все уровни суши-бара', en: 'Beat all sushi bar levels' } }
   ],
 
   restaurants: [
@@ -613,6 +615,11 @@ const CONFIG = {
         { id: 'patience',     group: 'hall', icon: 'up_patience',        costs: [140, 350, 670],
           name: { ru: 'Уютный зал', en: 'Cozy hall' },
           params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
+        // Официант: одна ступень, дорогой — тап по готовому блюду сразу отдаёт его тому, кто ждёт дольше всех
+        { id: 'autoServe',    group: 'hall', icon: 'up_auto_serve',      costs: [1500],
+          name: { ru: 'Официант', en: 'Waiter' },
+          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
         { id: 'tips',         group: 'hall', icon: 'up_tips',            costs: [130, 320, 630],
           name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
           params: { tips: { v: [1, 1.3, 1.6, 2], fmt: 'mult' } } }
@@ -621,33 +628,23 @@ const CONFIG = {
       // Уровни: time — секунды, goal — пороги монет на 1/2/3 звезды, every — интервал прихода посетителей,
       // patience — терпение (сек), items — размер заказа, seats — сколько мест открыто, intro — новое блюдо
       levels: [
-        { time: 60, seats: 2, every: [7, 9], patience: 30, items: [1, 1], menu: M1, tutorial: true, goal: [45, 70, 90] },
-        { time: 70, seats: 3, every: [6, 8], patience: 28, items: [1, 2], menu: M2, intro: 'miso', tutorial: true, goal: [60, 125, 165] },
-        { time: 75, seats: 3, every: [5.5, 7.5], patience: 27, items: [1, 2], menu: M3, intro: 'roll_cucumber', tutorial: true, goal: [65, 130, 170] },
-        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M3, goal: [130, 200, 300] },
-        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M4, intro: 'tempura', goal: [145, 250, 350] },
-        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M4, goal: [160, 260, 400] },
-        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M5, intro: 'roll_avocado', goal: [170, 315, 410] },
-        { time: 90, seats: 4, every: [4.5, 6], patience: 24, items: [1, 3], menu: M5, goal: [180, 330, 440] },
-        { time: 100, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M6, intro: 'roll_mix', goal: [190, 360, 480] },
-        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M6, goal: [195, 370, 500] },
-        { time: 100, seats: 4, every: [4, 5.5], patience: 23, items: [1, 3], menu: M6, goal: [200, 380, 510] },
-        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M7, intro: 'tea', goal: [205, 385, 520] },
-        { time: 105, seats: 4, every: [3.5, 5.5], patience: 23, items: [1, 3], menu: M7, goal: [210, 390, 530] },
-        { time: 105, seats: 4, every: [3.5, 5], patience: 22, items: [2, 3], menu: M7, goal: [215, 395, 540] },
-        { time: 110, seats: 4, every: [3.5, 5], patience: 22, items: [1, 3], menu: M7, goal: [220, 400, 550] },
-        { time: 110, seats: 4, every: [3, 4.5], patience: 21, items: [2, 3], menu: M7, goal: [225, 405, 555] },
-        { time: 115, seats: 4, every: [3, 4.5], patience: 20, items: [2, 3], menu: M7, goal: [230, 410, 560] },
-        { time: 115, seats: 4, every: [3, 4], patience: 20, items: [2, 3], menu: M7, goal: [235, 415, 565] },
-        { time: 120, seats: 4, every: [2.5, 4], patience: 19, items: [2, 3], menu: M7, goal: [240, 420, 570] },
-        { time: 120, seats: 4, every: [2.5, 3.5], patience: 18, items: [2, 3], menu: M7, goal: [245, 425, 580] }
+        { time: 60, seats: 2, every: [7, 9], patience: 32, items: [1, 1], menu: M1, tutorial: true, goal: [45, 70, 90] },
+        { time: 70, seats: 3, every: [6.5, 8.5], patience: 31, items: [1, 2], menu: M2, intro: 'miso', tutorial: true, goal: [65, 115, 150] },
+        { time: 75, seats: 3, every: [6, 8], patience: 30, items: [1, 2], menu: M3, intro: 'roll_cucumber', tutorial: true, goal: [70, 145, 190] },
+        { time: 80, seats: 4, every: [5.5, 7.5], patience: 29, items: [1, 2], menu: M4, intro: 'tempura', goal: [200, 250, 375] },
+        { time: 90, seats: 4, every: [5, 7], patience: 28, items: [1, 2], menu: M5, intro: 'roll_avocado', goal: [205, 270, 385] },
+        { time: 90, seats: 4, every: [5, 7], patience: 28, items: [1, 3], menu: M6, intro: 'roll_mix', goal: [210, 380, 540] },
+        { time: 100, seats: 4, every: [5, 7], patience: 28, items: [1, 3], menu: M7, intro: 'tea', goal: [215, 375, 500] },
+        { time: 105, seats: 4, every: [4.5, 6.5], patience: 26, items: [1, 3], menu: M7, goal: [225, 390, 560] },
+        { time: 110, seats: 4, every: [4, 6], patience: 24, items: [2, 3], menu: M7, goal: [230, 400, 570] },
+        { time: 120, seats: 4, every: [3.5, 5.5], patience: 23, items: [2, 3], menu: M7, goal: [240, 440, 590] }
       ]
     },
     // Заглушки будущих ресторанов: только карточка на карте
-    { id: 'ramen',  name: { ru: 'Раменная', en: 'Ramen House' },             icon: 'rest_ramen',  mapPos: { x: 830,  y: 230 }, starsRequired: 40,  comingSoon: true },
-    { id: 'wok',    name: { ru: 'Вок-стрит', en: 'Wok Street' },              icon: 'rest_wok',    mapPos: { x: 1400, y: 290 }, starsRequired: 80,  comingSoon: true },
-    { id: 'sweets', name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' },  icon: 'rest_sweets', mapPos: { x: 1215, y: 680 }, starsRequired: 120, comingSoon: true },
-    { id: 'dimsum', name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },         icon: 'rest_dimsum', mapPos: { x: 400,  y: 580 }, starsRequired: 160, comingSoon: true }
+    { id: 'ramen',  name: { ru: 'Раменная', en: 'Ramen House' },             icon: 'rest_ramen',  mapPos: { x: 830,  y: 230 }, starsRequired: 20,  comingSoon: true },
+    { id: 'wok',    name: { ru: 'Вок-стрит', en: 'Wok Street' },              icon: 'rest_wok',    mapPos: { x: 1400, y: 290 }, starsRequired: 45,  comingSoon: true },
+    { id: 'sweets', name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' },  icon: 'rest_sweets', mapPos: { x: 1215, y: 680 }, starsRequired: 70,  comingSoon: true },
+    { id: 'dimsum', name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },         icon: 'rest_dimsum', mapPos: { x: 400,  y: 580 }, starsRequired: 95,  comingSoon: true }
   ]
 };
 
@@ -669,7 +666,7 @@ const TEXT = {
     claimed: 'Возвращайтесь завтра!', leaderboard: 'Лидеры по сердцам', lbUnavailable: 'Таблица лидеров доступна в Яндекс Играх',
     you: 'Вы', loadingLb: 'Загрузка…', combo: 'КОМБО x{0}', tips: 'чаевые +{0}', adError: 'Реклама недоступна',
     adFake: 'Реклама (тестовая заглушка)', sec: '{0} с', burnt: 'Сгорело! -{0}', noAdYet: 'Подождите немного',
-    achievements: 'Достижения', achUnlocked: 'Достижение: {0}', bestCombo: 'Лучшее комбо'
+    on: 'есть', off: 'нет', achievements: 'Достижения', achUnlocked: 'Достижение: {0}', bestCombo: 'Лучшее комбо'
   },
   en: {
     title: 'Sushi Chef', rotate: 'Please rotate your device',
@@ -685,7 +682,7 @@ const TEXT = {
     claimed: 'Come back tomorrow!', leaderboard: 'Top hearts', lbUnavailable: 'Leaderboard is available on Yandex Games',
     you: 'You', loadingLb: 'Loading…', combo: 'COMBO x{0}', tips: 'tip +{0}', adError: 'Ad is not available',
     adFake: 'Ad (test stub)', sec: '{0} s', burnt: 'Burnt! -{0}', noAdYet: 'Please wait a bit',
-    achievements: 'Achievements', achUnlocked: 'Achievement: {0}', bestCombo: 'Best combo'
+    on: 'on', off: 'off', achievements: 'Achievements', achUnlocked: 'Achievement: {0}', bestCombo: 'Best combo'
   }
 };
 
@@ -936,12 +933,14 @@ function restSave(id) {
   const r = Save.data.rest;
   if (!r[id]) r[id] = { stars: [], up: {} };
   if (!r[id].stars) r[id].stars = [];
+  const R = CONFIG.restaurants.find(x => x.id === id);
+  if (R && R.levels && r[id].stars.length > R.levels.length) r[id].stars.length = R.levels.length;
   if (!r[id].up) r[id].up = {};
   return r[id];
 }
 function totalStars() {
   let s = 0;
-  for (const id in Save.data.rest) (Save.data.rest[id].stars || []).forEach(v => { s += v || 0; });
+  for (const id in Save.data.rest) (restSave(id).stars || []).forEach(v => { s += v || 0; });
   return s;
 }
 const restStars = id => (restSave(id).stars || []).reduce((a, b) => a + (b || 0), 0);
@@ -976,6 +975,7 @@ function fmtParam(p, v) {
   if (p.fmt === 'sec') return t('sec', Math.round(v * 10) / 10);
   if (p.fmt === 'mult') return '+' + Math.round((v - 1) * 100) + '%';
   if (p.fmt === 'time') return v >= 1 ? '0%' : '−' + Math.round((1 - v) * 100) + '%';
+  if (p.fmt === 'onoff') return t(v ? 'on' : 'off');
   return String(v);
 }
 
@@ -984,7 +984,7 @@ function fmtParam(p, v) {
    ===================================================================== */
 function statValue(id) {
   if (id === 'stars') return totalStars();
-  if (id === 'levelsDone') { const R = CONFIG.restaurants[0]; return restSave(R.id).stars.filter(s => s > 0).length; }
+  if (id === 'levelsDone') { const R = CONFIG.restaurants[0]; return restSave(R.id).stars.filter(s => s > 0).length; } // goal = число уровней первого ресторана
   return Save.data.stats[id] || 0;
 }
 function stat(id, add) { Save.data.stats[id] = (Save.data.stats[id] || 0) + add; checkAch(); }
@@ -1130,9 +1130,10 @@ function goWorld() { renderWorld(); show('world'); }
 /* =====================================================================
    КАРТА УРОВНЕЙ РЕСТОРАНА
    ===================================================================== */
-function levelPos(i) {
+function levelPos(i, n) {
+  const rows = Math.ceil(n / 5), span = Math.min(495, 270 * (rows - 1));
   const row = Math.floor(i / 5); let col = i % 5; if (row % 2) col = 4 - col;
-  return { x: 280 + col * 260, y: 240 + row * 165 };
+  return { x: 280 + col * 260, y: 490 - span / 2 + (rows > 1 ? row * span / (rows - 1) : 0) };
 }
 const levelUnlocked = (R, i) => i === 0 || (restSave(R.id).stars[i - 1] || 0) > 0;
 function renderLevels() {
@@ -1142,7 +1143,7 @@ function renderLevels() {
   const current = R.levels.findIndex((_, i) => levelUnlocked(R, i) && !(rs.stars[i] > 0));
   let d = '';
   const nodes = R.levels.map((L, i) => {
-    const p = levelPos(i);
+    const p = levelPos(i, R.levels.length);
     d += (i ? ' L' : 'M') + p.x + ',' + p.y;
     const st = rs.stars[i] || 0, un = levelUnlocked(R, i);
     const cls = !un ? 'locked' : (st > 0 ? 'done' : '') + (i === current ? ' current' : '');
@@ -1221,7 +1222,7 @@ function renderShop() {
         if (left <= 0) btns += `<button class="btn small ad adi" data-act="freeup" data-arg="${u.id}">${spr('ic_ad', 40)}</button>`;
       }
       return `<div class="ucard"><div class="ui">${spr(u.icon, 70)}</div>
-        <div class="ut"><div class="un">${esc(tr(u.name))}</div><div class="uv">${upgradeLines(u, tier)}</div><div class="dots">${dots}</div></div>
+        <div class="ut"><div class="un">${esc(tr(u.name))}</div>${u.desc ? `<div class="ud">${esc(tr(u.desc))}</div>` : ''}<div class="uv">${upgradeLines(u, tier)}</div><div class="dots">${dots}</div></div>
         <div class="ub">${btns}</div></div>`;
     }).join('');
     return `<div class="scol"><h3>${esc(title)}</h3>${cards}</div>`;
@@ -1356,7 +1357,8 @@ function startLevel(idx) {
     comboN: 0, lastServe: -99, bestCombo: 0,
     st: {}, stations: [], dishStation: {}, trash: false, sel: null, selElId: null,
     state: 'play', paused: false, addUsed: false, finalized: false, doubled: false,
-    introServed: false, hintT: 0, botT: 0, lastTick: 99, hasFryer: false
+    introServed: false, hintT: 0, botT: 0, lastTick: 99, hasFryer: false,
+    auto: paramVal(R, 'autoServe') >= 1   // куплен «Официант» — автовыдача
   };
   // Активные станции и параметры с учётом улучшений
   for (const st of R.stations) {
@@ -1385,6 +1387,7 @@ function startLevel(idx) {
   closeModal();
   buildGameDOM();
   show('game');
+  fitKitchen(); // размеры зон известны только когда экран уровня видим
 }
 
 /* =====================================================================
@@ -1581,6 +1584,18 @@ function takeSel() {
   else if (S.kind === 'disp') s.count--;
   G.sel = null;
 }
+// «Официант»: отдать блюдо из источника тому, кто ждёт его дольше всех; false — никому не нужно
+function autoServe(kind, sid, i, el) {
+  G.sel = { kind, sid, i };
+  const dish = selDish();
+  const v = dish && G.vis.filter(x => x.state === 'wait' && x.order.some(o => !o.done && o.dish === dish)).sort((a, b) => a.id - b.id)[0];
+  if (!v) { G.sel = null; shake(el); Sound.play('bad'); return false; }
+  takeSel();
+  serveTo(v, dish, el);
+  return true;
+}
+// Тап по готовому блюду: с «Официантом» — сразу гостю, иначе выбрать
+function pickReady(kind, sid, i, el) { if (G.auto) autoServe(kind, sid, i, el); else toggleSel(kind, sid, i); }
 function toggleSel(kind, sid, i) {
   const same = G.sel && G.sel.kind === kind && G.sel.sid === sid && G.sel.i === i;
   G.sel = same ? null : { kind, sid, i };
@@ -1677,7 +1692,7 @@ function gameTap(el) {
       const rec = st.recipes.find(r => r.set.length === it.tops.length && r.set.every(x => it.tops.includes(x)));
       it.dish = rec ? rec.dish : null; it.state = 'roll'; it.t = 0;
       Sound.play('roll');
-    } else if (it.state === 'ready') toggleSel('slot', sid, i);
+    } else if (it.state === 'ready') pickReady('slot', sid, i, el);
   } else if (kind === 'fry') {
     const i = s.slots.findIndex(x => !x);
     if (i < 0) { shake(el); Sound.play('bad'); return; }
@@ -1692,7 +1707,11 @@ function gameTap(el) {
       }
       s.slots[i] = null; discard(el);
     } else if (it.state === 'ready') {
-      // Снимаем с огня на поднос
+      // Снимаем с огня: с «Официантом» — сразу тому, кто ждёт, иначе на поднос
+      if (G.auto) {
+        const v = G.vis.filter(x => x.state === 'wait' && x.order.some(o => !o.done && o.dish === st.dish)).sort((a, b) => a.id - b.id)[0];
+        if (v) { s.slots[i] = null; serveTo(v, st.dish, el); renderGame(); return; }
+      }
       const k = s.tray.findIndex(x => !x);
       if (k >= 0) { s.tray[k] = st.dish; s.slots[i] = null; fly(el, byId(`k-${sid}-t${k}`), G.R.dishes[st.dish].sprite); Sound.play('place'); }
       else { shake(el); Sound.play('bad'); }
@@ -1700,7 +1719,7 @@ function gameTap(el) {
   } else if (kind === 'tray') {
     const i = +arg;
     if (!s.tray[i]) { renderGame(); return; }
-    if (wasTrash) { s.tray[i] = null; discard(el); } else toggleSel('tray', sid, i);
+    if (wasTrash) { s.tray[i] = null; discard(el); } else pickReady('tray', sid, i, el);
   } else if (kind === 'kettle') {
     // Пустой чайник — поставить кипятиться
     if (s.water !== 'empty') { shake(el); Sound.play('bad'); return; }
@@ -1716,10 +1735,10 @@ function gameTap(el) {
   } else if (kind === 'tcup') {
     const i = +arg;
     if (!s.cups[i]) { renderGame(); return; }
-    if (wasTrash) { s.cups[i] = null; discard(el); } else toggleSel('tcup', sid, i);
+    if (wasTrash) { s.cups[i] = null; discard(el); } else pickReady('tcup', sid, i, el);
   } else if (kind === 'disp') {
     if (s.count <= 0) { shake(el); Sound.play('bad'); return; }
-    toggleSel('disp', sid, 0);
+    pickReady('disp', sid, 0, el);
   }
   renderGame();
 }
