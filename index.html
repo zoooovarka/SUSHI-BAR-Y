@@ -139,7 +139,7 @@ button{font:inherit;color:inherit}
 .fig .torso{position:absolute;left:35px;bottom:0;width:130px;height:120px;border-radius:64px 64px 12px 12px;background:var(--shirt);
   box-shadow:inset 0 -10px 0 rgba(0,0,0,.12)}
 .fig .head{position:absolute;left:50%;bottom:86px;margin-left:-68px}
-.fig .full{position:absolute;left:0;bottom:0}
+.fig .vimg{position:absolute;left:50%;bottom:4px;height:250px;width:auto;transform:translateX(-50%);-webkit-user-drag:none;pointer-events:none}
 .fig .mood{position:absolute;right:0;top:-6px;animation:pop .35s}
 .vis.angry .fig{animation:stomp .25s infinite alternate}
 .bubble{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:#fff;border-radius:28px;padding:10px 14px 12px;z-index:4;
@@ -378,14 +378,18 @@ const CONFIG = {
     bg_kitchen_sushi:{ file: 'bg_kitchen_sushi.jpg', emoji: '' },
     bg_shop:         { file: 'bg_shop.jpg',          emoji: '' },
     // посетители (картинка — фигура целиком; заглушка — лицо + рубашка CSS)
-    visitor_1:       { file: 'visitor_1.png',        emoji: '👩' },
-    visitor_2:       { file: 'visitor_2.png',        emoji: '👨' },
-    visitor_3:       { file: 'visitor_3.png',        emoji: '👵' },
-    visitor_4:       { file: 'visitor_4.png',        emoji: '👴' },
-    visitor_5:       { file: 'visitor_5.png',        emoji: '👧' },
-    visitor_6:       { file: 'visitor_6.png',        emoji: '👦' },
-    visitor_7:       { file: 'visitor_7.png',        emoji: '🧔' },
-    visitor_8:       { file: 'visitor_8.png',        emoji: '👱‍♀️' },
+    visitor_1:       { file: 'visitor_1.png',        emoji: '👦' },   // парень в жёлтом худи
+    visitor_1_angry: { file: 'visitor_1_angry.png',  emoji: '😠' },
+    visitor_2:       { file: 'visitor_2.png',        emoji: '👩' },   // девушка в синем пиджаке
+    visitor_2_angry: { file: 'visitor_2_angry.png',  emoji: '😠' },
+    visitor_3:       { file: 'visitor_3.png',        emoji: '👴' },   // дедушка в кепке
+    visitor_3_angry: { file: 'visitor_3_angry.png',  emoji: '😠' },
+    visitor_4:       { file: 'visitor_4.png',        emoji: '👧' },   // девушка с розовыми волосами
+    visitor_4_angry: { file: 'visitor_4_angry.png',  emoji: '😠' },
+    visitor_5:       { file: 'visitor_5.png',        emoji: '🧔' },   // турист в шляпе
+    visitor_5_angry: { file: 'visitor_5_angry.png',  emoji: '😠' },
+    visitor_6:       { file: 'visitor_6.png',        emoji: '👵' },   // бабушка
+    visitor_6_angry: { file: 'visitor_6_angry.png',  emoji: '😠' },
     mood_happy:      { file: 'mood_happy.png',       emoji: '😊' },
     mood_angry:      { file: 'mood_angry.png',       emoji: '😠' },
     // ингредиенты и блюда
@@ -454,7 +458,7 @@ const CONFIG = {
     { id: 'stars3',     stat: 'threeStars',    goal: 1,   reward: 50,  icon: 'star',          name: { ru: 'Три звезды', en: 'Three stars' },          desc: { ru: 'Получите 3 звезды на уровне', en: 'Get 3 stars on a level' } },
     { id: 'combo4',     stat: 'maxCombo',      goal: 4,   reward: 60,  icon: 'combo',         name: { ru: 'Комбо x4', en: 'Combo x4' },                desc: { ru: 'Разгоните комбо до x4', en: 'Reach a x4 combo' } },
     { id: 'guests100',  stat: 'served',        goal: 100, reward: 150, icon: 'visitor_2',     name: { ru: '100 посетителей', en: '100 visitors' },     desc: { ru: 'Обслужите 100 посетителей', en: 'Serve 100 visitors' } },
-    { id: 'guests500',  stat: 'served',        goal: 500, reward: 400, icon: 'visitor_7',     name: { ru: 'Любимое место', en: 'Local favorite' },     desc: { ru: 'Обслужите 500 посетителей', en: 'Serve 500 visitors' } },
+    { id: 'guests500',  stat: 'served',        goal: 500, reward: 400, icon: 'visitor_5',     name: { ru: 'Любимое место', en: 'Local favorite' },     desc: { ru: 'Обслужите 500 посетителей', en: 'Serve 500 visitors' } },
     { id: 'noburn',     stat: 'noBurnLevels',  goal: 1,   reward: 60,  icon: 'tempura',       name: { ru: 'Без пожаров', en: 'No fires' },             desc: { ru: 'Пройдите уровень с фритюром без сгоревших блюд', en: 'Win a fryer level with nothing burnt' } },
     { id: 'noangry',    stat: 'perfectLevels', goal: 1,   reward: 60,  icon: 'mood_happy',    name: { ru: 'Все довольны', en: 'Everyone happy' },      desc: { ru: 'Пройдите уровень без сердитых посетителей', en: 'Win a level with no angry visitors' } },
     { id: 'hearts50',   stat: 'hearts',        goal: 50,  reward: 100, icon: 'heart',         name: { ru: 'Сердцеед', en: 'Heartthrob' },              desc: { ru: 'Соберите 50 сердец', en: 'Collect 50 hearts' } },
@@ -475,8 +479,16 @@ const CONFIG = {
       mapPos: { x: 330, y: 560 },
       starsRequired: 0,
       seats: 4,                                 // мест у стойки
-      visitors: ['visitor_1', 'visitor_2', 'visitor_3', 'visitor_4', 'visitor_5', 'visitor_6', 'visitor_7', 'visitor_8'],
-      shirts: ['#e2552b', '#3f8fd8', '#46a84b', '#8a4fd8', '#f2a72e', '#d94f8a', '#2fa8a0', '#6b6f7a'],
+      // Посетители: весёлый и злой спрайт; shirt — цвет одежды для заглушки без картинок
+      visitors: [
+        { happy: 'visitor_1', angry: 'visitor_1_angry', shirt: '#f2b630' },
+        { happy: 'visitor_2', angry: 'visitor_2_angry', shirt: '#2f3f8f' },
+        { happy: 'visitor_3', angry: 'visitor_3_angry', shirt: '#5a7a3a' },
+        { happy: 'visitor_4', angry: 'visitor_4_angry', shirt: '#e870a8' },
+        { happy: 'visitor_5', angry: 'visitor_5_angry', shirt: '#3f8fd8' },
+        { happy: 'visitor_6', angry: 'visitor_6_angry', shirt: '#a77acb' }
+      ],
+      angryBelow: 0.33,                         // при терпении ниже 33% посетитель начинает злиться
       tips: [ { above: 0.66, bonus: 0.5 }, { above: 0.33, bonus: 0.2 } ], // чаевые от остатка терпения
       heartAbove: 0.5,                          // сердце, если терпение выше 50%
       patiencePerExtraItem: 0.3,                // +30% терпения за каждую позицию заказа после первой
@@ -1385,8 +1397,11 @@ function spawnVisitor(seat) {
   const n = rndInt(L.items[0], L.items[1]);
   const order = []; for (let i = 0; i < n; i++) order.push({ dish: pickDish(), done: false });
   const max = L.patience * paramVal(R, 'patience') * (1 + (n - 1) * R.patiencePerExtraItem);
+  // Выбираем персонажа, которого сейчас нет в зале, чтобы не было двойников
+  const busy = new Set(G.vis.map(x => x.look));
+  const free = R.visitors.filter(l => !busy.has(l));
   const v = { id: ++G.vid, seat, x: -140, tx: seatX(seat, G.seats.length), state: 'in', mood: 'wait',
-    skin: pick(R.visitors), shirt: pick(R.shirts), order, pat: max, max };
+    look: pick(free.length ? free : R.visitors), order, pat: max, max };
   G.seats[seat] = v.id;
   G.vis.push(v);
 }
@@ -1569,16 +1584,25 @@ function gameTap(el) {
    УРОВЕНЬ: отрисовка (DOM меняется только при смене ключа состояния)
    ===================================================================== */
 function setKey(el, key, html) { if (el._k === key) return false; el._k = key; el.innerHTML = html; return true; }
-function visitorHTML(v) {
+// Какое лицо у посетителя сейчас: злое при уходе сердитым или когда терпение на исходе
+function visitorFace(v) {
+  if (v.mood === 'angry') return 'angry';
+  if (v.state === 'wait' && v.pat / v.max < G.R.angryBelow) return 'angry';
+  return 'happy';
+}
+function bubbleHTML(v) {
+  if (v.state !== 'wait') return '';
   const R = G.R;
-  const fig = SPR_OK[v.skin]
-    ? `<span class="full">${spr(v.skin, 200)}</span>`
-    : `<div class="torso" style="--shirt:${v.shirt}"></div><span class="head">${spr(v.skin, 136)}</span>`;
-  const bubble = v.state === 'wait' ? `<div class="bubble"><div class="ord">${v.order.map((o, j) =>
+  return `<div class="bubble"><div class="ord">${v.order.map((o, j) =>
     `<div class="oi ${o.done ? 'done' : ''}" data-oi="${j}">${spr(R.dishes[o.dish].sprite, 70)}${o.done ? '<b class="ok">✓</b>' : ''}</div>`).join('')}</div>
-    <div class="pat"><i></i></div></div>` : '';
+    <div class="pat"><i></i></div></div>`;
+}
+function figureHTML(v, face) {
+  const key = v.look[face];
+  if (SPR_OK[key]) return `<img class="vimg" src="${CONFIG.imgPath}${CONFIG.sprites[key].file}" alt="" draggable="false">`;
+  // Заглушка без картинок: эмодзи-лицо, рубашка и значок настроения
   const mood = v.mood !== 'wait' ? `<span class="mood">${spr('mood_' + v.mood, 70)}</span>` : '';
-  return `${bubble}<div class="fig">${fig}${mood}</div>`;
+  return `<div class="torso" style="--shirt:${v.look.shirt}"></div><span class="head">${spr(key, 136)}</span>${mood}`;
 }
 function renderGame(force) {
   if (!G) return;
@@ -1603,12 +1627,16 @@ function renderGame(force) {
   for (const v of G.vis) {
     alive.add('vis-' + v.id);
     let el = byId('vis-' + v.id);
-    if (!el) { el = document.createElement('div'); el.id = 'vis-' + v.id; el.className = 'vis'; box.appendChild(el); }
-    const key = v.state + '|' + v.mood + '|' + v.order.map(o => (o.done ? 1 : 0)).join('');
-    if (setKey(el, key, visitorHTML(v))) {
-      el.className = 'vis ' + (v.state === 'wait' ? '' : 'walking ') + (v.state === 'out' ? 'out ' : '') + (v.mood === 'angry' ? 'angry' : '');
-      el._pat = el.querySelector('.pat i');
+    if (!el) {
+      el = document.createElement('div'); el.id = 'vis-' + v.id;
+      el.innerHTML = '<div class="bw"></div><div class="fig"></div>';
+      box.appendChild(el);
     }
+    // Пузырь и фигура обновляются раздельно, чтобы смена лица не перезапускала анимацию пузыря
+    const bw = el.firstElementChild, fig = el.lastElementChild, face = visitorFace(v);
+    if (setKey(bw, v.state + '|' + v.order.map(o => (o.done ? 1 : 0)).join(''), bubbleHTML(v))) el._pat = bw.querySelector('.pat i');
+    setKey(fig, face + '|' + v.mood, figureHTML(v, face));
+    el.className = 'vis ' + (v.state === 'wait' ? '' : 'walking ') + (v.state === 'out' ? 'out ' : '') + (v.mood === 'angry' ? 'angry' : '');
     el.style.transform = `translateX(${v.x - 100}px)`;
     if (el._pat) {
       const r = v.pat / v.max;
