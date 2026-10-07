@@ -161,18 +161,45 @@ button{font:inherit;color:inherit}
 .pat{height:16px;margin-top:8px;border-radius:9px;background:#eadfcf;overflow:hidden}
 .pat i{display:block;height:100%;width:100%;background:#4fbf4f;border-radius:9px}
 
-#kitchen{position:absolute;left:0;top:460px;width:1600px;height:440px;display:flex;justify-content:center;align-items:stretch;gap:16px;padding:16px;
+#kitchen{position:absolute;left:0;top:460px;width:1600px;height:440px;display:block;padding:16px;
   background:linear-gradient(45deg,#d7cbb6 25%,transparent 25%,transparent 75%,#d7cbb6 75%) 0 0/80px 80px,
    linear-gradient(45deg,#d7cbb6 25%,transparent 25%,transparent 75%,#d7cbb6 75%) 40px 40px/80px 80px,#e9e0cf}
 #kitchen.has-bg{background-size:cover;background-position:center}
-.zone{background:rgba(255,246,230,.93);border-radius:26px;padding:14px;display:flex;gap:12px;box-shadow:0 6px 0 rgba(0,0,0,.12),0 8px 18px rgba(0,0,0,.18)}
+#kin{display:flex;justify-content:center;align-items:stretch;gap:12px;height:100%;transform-origin:0 0}
+.ingr.off{filter:grayscale(.7) brightness(.85)}
+/* Подставка под миску мисо */
+.bowlslot{width:110px;border-radius:26px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 45%,#ffffff,#dfe9ee 70%);box-shadow:inset 0 0 0 5px #9fb8c2,0 6px 0 #6f8892}
+.bowlslot.tier-1,.bowlslot.tier-2,.bowlslot.tier-3{box-shadow:inset 0 0 0 7px var(--frame),0 6px 0 #6f8892}
+.bowlslot.wrong{box-shadow:inset 0 0 0 5px #c62e1e,0 6px 0 #7d1a10}
+/* Чайник и чашки */
+.z-brew{flex-direction:column;align-items:center}
+.brow{display:flex;gap:10px;align-items:center}
+.kettle{width:140px;height:150px;border-radius:24px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(#fbe8c9,#ecc996);box-shadow:inset 0 0 0 5px #c79a5a,0 6px 0 #8f6430}
+.kettle.tier-1,.kettle.tier-2,.kettle.tier-3{box-shadow:inset 0 0 0 7px var(--frame),0 6px 0 #8f6430}
+.kettle.empty>.spr{filter:grayscale(.5) brightness(.85)}
+.kettle.boil>.spr{animation:sizzle .18s infinite alternate}
+.kettle.hot{background:linear-gradient(#fff3d6,#f6d9a6)}
+.kettle.hot>.spr{animation:readyGlow 1s infinite alternate}
+.kstate{position:absolute;right:10px;top:8px;display:flex;gap:4px;font-size:30px}
+.kstate i{width:18px;height:18px;border-radius:50%;background:#46a84b;box-shadow:0 2px 0 #2c7a31}
+.cups{display:flex;gap:8px;padding:8px;border-radius:18px;background:#d9c3a0;box-shadow:inset 0 3px 6px rgba(0,0,0,.2)}
+.tcup{width:78px;height:78px;border-radius:16px;background:#f4e6cf;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.z-trash{align-items:center;justify-content:center}
+/* Выбранное блюдо и посетители, которым оно нужно */
+.sel{outline:7px solid #ffe14d !important;outline-offset:-3px;box-shadow:0 0 22px 8px rgba(255,214,60,.85) !important}
+.vis{cursor:pointer}
+.vis.want .bubble{box-shadow:0 0 0 7px #6fdc6f,0 8px 16px rgba(0,0,0,.2)}
+.vis.want .fig{filter:drop-shadow(0 0 12px #6fdc6f)}
+.zone{flex:none;background:rgba(255,246,230,.93);border-radius:26px;padding:14px;display:flex;gap:12px;box-shadow:0 6px 0 rgba(0,0,0,.12),0 8px 18px rgba(0,0,0,.18)}
 .z-asm{flex-direction:column}
 .irow{display:flex;gap:12px;justify-content:center}
-.ingr{width:120px;height:120px;border-radius:24px;border:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+.ingr{width:104px;height:104px;flex:none;border-radius:24px;border:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(#c58a52,#94602f);box-shadow:inset 0 0 0 6px #6d4320,0 6px 0 #4e2f14;position:relative}
 .ingr:active{transform:translateY(3px) scale(.96)}
 .mats{flex:1;display:flex;gap:12px;justify-content:center}
-.mat{width:156px;border-radius:20px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
+.mat{width:132px;border-radius:20px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
   background:repeating-linear-gradient(90deg,#b9c97a 0 14px,#9cad5c 14px 16px,#c4d388 16px 30px,#9cad5c 30px 32px);
   box-shadow:inset 0 0 0 5px #7f8f44,0 6px 0 #5d6b2c}
 .mat.has-img{background-size:cover;background-position:center}
@@ -201,12 +228,12 @@ button{font:inherit;color:inherit}
 .fcol{display:flex;flex-direction:column;gap:12px;align-items:center}
 .tray{display:grid;grid-template-columns:repeat(2,64px);gap:8px;padding:8px;border-radius:18px;background:#d9c3a0;box-shadow:inset 0 3px 6px rgba(0,0,0,.2)}
 .tslot{width:64px;height:64px;border-radius:14px;background:#f4e6cf;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.fryer{position:relative;display:grid;grid-template-columns:repeat(2,96px);gap:12px;padding:14px;border-radius:24px;
+.fryer{position:relative;display:grid;grid-template-columns:repeat(2,84px);gap:12px;padding:14px;border-radius:24px;
   background:linear-gradient(#9aa3ad,#6c757f);box-shadow:inset 0 0 0 6px #4d555e,0 6px 0 #3a4048}
 .fryer.has-img{background-size:cover;background-position:center}
 .fcol2{display:flex;flex-direction:column;align-items:center;gap:4px}
-.fryer-img{height:150px;width:auto;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 6px 6px rgba(0,0,0,.3))}
-.basket{width:96px;height:96px;border-radius:18px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
+.fryer-img{height:130px;width:auto;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 6px 6px rgba(0,0,0,.3))}
+.basket{width:84px;height:84px;border-radius:18px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;
   background:radial-gradient(circle,#ffd877,#e8a73a);box-shadow:inset 0 0 0 5px #8b6a2e}
 .basket.cook .slot-it{animation:sizzle .25s infinite alternate}
 .basket.ready{background:radial-gradient(circle,#c7f59a,#6cc04a)}
@@ -221,7 +248,7 @@ button{font:inherit;color:inherit}
 .disp .pe{width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.12)}
 .disp .bar{bottom:14px}
 .disp.full{outline:5px solid #46a84b;outline-offset:-5px}
-.trashb{width:150px;height:130px;border-radius:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;
+.trashb{width:116px;height:116px;border-radius:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;
   background:linear-gradient(#d9dde2,#aab0b8);box-shadow:inset 0 0 0 5px #7d848c,0 6px 0 #5a6067}
 .trash-on .trashb{background:linear-gradient(#ff8f7a,#e2402b);box-shadow:inset 0 0 0 5px #a9281a,0 6px 0 #7d1a10;animation:pulse .7s infinite}
 .trash-on .mat,.trash-on .basket,.trash-on .tslot{outline:5px dashed rgba(226,64,43,.85);outline-offset:-5px}
@@ -418,6 +445,11 @@ const CONFIG = {
     tempura:         { file: 'tempura.png',          emoji: '🍤' },
     tempura_burnt:   { file: 'tempura_burnt.png',    emoji: '🍤', css: 'burnt' },
     miso:            { file: 'miso.png',             emoji: '🍲' },
+    miso_wrong:      { file: 'miso_wrong.png',       emoji: '🍲', badge: '❌', css: 'wrong' },
+    bowl:            { file: 'bowl.png',             emoji: '🥣' },   // пустая миска — основа мисо
+    tofu:            { file: 'tofu.png',             emoji: '🧊' },   // кубики тофу
+    wakame:          { file: 'wakame.png',           emoji: '🌿' },   // водоросли вакамэ
+    cup_empty:       { file: 'cup_empty.png',        emoji: '🍵', css: 'gray' },   // пустая чашка
     tea:             { file: 'tea.png',              emoji: '🍵' },
     // оборудование: ключ по ступени улучшения (_0 — базовая, _3 — максимальная); несколько ступеней могут делить файл,
     // а без картинок ступень видна по рамке: дерево → бронза → серебро → золото
@@ -515,14 +547,15 @@ const CONFIG = {
         roll_avocado:  { name: { ru: 'Ролл с авокадо', en: 'Avocado roll' },  price: 12, sprite: 'roll_avocado',  priceUp: 'priceRoll',    weight: 1 },
         roll_mix:      { name: { ru: 'Ролл ассорти', en: 'Mixed roll' },      price: 22, sprite: 'roll_mix',      priceUp: 'priceRoll',    weight: 0.7 },
         tempura:       { name: { ru: 'Темпура', en: 'Tempura' },              price: 14, sprite: 'tempura',       priceUp: 'priceTempura', weight: 1 },
-        miso:          { name: { ru: 'Мисо-суп', en: 'Miso soup' },           price: 6,  sprite: 'miso',          priceUp: 'priceSoup',    weight: 1 },
-        tea:           { name: { ru: 'Зелёный чай', en: 'Green tea' },        price: 5,  sprite: 'tea',           priceUp: 'priceSoup',    weight: 0.9 }
+        miso:          { name: { ru: 'Мисо-суп', en: 'Miso soup' },           price: 10, sprite: 'miso',          priceUp: 'priceSoup',    weight: 1 },
+        tea:           { name: { ru: 'Зелёный чай', en: 'Green tea' },        price: 8,  sprite: 'tea',            priceUp: 'priceSoup',    weight: 0.9 }
       },
 
       // Станции кухни. Параметр — число, имя параметра улучшения или массив имён (значения перемножаются).
       // look — улучшение, от ступени которого зависит картинка оборудования.
       stations: [
         { id: 'mats', type: 'assembly', slots: 'mats', time: ['rollTime', 'rollMul'], look: 'mats', sprite: 'mat',
+          slotClass: 'mat', size: 104, stat: 'rolls',
           base: 'nori', toppings: ['salmon', 'cucumber', 'avocado'],
           recipes: [
             { dish: 'roll_salmon',   set: ['salmon'] },
@@ -533,49 +566,54 @@ const CONFIG = {
           wrong: 'roll_wrong' },
         { id: 'fryer', type: 'fryer', slots: 'fryerSlots', time: 'fryTime', burn: 'burnTime', penalty: 5, look: 'fryerSlots', sprite: 'fryer',
           input: 'shrimp_raw', dish: 'tempura', burnt: 'tempura_burnt' },
-        { id: 'soup', type: 'dispenser', dish: 'miso', fill: 'soupFill', cap: 'soupCap', look: 'soupCap', sprite: 'pot' },
-        { id: 'tea',  type: 'dispenser', dish: 'tea',  fill: 'teaFill',  cap: 'teaCap',  look: 'teaCap',  sprite: 'teapot' },
+        // Мисо: миска + тофу + вакамэ, тап по миске — налить бульон
+        { id: 'soup', type: 'assembly', slots: 'soupSlots', time: 'soupTime', look: 'soupCap', slotClass: 'bowlslot', size: 84, stat: 'soups',
+          base: 'bowl', toppings: ['tofu', 'wakame'],
+          recipes: [ { dish: 'miso', set: ['tofu', 'wakame'] } ],
+          wrong: 'miso_wrong' },
+        // Чай: вскипятить чайник, затем наливать чашки (порций на одно кипячение — cap)
+        { id: 'tea', type: 'brew', dish: 'tea', kettle: 'teapot', cup: 'cup_empty', cups: 3, boil: 'teaBoil', cap: 'teaCap', look: 'teaCap' },
         { id: 'trash', type: 'trash', sprite: 'trash' }
       ],
 
       // Улучшения: по 3 ступени. params — значения параметров для ступеней 0..3 (0 — без улучшения).
       // fmt: sec — секунды, count — штуки, mult — надбавка %, time — ускорение %.
       upgrades: [
-        { id: 'rollSpeed',    group: 'kitchen', icon: 'up_roll_speed',   costs: [120, 300, 640],
+        { id: 'rollSpeed',    group: 'kitchen', icon: 'up_roll_speed',   costs: [80, 210, 450],
           name: { ru: 'Быстрая скрутка', en: 'Fast rolling' },
           params: { rollTime: { v: [2, 1.7, 1.4, 1.1], fmt: 'sec' } } },
-        { id: 'mats',         group: 'kitchen', icon: 'up_mats',         costs: [240, 600, 900],
+        { id: 'mats',         group: 'kitchen', icon: 'up_mats',         costs: [170, 420, 630],
           name: { ru: 'Циновки', en: 'Bamboo mats' },
           params: { mats: { v: [2, 3, 4, 4], fmt: 'count' },
                     rollMul: { v: [1, 1, 1, 0.8], fmt: 'time', label: { ru: 'скрутка', en: 'rolling' } } } },
-        { id: 'fryerSpeed',   group: 'kitchen', icon: 'up_fryer_speed',  costs: [180, 400, 760],
+        { id: 'fryerSpeed',   group: 'kitchen', icon: 'up_fryer_speed',  costs: [130, 280, 530],
           name: { ru: 'Жаркий фритюр', en: 'Hot fryer' },
           params: { fryTime: { v: [5, 4.3, 3.6, 3], fmt: 'sec' } } },
-        { id: 'fryerSlots',   group: 'kitchen', icon: 'up_fryer_slots',  costs: [300, 700, 900],
+        { id: 'fryerSlots',   group: 'kitchen', icon: 'up_fryer_slots',  costs: [210, 490, 630],
           name: { ru: 'Корзины фритюра', en: 'Fryer baskets' },
           params: { fryerSlots: { v: [2, 3, 4, 4], fmt: 'count' },
                     burnTime: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до сгорания', en: 'before burning' } } } },
-        { id: 'soupCap',      group: 'kitchen', icon: 'up_soup_cap',     costs: [140, 360, 600],
-          name: { ru: 'Большая кастрюля', en: 'Big soup pot' },
-          params: { soupCap: { v: [1, 2, 3, 3], fmt: 'count' },
-                    soupFill: { v: [3, 3, 3, 2], fmt: 'sec', label: { ru: 'порция', en: 'portion' } } } },
-        { id: 'teaCap',       group: 'kitchen', icon: 'up_tea_cap',      costs: [180, 440, 700],
+        { id: 'soupCap',      group: 'kitchen', icon: 'up_soup_cap',     costs: [100, 250, 420],
+          name: { ru: 'Больше мисок', en: 'More bowls' },
+          params: { soupSlots: { v: [1, 2, 2, 3], fmt: 'count' },
+                    soupTime: { v: [2, 2, 1.4, 1.4], fmt: 'sec', label: { ru: 'налить', en: 'pour' } } } },
+        { id: 'teaCap',       group: 'kitchen', icon: 'up_tea_cap',      costs: [130, 310, 490],
           name: { ru: 'Большой чайник', en: 'Big teapot' },
-          params: { teaCap: { v: [1, 2, 3, 3], fmt: 'count' },
-                    teaFill: { v: [3, 3, 3, 2], fmt: 'sec', label: { ru: 'чашка', en: 'cup' } } } },
-        { id: 'priceRoll',    group: 'food', icon: 'up_price_roll',      costs: [200, 480, 960],
+          params: { teaCap: { v: [2, 3, 3, 4], fmt: 'count' },
+                    teaBoil: { v: [4, 4, 3, 3], fmt: 'sec', label: { ru: 'кипячение', en: 'boiling' } } } },
+        { id: 'priceRoll',    group: 'food', icon: 'up_price_roll',      costs: [140, 340, 670],
           name: { ru: 'Отборная рыба', en: 'Premium rolls' },
           params: { priceRoll: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
-        { id: 'priceTempura', group: 'food', icon: 'up_price_tempura',   costs: [220, 520, 1000],
+        { id: 'priceTempura', group: 'food', icon: 'up_price_tempura',   costs: [150, 360, 700],
           name: { ru: 'Хрустящий кляр', en: 'Crispy batter' },
           params: { priceTempura: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
-        { id: 'priceSoup',    group: 'food', icon: 'up_price_soup',      costs: [160, 400, 800],
+        { id: 'priceSoup',    group: 'food', icon: 'up_price_soup',      costs: [110, 280, 560],
           name: { ru: 'Суп и чай люкс', en: 'Deluxe soup & tea' },
           params: { priceSoup: { v: [1, 1.25, 1.5, 1.8], fmt: 'mult' } } },
-        { id: 'patience',     group: 'hall', icon: 'up_patience',        costs: [200, 500, 960],
+        { id: 'patience',     group: 'hall', icon: 'up_patience',        costs: [140, 350, 670],
           name: { ru: 'Уютный зал', en: 'Cozy hall' },
           params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
-        { id: 'tips',         group: 'hall', icon: 'up_tips',            costs: [180, 460, 900],
+        { id: 'tips',         group: 'hall', icon: 'up_tips',            costs: [130, 320, 630],
           name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
           params: { tips: { v: [1, 1.3, 1.6, 2], fmt: 'mult' } } }
       ],
@@ -584,25 +622,25 @@ const CONFIG = {
       // patience — терпение (сек), items — размер заказа, seats — сколько мест открыто, intro — новое блюдо
       levels: [
         { time: 60, seats: 2, every: [7, 9], patience: 30, items: [1, 1], menu: M1, tutorial: true, goal: [45, 70, 90] },
-        { time: 70, seats: 3, every: [6, 8], patience: 28, items: [1, 2], menu: M2, intro: 'miso', tutorial: true, goal: [80, 110, 140] },
-        { time: 75, seats: 3, every: [5.5, 7.5], patience: 27, items: [1, 2], menu: M3, intro: 'roll_cucumber', tutorial: true, goal: [90, 155, 200] },
-        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M3, goal: [135, 225, 280] },
-        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M4, intro: 'tempura', goal: [175, 285, 360] },
-        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M4, goal: [205, 305, 400] },
-        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M5, intro: 'roll_avocado', goal: [210, 335, 420] },
-        { time: 90, seats: 4, every: [4.5, 6], patience: 24, items: [1, 3], menu: M5, goal: [225, 470, 560] },
-        { time: 100, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M6, intro: 'roll_mix', goal: [240, 495, 670] },
-        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M6, goal: [255, 560, 780] },
-        { time: 100, seats: 4, every: [4, 5.5], patience: 23, items: [1, 3], menu: M6, goal: [265, 600, 800] },
-        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M7, intro: 'tea', goal: [275, 500, 650] },
-        { time: 105, seats: 4, every: [3.5, 5.5], patience: 23, items: [1, 3], menu: M7, goal: [290, 640, 840] },
-        { time: 105, seats: 4, every: [3.5, 5], patience: 22, items: [2, 3], menu: M7, goal: [300, 760, 1000] },
-        { time: 110, seats: 4, every: [3.5, 5], patience: 22, items: [1, 3], menu: M7, goal: [310, 780, 1020] },
-        { time: 110, seats: 4, every: [3, 4.5], patience: 21, items: [2, 3], menu: M7, goal: [320, 850, 1120] },
-        { time: 115, seats: 4, every: [3, 4.5], patience: 20, items: [2, 3], menu: M7, goal: [330, 880, 1160] },
-        { time: 115, seats: 4, every: [3, 4], patience: 20, items: [2, 3], menu: M7, goal: [340, 910, 1200] },
-        { time: 120, seats: 4, every: [2.5, 4], patience: 19, items: [2, 3], menu: M7, goal: [350, 950, 1250] },
-        { time: 120, seats: 4, every: [2.5, 3.5], patience: 18, items: [2, 3], menu: M7, goal: [360, 980, 1300] }
+        { time: 70, seats: 3, every: [6, 8], patience: 28, items: [1, 2], menu: M2, intro: 'miso', tutorial: true, goal: [60, 125, 165] },
+        { time: 75, seats: 3, every: [5.5, 7.5], patience: 27, items: [1, 2], menu: M3, intro: 'roll_cucumber', tutorial: true, goal: [65, 130, 170] },
+        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M3, goal: [130, 200, 300] },
+        { time: 80, seats: 4, every: [5, 7], patience: 26, items: [1, 2], menu: M4, intro: 'tempura', goal: [145, 250, 350] },
+        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M4, goal: [160, 260, 400] },
+        { time: 90, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M5, intro: 'roll_avocado', goal: [170, 315, 410] },
+        { time: 90, seats: 4, every: [4.5, 6], patience: 24, items: [1, 3], menu: M5, goal: [180, 330, 440] },
+        { time: 100, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 2], menu: M6, intro: 'roll_mix', goal: [190, 360, 480] },
+        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M6, goal: [195, 370, 500] },
+        { time: 100, seats: 4, every: [4, 5.5], patience: 23, items: [1, 3], menu: M6, goal: [200, 380, 510] },
+        { time: 100, seats: 4, every: [4, 6], patience: 24, items: [1, 3], menu: M7, intro: 'tea', goal: [205, 385, 520] },
+        { time: 105, seats: 4, every: [3.5, 5.5], patience: 23, items: [1, 3], menu: M7, goal: [210, 390, 530] },
+        { time: 105, seats: 4, every: [3.5, 5], patience: 22, items: [2, 3], menu: M7, goal: [215, 395, 540] },
+        { time: 110, seats: 4, every: [3.5, 5], patience: 22, items: [1, 3], menu: M7, goal: [220, 400, 550] },
+        { time: 110, seats: 4, every: [3, 4.5], patience: 21, items: [2, 3], menu: M7, goal: [225, 405, 555] },
+        { time: 115, seats: 4, every: [3, 4.5], patience: 20, items: [2, 3], menu: M7, goal: [230, 410, 560] },
+        { time: 115, seats: 4, every: [3, 4], patience: 20, items: [2, 3], menu: M7, goal: [235, 415, 565] },
+        { time: 120, seats: 4, every: [2.5, 4], patience: 19, items: [2, 3], menu: M7, goal: [240, 420, 570] },
+        { time: 120, seats: 4, every: [2.5, 3.5], patience: 18, items: [2, 3], menu: M7, goal: [245, 425, 580] }
       ]
     },
     // Заглушки будущих ресторанов: только карточка на карте
@@ -874,7 +912,7 @@ const Save = {
   data: null,
   fresh() {
     return { v: 1, ts: 0, coins: 0, sound: true, rest: {}, daily: { last: '', streak: 0 }, freeUpAt: 0, ach: {},
-      stats: { served: 0, hearts: 0, rolls: 0, tempura: 0, maxCombo: 0, noBurnLevels: 0, perfectLevels: 0, threeStars: 0, bigOrders: 0, upgrades: 0 } };
+      stats: { served: 0, hearts: 0, rolls: 0, soups: 0, tempura: 0, maxCombo: 0, noBurnLevels: 0, perfectLevels: 0, threeStars: 0, bigOrders: 0, upgrades: 0 } };
   },
   async load() {
     let local = null;
@@ -1129,7 +1167,7 @@ function goLevels() { renderLevels(); show('levels'); }
 // Окно перед стартом уровня
 function stationOfDish(R, dish) {
   return R.stations.find(s => (s.type === 'assembly' && s.recipes.some(r => r.dish === dish)) ||
-    ((s.type === 'fryer' || s.type === 'dispenser') && s.dish === dish));
+    ((s.type === 'fryer' || s.type === 'dispenser' || s.type === 'brew') && s.dish === dish));
 }
 function recipeHTML(R, dish) {
   const st = stationOfDish(R, dish), arrow = '<b style="font-size:44px">→</b>', out = spr(R.dishes[dish].sprite, 96);
@@ -1138,6 +1176,7 @@ function recipeHTML(R, dish) {
     return `<div class="row-ico">${spr(st.base, 76)}<b>+</b>${rec.set.map(x => spr(x, 64)).join('')}${arrow}${out}</div>`;
   }
   if (st.type === 'fryer') return `<div class="row-ico">${spr(st.input, 76)}${arrow}${out}</div>`;
+  if (st.type === 'brew') return `<div class="row-ico">${spr(st.kettle + '_0', 76)}<b>+</b>${spr(st.cup, 64)}${arrow}${out}</div>`;
   return `<div class="row-ico">${spr(st.sprite + '_0', 76)}${arrow}${out}</div>`;
 }
 function openLevelIntro(i) {
@@ -1302,7 +1341,7 @@ function autoPauseLevel() { if (screen === 'game' && G && G.state === 'play' && 
 
 function stationActive(st, menu) {
   if (st.type === 'assembly') return st.recipes.some(r => menu.includes(r.dish));
-  if (st.type === 'fryer' || st.type === 'dispenser') return menu.includes(st.dish);
+  if (st.type === 'fryer' || st.type === 'dispenser' || st.type === 'brew') return menu.includes(st.dish);
   return true; // мусорка
 }
 // Позиции мест у стойки (по центру зала)
@@ -1315,7 +1354,7 @@ function startLevel(idx) {
     R, L, idx, time: L.time, elapsed: 0, coins: 0, hearts: 0, served: 0, angry: 0, burnt: 0, vid: 0,
     seats: new Array(nSeats).fill(null), vis: [], spawnT: 0.8,
     comboN: 0, lastServe: -99, bestCombo: 0,
-    st: {}, stations: [], dishStation: {}, trash: false,
+    st: {}, stations: [], dishStation: {}, trash: false, sel: null, selElId: null,
     state: 'play', paused: false, addUsed: false, finalized: false, doubled: false,
     introServed: false, hintT: 0, botT: 0, lastTick: 99, hasFryer: false
   };
@@ -1333,6 +1372,10 @@ function startLevel(idx) {
       s.n = pv(R, st.slots); s.time = pv(R, st.time); s.burn = pv(R, st.burn);
       s.slots = new Array(s.n).fill(null); s.tray = new Array(s.n).fill(null);
       G.dishStation[st.dish] = st; G.hasFryer = true;
+    } else if (st.type === 'brew') {
+      s.cap = pv(R, st.cap); s.boil = pv(R, st.boil);
+      s.water = 'empty'; s.left = 0; s.t = 0; s.cups = new Array(st.cups).fill(null);
+      G.dishStation[st.dish] = st;
     } else if (st.type === 'dispenser') {
       s.cap = pv(R, st.cap); s.fill = pv(R, st.fill); s.count = 0; s.t = 0;
       G.dishStation[st.dish] = st;
@@ -1363,39 +1406,64 @@ function buildGameDOM() {
   applyBg(byId('counter'), R.bgCounter);
   byId('people').innerHTML = '';
 
-  // Кухня строится по типам станций; внешний вид зависит от ступени улучшения (tier)
-  let asm = '', fry = '', disp = '', side = '';
+  // Каждая станция — своя зона, в порядке из CONFIG; вид оборудования зависит от ступени улучшения (tier)
+  let html = '';
   for (const st of G.stations) {
-    const s = G.st[st.id], k = 'k-' + st.id, look = st.sprite ? st.sprite + '_' + s.tier : '';
+    const s = G.st[st.id], k = 'k-' + st.id;
     if (st.type === 'assembly') {
+      const look = st.sprite ? st.sprite + '_' + s.tier : '';
       const img = SPR_OK[look] ? `style="background-image:${sprUrl(look)}"` : '';
-      asm += `<div class="zone z-asm">
+      html += `<div class="zone z-asm">
         <div class="irow">
-          <button class="ingr" id="${k}-base" data-g="base:${st.id}">${spr(st.base, 96)}</button>
-          ${s.tops.map(tp => `<button class="ingr" id="${k}-top-${tp}" data-g="top:${st.id}:${tp}">${spr(tp, 90)}</button>`).join('')}
+          <button class="ingr" id="${k}-base" data-g="base:${st.id}">${spr(st.base, 84)}</button>
+          ${s.tops.map(tp => `<button class="ingr" id="${k}-top-${tp}" data-g="top:${st.id}:${tp}">${spr(tp, 80)}</button>`).join('')}
         </div>
-        <div class="mats">${s.slots.map((_, i) => `<div class="mat tier-${s.tier} ${img ? 'has-img' : ''}" id="${k}-s${i}" data-g="slot:${st.id}:${i}" ${img}>
+        <div class="mats">${s.slots.map((_, i) => `<div class="${st.slotClass || 'mat'} tier-${s.tier} ${img ? 'has-img' : ''}" id="${k}-s${i}" data-g="slot:${st.id}:${i}" ${img}>
           ${tierMark(s.tier)}<div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div>
       </div>`;
     } else if (st.type === 'fryer') {
-      fry += `<div class="zone z-fry">
+      const look = st.sprite + '_' + s.tier;
+      html += `<div class="zone z-fry">
         <div class="fcol">
-          <button class="ingr" id="${k}-in" data-g="fry:${st.id}">${spr(st.input, 96)}</button>
+          <button class="ingr" id="${k}-in" data-g="fry:${st.id}">${spr(st.input, 84)}</button>
           <div class="tray">${s.tray.map((_, i) => `<div class="tslot" id="${k}-t${i}" data-g="tray:${st.id}:${i}"></div>`).join('')}</div>
         </div>
         <div class="fcol2">${SPR_OK[look] ? `<img class="fryer-img" src="${CONFIG.imgPath}${CONFIG.sprites[look].file}" alt="" draggable="false">` : ''}
         <div class="fryer tier-${s.tier}">${tierMark(s.tier)}${s.slots.map((_, i) =>
           `<div class="basket" id="${k}-s${i}" data-g="fslot:${st.id}:${i}"><div class="slot-it"></div><div class="bar"><i></i></div></div>`).join('')}</div></div>
       </div>`;
+    } else if (st.type === 'brew') {
+      html += `<div class="zone z-brew">
+        <div class="brow">
+          <div class="kettle tier-${s.tier}" id="${k}-kettle" data-g="kettle:${st.id}">${tierMark(s.tier)}${spr(st.kettle + '_' + s.tier, 112)}
+            <div class="kstate"></div><div class="bar"><i></i></div></div>
+          <button class="ingr" id="${k}-cup" data-g="cup:${st.id}">${spr(st.cup, 80)}</button>
+        </div>
+        <div class="cups">${s.cups.map((_, i) => `<div class="tcup" id="${k}-c${i}" data-g="tcup:${st.id}:${i}"></div>`).join('')}</div>
+      </div>`;
     } else if (st.type === 'dispenser') {
-      disp += `<div class="disp tier-${s.tier}" id="${k}" data-g="disp:${st.id}">${tierMark(s.tier)}${spr(look, 120)}<div class="portions"></div><div class="bar"><i></i></div></div>`;
+      const look = st.sprite + '_' + s.tier;
+      html += `<div class="zone"><div class="disp tier-${s.tier}" id="${k}" data-g="disp:${st.id}">${tierMark(s.tier)}${spr(look, 120)}<div class="portions"></div><div class="bar"><i></i></div></div></div>`;
     } else if (st.type === 'trash') {
-      side += `<div class="trashb" id="k-trash" data-g="trash:${st.id}">${spr(st.sprite, 100)}</div>`;
+      html += `<div class="zone z-trash"><div class="trashb" id="k-trash" data-g="trash:${st.id}">${spr(st.sprite, 92)}</div></div>`;
     }
   }
-  byId('kitchen').innerHTML = asm + fry + `<div class="zone z-side">${disp ? `<div class="drow">${disp}</div>` : ''}${side}</div>`;
+  byId('kitchen').innerHTML = `<div id="kin">${html}</div>`;
   byId('kitchen').classList.remove('trash-on');
+  fitKitchen();
   renderGame(true);
+}
+// Если станций много (поздние уровни), кухня ужимается целиком, чтобы влезть по ширине
+function fitKitchen() {
+  const kin = byId('kin'), availW = 1600 - 32, availH = 440 - 32, gap = 12;
+  kin.style.transform = ''; kin.style.width = ''; kin.style.height = '';
+  const zones = [...kin.children];
+  const w = zones.reduce((a, z) => a + z.offsetWidth, 0) + gap * (zones.length - 1);
+  if (w <= availW) return;
+  const sc = availW / w;
+  kin.style.width = w + 'px';
+  kin.style.height = (availH / sc) + 'px';
+  kin.style.transform = `scale(${sc})`;
 }
 
 /* =====================================================================
@@ -1460,7 +1528,7 @@ function update(dt) {
           if (it.t >= s.time) {
             it.state = it.dish ? 'ready' : 'wrong';
             Sound.play(it.dish ? 'ready' : 'bad');
-            if (it.dish) stat('rolls', 1);
+            if (it.dish && st.stat) stat(st.stat, 1);
           }
         }
       });
@@ -1471,6 +1539,8 @@ function update(dt) {
         if (it.state === 'cook' && it.t >= s.time) { it.state = 'ready'; it.t = 0; Sound.play('ready'); stat('tempura', 1); }
         else if (it.state === 'ready' && it.t >= s.burn) { it.state = 'burnt'; it.t = 0; G.burnt++; Sound.play('burn'); }
       });
+    } else if (st.type === 'brew') {
+      if (s.water === 'boil') { s.t += dt; if (s.t >= s.boil) { s.water = 'hot'; s.left = s.cap; s.t = 0; Sound.play('ready'); } }
     } else if (st.type === 'dispenser') {
       if (s.count < s.cap) { s.t += dt; if (s.t >= s.fill) { s.count++; s.t = 0; } } else s.t = 0;
     }
@@ -1485,11 +1555,40 @@ function visitorLeave(v, happy) {
   G.seats[v.seat] = null;
   if (!happy) { G.angry++; Sound.play('angry'); }
 }
-// Подать блюдо первому подходящему посетителю (по порядку прихода)
-function serveDish(dish, fromEl) {
-  const cands = G.vis.filter(v => v.state === 'wait' && v.order.some(o => !o.done && o.dish === dish)).sort((a, b) => a.id - b.id);
-  if (!cands.length) return false;
-  const v = cands[0], R = G.R;
+
+/* --- Выбор блюда: игрок тапает готовое блюдо, затем посетителя --- */
+// Какое блюдо сейчас выбрано (null, если выбора нет или источник опустел)
+function selDish() {
+  const S = G.sel; if (!S) return null;
+  const s = G.st[S.sid], st = G.R.stations.find(x => x.id === S.sid);
+  if (S.kind === 'slot') { const it = s.slots[S.i]; return it && it.state === 'ready' ? it.dish : null; }
+  if (S.kind === 'tray') return s.tray[S.i] || null;
+  if (S.kind === 'tcup') return s.cups[S.i] || null;
+  if (S.kind === 'disp') return s.count > 0 ? st.dish : null;
+  return null;
+}
+function selElId(S) {
+  if (!S) return null;
+  const k = 'k-' + S.sid;
+  return S.kind === 'slot' ? `${k}-s${S.i}` : S.kind === 'tray' ? `${k}-t${S.i}` : S.kind === 'tcup' ? `${k}-c${S.i}` : k;
+}
+// Забрать выбранное блюдо из источника
+function takeSel() {
+  const S = G.sel, s = G.st[S.sid];
+  if (S.kind === 'slot') s.slots[S.i] = null;
+  else if (S.kind === 'tray') s.tray[S.i] = null;
+  else if (S.kind === 'tcup') s.cups[S.i] = null;
+  else if (S.kind === 'disp') s.count--;
+  G.sel = null;
+}
+function toggleSel(kind, sid, i) {
+  const same = G.sel && G.sel.kind === kind && G.sel.sid === sid && G.sel.i === i;
+  G.sel = same ? null : { kind, sid, i };
+  Sound.play('click');
+}
+// Отдать блюдо конкретному посетителю
+function serveTo(v, dish, fromEl) {
+  const R = G.R;
   const j = v.order.findIndex(o => !o.done && o.dish === dish);
   v.order[j].done = true;
   v.pat = Math.min(v.max, v.pat + v.max * R.patienceRefill);
@@ -1509,7 +1608,6 @@ function serveDish(dish, fromEl) {
     statMax('maxCombo', mult);
   }
   if (v.order.every(o => o.done)) payVisitor(v);
-  return true;
 }
 function payVisitor(v) {
   const R = G.R;
@@ -1535,11 +1633,29 @@ function payVisitor(v) {
 }
 function discard(el) { fly(el, byId('k-trash'), 'trash'); Sound.play('trash'); }
 
-// Обработка тапа по кухне
+// Обработка тапа по кухне и по посетителям
 function gameTap(el) {
   const [kind, sid, arg] = el.dataset.g.split(':');
+  // Тап по посетителю: отдать выбранное блюдо
+  if (kind === 'vis') {
+    G.trash = false;
+    const v = G.vis.find(x => x.id === +sid);
+    const dish = selDish();
+    if (!v || v.state !== 'wait' || !dish) { if (v && v.state === 'wait') shake(el.querySelector('.bubble')); renderGame(); return; }
+    if (!v.order.some(o => !o.done && o.dish === dish)) { shake(el.querySelector('.bubble')); Sound.play('bad'); return; }
+    const from = byId(selElId(G.sel));
+    takeSel();
+    serveTo(v, dish, from);
+    renderGame();
+    return;
+  }
   const st = G.R.stations.find(s => s.id === sid), s = G.st[sid];
-  if (kind === 'trash') { G.trash = !G.trash; Sound.play('click'); renderGame(); return; }
+  // Мусорка: выбранное блюдо выбрасывается сразу, иначе включается режим выбрасывания
+  if (kind === 'trash') {
+    if (selDish()) { discard(byId(selElId(G.sel))); takeSel(); }
+    else { G.trash = !G.trash; Sound.play('click'); }
+    renderGame(); return;
+  }
   const wasTrash = G.trash;
   G.trash = false; // режим мусорки сбрасывается любым тапом
   if (kind === 'base') {
@@ -1557,13 +1673,11 @@ function gameTap(el) {
     if (wasTrash || it.state === 'wrong') { s.slots[i] = null; discard(el); }
     else if (it.state === 'base') {
       if (!it.tops.length) { shake(el); Sound.play('bad'); return; }
-      // Рецепт с точным совпадением начинок; иначе получится «неправильный» ролл
+      // Рецепт с точным совпадением начинок; иначе получится «неправильное» блюдо
       const rec = st.recipes.find(r => r.set.length === it.tops.length && r.set.every(x => it.tops.includes(x)));
       it.dish = rec ? rec.dish : null; it.state = 'roll'; it.t = 0;
       Sound.play('roll');
-    } else if (it.state === 'ready') {
-      if (serveDish(it.dish, el)) s.slots[i] = null; else { shake(el); Sound.play('bad'); }
-    }
+    } else if (it.state === 'ready') toggleSel('slot', sid, i);
   } else if (kind === 'fry') {
     const i = s.slots.findIndex(x => !x);
     if (i < 0) { shake(el); Sound.play('bad'); return; }
@@ -1578,22 +1692,34 @@ function gameTap(el) {
       }
       s.slots[i] = null; discard(el);
     } else if (it.state === 'ready') {
-      // Снимаем с огня: сразу посетителю, иначе на поднос
-      if (serveDish(st.dish, el)) s.slots[i] = null;
-      else {
-        const k = s.tray.findIndex(x => !x);
-        if (k >= 0) { s.tray[k] = st.dish; s.slots[i] = null; fly(el, byId(`k-${sid}-t${k}`), G.R.dishes[st.dish].sprite); Sound.play('place'); }
-        else { shake(el); Sound.play('bad'); }
-      }
+      // Снимаем с огня на поднос
+      const k = s.tray.findIndex(x => !x);
+      if (k >= 0) { s.tray[k] = st.dish; s.slots[i] = null; fly(el, byId(`k-${sid}-t${k}`), G.R.dishes[st.dish].sprite); Sound.play('place'); }
+      else { shake(el); Sound.play('bad'); }
     } else shake(el);
   } else if (kind === 'tray') {
     const i = +arg;
     if (!s.tray[i]) { renderGame(); return; }
-    if (wasTrash) { s.tray[i] = null; discard(el); }
-    else if (serveDish(s.tray[i], el)) s.tray[i] = null; else { shake(el); Sound.play('bad'); }
+    if (wasTrash) { s.tray[i] = null; discard(el); } else toggleSel('tray', sid, i);
+  } else if (kind === 'kettle') {
+    // Пустой чайник — поставить кипятиться
+    if (s.water !== 'empty') { shake(el); Sound.play('bad'); return; }
+    s.water = 'boil'; s.t = 0; Sound.play('place');
+  } else if (kind === 'cup') {
+    // Налить чашку из горячего чайника
+    const i = s.cups.findIndex(x => !x);
+    if (s.water !== 'hot' || s.left <= 0 || i < 0) { shake(el); Sound.play('bad'); return; }
+    s.cups[i] = st.dish; s.left--;
+    if (s.left <= 0) s.water = 'empty';
+    fly(byId(`k-${sid}-kettle`), byId(`k-${sid}-c${i}`), G.R.dishes[st.dish].sprite, 60);
+    Sound.play('place');
+  } else if (kind === 'tcup') {
+    const i = +arg;
+    if (!s.cups[i]) { renderGame(); return; }
+    if (wasTrash) { s.cups[i] = null; discard(el); } else toggleSel('tcup', sid, i);
   } else if (kind === 'disp') {
     if (s.count <= 0) { shake(el); Sound.play('bad'); return; }
-    if (serveDish(st.dish, el)) s.count--; else { shake(el); Sound.play('bad'); }
+    toggleSel('disp', sid, 0);
   }
   renderGame();
 }
@@ -1625,7 +1751,7 @@ function figureHTML(v, face) {
 function renderGame(force) {
   if (!G) return;
   const R = G.R, L = G.L;
-  if (force) document.querySelectorAll('#scr-game [id]').forEach(e => { e._k = undefined; });
+  if (force) { document.querySelectorAll('#scr-game [id]').forEach(e => { e._k = undefined; }); G.selElId = null; }
   // HUD
   byId('hud-time').textContent = fmtTime(G.time);
   byId('hud-timer').classList.toggle('warn', G.time <= 10 && G.state === 'play');
@@ -1640,13 +1766,22 @@ function renderGame(force) {
     byId('hud-combo-n').textContent = 'x' + Math.min(R.combo.bonus.length + 1, G.comboN);
     cEl.lastElementChild.style.width = Math.max(0, 100 - since / R.combo.window * 100) + '%';
   }
+  // Выбранное блюдо: подсветка источника (если источник опустел — выбор снимается)
+  const sd = selDish();
+  if (!sd) G.sel = null;
+  const sid = selElId(G.sel);
+  if (sid !== G.selElId) {
+    if (G.selElId && byId(G.selElId)) byId(G.selElId).classList.remove('sel');
+    if (sid && byId(sid)) byId(sid).classList.add('sel');
+    G.selElId = sid;
+  }
   // Посетители
   const box = byId('people'), alive = new Set();
   for (const v of G.vis) {
     alive.add('vis-' + v.id);
     let el = byId('vis-' + v.id);
     if (!el) {
-      el = document.createElement('div'); el.id = 'vis-' + v.id;
+      el = document.createElement('div'); el.id = 'vis-' + v.id; el.dataset.g = 'vis:' + v.id;
       el.innerHTML = '<div class="bw"></div><div class="fig"></div>';
       box.appendChild(el);
     }
@@ -1654,7 +1789,8 @@ function renderGame(force) {
     const bw = el.firstElementChild, fig = el.lastElementChild, face = visitorFace(v);
     if (setKey(bw, v.state + '|' + v.order.map(o => (o.done ? 1 : 0)).join(''), bubbleHTML(v))) el._pat = bw.querySelector('.pat i');
     setKey(fig, face + '|' + v.mood, figureHTML(v, face));
-    el.className = 'vis ' + (v.state === 'wait' ? '' : 'walking ') + (v.state === 'out' ? 'out ' : '') + (v.mood === 'angry' ? 'angry' : '');
+    const want = sd && v.state === 'wait' && v.order.some(o => !o.done && o.dish === sd);
+    el.className = 'vis ' + (v.state === 'wait' ? '' : 'walking ') + (v.state === 'out' ? 'out ' : '') + (v.mood === 'angry' ? 'angry ' : '') + (want ? 'want' : '');
     el.style.transform = `translateX(${v.x - 100}px)`;
     if (el._pat) {
       const r = v.pat / v.max;
@@ -1667,13 +1803,14 @@ function renderGame(force) {
   for (const st of G.stations) {
     const s = G.st[st.id], k = 'k-' + st.id;
     if (st.type === 'assembly') {
+      const size = st.size || 104;
       s.slots.forEach((it, i) => {
         const el = byId(`${k}-s${i}`), box2 = el.querySelector('.slot-it'), bar = el.querySelector('.bar');
         const state = it ? it.state : 'empty';
         if (setKey(box2, it ? state + '|' + it.tops.join(',') + '|' + it.dish : 'empty', !it ? '' :
-          (state === 'ready' ? spr(R.dishes[it.dish].sprite, 124)
-            : state === 'wrong' ? spr(st.wrong, 124)
-            : `${spr(st.base, 116)}<div class="tops">${it.tops.map(tp => spr(tp, 52)).join('')}</div>`))) {
+          (state === 'ready' ? spr(R.dishes[it.dish].sprite, size + 8)
+            : state === 'wrong' ? spr(st.wrong, size + 8)
+            : `${spr(st.base, size)}<div class="tops">${it.tops.map(tp => spr(tp, Math.round(size * 0.45))).join('')}</div>`))) {
           el.classList.remove('rolling', 'ready', 'wrong', 'base');
           if (state !== 'empty') el.classList.add(state === 'roll' ? 'rolling' : state);
         }
@@ -1684,7 +1821,7 @@ function renderGame(force) {
       s.slots.forEach((it, i) => {
         const el = byId(`${k}-s${i}`), box2 = el.firstElementChild, bar = el.lastElementChild;
         const state = it ? it.state : 'empty';
-        if (setKey(box2, state, !it ? '' : spr(state === 'cook' ? st.input : state === 'ready' ? R.dishes[st.dish].sprite : st.burnt, 80)))
+        if (setKey(box2, state, !it ? '' : spr(state === 'cook' ? st.input : state === 'ready' ? R.dishes[st.dish].sprite : st.burnt, 70)))
           el.className = 'basket ' + state;
         bar.classList.toggle('on', state === 'cook' || state === 'ready');
         const fill = bar.firstElementChild;
@@ -1692,6 +1829,15 @@ function renderGame(force) {
         else if (state === 'ready') { fill.style.width = Math.max(0, 100 - it.t / s.burn * 100) + '%'; fill.style.background = it.t / s.burn > 0.6 ? '#e2402b' : '#3fbf3f'; }
       });
       s.tray.forEach((d, i) => setKey(byId(`${k}-t${i}`), d || '', d ? spr(R.dishes[d].sprite, 56) : ''));
+    } else if (st.type === 'brew') {
+      const kel = byId(`${k}-kettle`), bar = kel.querySelector('.bar');
+      kel.classList.remove('empty', 'boil', 'hot'); kel.classList.add(s.water);
+      setKey(kel.querySelector('.kstate'), s.water + '|' + s.left,
+        s.water === 'hot' ? '<i></i>'.repeat(s.left) : s.water === 'empty' ? '<b>💧</b>' : '');
+      bar.classList.toggle('on', s.water === 'boil');
+      if (s.water === 'boil') bar.firstElementChild.style.width = Math.min(100, s.t / s.boil * 100) + '%';
+      byId(`${k}-cup`).classList.toggle('off', s.water !== 'hot');
+      s.cups.forEach((d, i) => setKey(byId(`${k}-c${i}`), d || '', d ? spr(R.dishes[d].sprite, 60) : ''));
     } else if (st.type === 'dispenser') {
       const el = byId(k), por = el.querySelector('.portions'), bar = el.querySelector('.bar');
       let h = ''; for (let i = 0; i < s.cap; i++) h += i < s.count ? spr(R.dishes[st.dish].sprite, 46) : '<span class="pe"></span>';
@@ -1706,31 +1852,42 @@ function renderGame(force) {
 
 /* =====================================================================
    ПОДСКАЗКИ: рука-указатель ищет следующее полезное действие
+   (по ней же играет отладочный бот)
    ===================================================================== */
+// Готовые блюда, которые можно выбрать для подачи
 function readySources(dish) {
   const out = [];
   for (const st of G.stations) {
     const s = G.st[st.id], k = 'k-' + st.id;
     if (st.type === 'assembly') s.slots.forEach((x, i) => { if (x && x.state === 'ready' && x.dish === dish) out.push(byId(`${k}-s${i}`)); });
-    else if (st.type === 'fryer' && st.dish === dish) {
-      s.slots.forEach((x, i) => { if (x && x.state === 'ready') out.push(byId(`${k}-s${i}`)); });
-      s.tray.forEach((x, i) => { if (x) out.push(byId(`${k}-t${i}`)); });
-    } else if (st.type === 'dispenser' && st.dish === dish && s.count > 0) out.push(byId(k));
+    else if (st.type === 'fryer' && st.dish === dish) s.tray.forEach((x, i) => { if (x) out.push(byId(`${k}-t${i}`)); });
+    else if (st.type === 'brew' && st.dish === dish) s.cups.forEach((x, i) => { if (x) out.push(byId(`${k}-c${i}`)); });
+    else if (st.type === 'dispenser' && st.dish === dish && s.count > 0) out.push(byId(k));
   }
   return out;
 }
 function computeHint() {
   const trashEl = byId('k-trash');
-  // 1. Сгоревшее и неправильное — выбросить
+  const waiting = G.vis.filter(v => v.state === 'wait').sort((a, b) => a.id - b.id);
+  // 0. Блюдо выбрано — отдать тому, кто ждёт его дольше всех; если никому не нужно — выбросить
+  const sd = selDish();
+  if (sd) {
+    const v = waiting.find(x => x.order.some(o => !o.done && o.dish === sd));
+    return v ? byId('vis-' + v.id) : trashEl;
+  }
+  // 1. Сгоревшее и неправильное — выбросить; готовую темпуру — снять с огня
   for (const st of G.stations) {
     const s = G.st[st.id], k = 'k-' + st.id;
-    if (st.type === 'fryer') { const i = s.slots.findIndex(x => x && x.state === 'burnt'); if (i >= 0) return byId(`${k}-s${i}`); }
+    if (st.type === 'fryer') {
+      let i = s.slots.findIndex(x => x && x.state === 'burnt'); if (i >= 0) return byId(`${k}-s${i}`);
+      i = s.slots.findIndex(x => x && x.state === 'ready');
+      if (i >= 0 && s.tray.some(x => !x)) return byId(`${k}-s${i}`);
+    }
     if (st.type === 'assembly') { const i = s.slots.findIndex(x => x && x.state === 'wrong'); if (i >= 0) return byId(`${k}-s${i}`); }
   }
   const needs = [];
-  G.vis.filter(v => v.state === 'wait').sort((a, b) => a.id - b.id)
-    .forEach(v => v.order.forEach(o => { if (!o.done) needs.push(o.dish); }));
-  // 2. Подать готовое
+  waiting.forEach(v => v.order.forEach(o => { if (!o.done) needs.push(o.dish); }));
+  // 2. Выбрать готовое блюдо, которое кто-то ждёт
   for (const d of needs) { const r = readySources(d); if (r.length) return r[0]; }
   // 3. Начать или продолжить готовку
   const used = new Set(); let blocked = null;
@@ -1756,9 +1913,12 @@ function computeHint() {
       const i = s.slots.findIndex((x, j) => x && x.state === 'cook' && !used.has(k + j));
       if (i >= 0) { used.add(k + i); continue; }
       if (s.slots.some(x => !x)) return byId(`${k}-in`);
+    } else if (st.type === 'brew') {
+      if (s.water === 'hot' && s.left > 0 && s.cups.some(x => !x)) return byId(`${k}-cup`);
+      if (s.water === 'empty') return byId(`${k}-kettle`);
     }
   }
-  // 4. Все циновки заняты ненужным — освободить
+  // 4. Все места заняты ненужным — освободить
   if (blocked) {
     const s = G.st[blocked.id], k = 'k-' + blocked.id;
     const i = s.slots.findIndex((x, j) => x && !used.has(k + j) && (x.state === 'ready' || x.state === 'base'));
@@ -1773,7 +1933,8 @@ function updateHand() {
   if (!target) { hand.style.display = 'none'; return; }
   const r = stageRect(target);
   if (hand.style.display !== 'block') { hand.style.display = 'block'; hand.firstElementChild.innerHTML = spr('hand', 96); }
-  const cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+  // На посетителя указываем в пузырь заказа, на остальное — в центр
+  const cx = r.x + r.w / 2, cy = target.classList.contains("vis") ? 170 : r.y + r.h / 2;
   // Кончик пальца: у картинки (палец вниз) — снизу, у эмодзи 👆 — сверху слева
   const tip = SPR_OK.hand ? CONFIG.handTip : [0.3, 0.05];
   hand.style.left = (cx - tip[0] * 96) + 'px';
@@ -1785,7 +1946,7 @@ function updateHand() {
    ===================================================================== */
 const calcStars = () => G.L.goal.filter(g => G.coins >= g).length;
 function endLevel() {
-  G.state = 'end'; G.trash = false;
+  G.state = 'end'; G.trash = false; G.sel = null;
   renderGame();
   const stars = calcStars();
   if (stars > 0) { finalize(); Sound.play('win'); } else Sound.play('lose');
