@@ -53,6 +53,7 @@ button{font:inherit;color:inherit}
   gap:10px;font-size:34px;font-weight:800;text-shadow:0 2px 0 rgba(0,0,0,.3);white-space:nowrap}
 .topbar{position:absolute;left:0;right:0;top:0;height:110px;display:flex;align-items:center;gap:18px;padding:0 26px;z-index:5}
 .topbar .grow{flex:1}
+.testmark{background:#c62e1e;padding:6px 20px;font-size:28px}
 .title-txt{font-size:48px;font-weight:900;color:#fff;text-shadow:0 4px 0 #6b3a17,0 6px 12px rgba(0,0,0,.4);white-space:nowrap}
 
 /* ===================== ЗАГРУЗКА ===================== */
@@ -707,6 +708,8 @@ function t(key, ...args) {
 }
 const tr = o => (o ? (o[LANG] || o.ru) : '');
 const DEBUG = /[?&]debug/.test(location.search);
+// Тестовый режим (?test): 99999 монет, все уровни открыты, отдельное сохранение без облака и лидерборда
+const TEST = /[?&]test/.test(location.search);
 
 /* =====================================================================
    СПРАЙТЫ: грузим из img/, при ошибке — эмодзи-заглушка
@@ -913,8 +916,9 @@ const Save = {
   },
   async load() {
     let local = null;
-    try { local = JSON.parse(localStorage.getItem(CONFIG.saveKey) || 'null'); } catch (e) {}
-    const cloud = await SDK.getData();
+    const key = CONFIG.saveKey + (TEST ? '_test' : '');
+    try { local = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
+    const cloud = TEST ? null : await SDK.getData();
     let best = local;
     if (cloud && (!best || (cloud.ts || 0) > (best.ts || 0))) best = cloud;
     const f = this.fresh();
@@ -922,11 +926,12 @@ const Save = {
     this.data.stats = Object.assign(this.fresh().stats, (best && best.stats) || {});
     if (!this.data.daily) this.data.daily = { last: '', streak: 0 };
     if (!this.data.ach) this.data.ach = {};
+    if (TEST) this.data.coins = Math.max(this.data.coins, 99999);
   },
   write() {
     this.data.ts = Date.now();
-    try { localStorage.setItem(CONFIG.saveKey, JSON.stringify(this.data)); } catch (e) {}
-    SDK.setData(this.data);
+    try { localStorage.setItem(CONFIG.saveKey + (TEST ? '_test' : ''), JSON.stringify(this.data)); } catch (e) {}
+    if (!TEST) SDK.setData(this.data);
   }
 };
 function restSave(id) {
@@ -1116,7 +1121,7 @@ function renderWorld() {
     ${pic ? '' : `<svg class="map-svg" viewBox="0 0 1600 900" width="1600" height="900"><path d="${path}" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="4 26" stroke-linecap="round" opacity=".9"/></svg>`}
     ${nodes}
     <div class="topbar">
-      ${spr('logo', 84)}<div class="title-txt">${esc(t('title'))}</div><div class="grow"></div>
+      ${spr('logo', 84)}<div class="title-txt">${esc(t('title'))}</div>${TEST ? '<div class="pill testmark">ТЕСТ</div>' : ''}<div class="grow"></div>
       <div class="pill">${spr('star', 48)}<span>${stars}</span></div>
       ${heartPill()}${coinPill()}
       <button class="ibtn" data-act="daily">${spr('ic_gift', 56)}${dailyAvailable() ? '<span class="dot">!</span>' : ''}</button>
@@ -1135,7 +1140,7 @@ function levelPos(i, n) {
   const row = Math.floor(i / 5); let col = i % 5; if (row % 2) col = 4 - col;
   return { x: 280 + col * 260, y: 490 - span / 2 + (rows > 1 ? row * span / (rows - 1) : 0) };
 }
-const levelUnlocked = (R, i) => i === 0 || (restSave(R.id).stars[i - 1] || 0) > 0;
+const levelUnlocked = (R, i) => TEST || i === 0 || (restSave(R.id).stars[i - 1] || 0) > 0;
 function renderLevels() {
   const R = restById(curRest), rs = restSave(R.id);
   const el = byId('scr-levels');
@@ -1156,7 +1161,7 @@ function renderLevels() {
     ${nodes}
     <div class="topbar">
       <button class="ibtn" data-act="world">${spr('ic_back', 56)}</button>
-      ${spr(R.icon, 80)}<div class="title-txt">${esc(tr(R.name))}</div><div class="grow"></div>
+      ${spr(R.icon, 80)}<div class="title-txt">${esc(tr(R.name))}</div>${TEST ? '<div class="pill testmark">ТЕСТ</div>' : ''}<div class="grow"></div>
       <div class="pill">${spr('star', 48)}<span>${restStars(R.id)}/${R.levels.length * 3}</span></div>
       ${coinPill()}
       <button class="ibtn" data-act="shop">${spr('ic_shop', 56)}</button>
@@ -1584,12 +1589,18 @@ function takeSel() {
   else if (S.kind === 'disp') s.count--;
   G.sel = null;
 }
-// «Официант»: отдать блюдо из источника тому, кто ждёт его дольше всех; false — никому не нужно
+// «Официант»: отдать блюдо из источника тому, кто ждёт его дольше всех.
+// Если блюдо никому не нужно — оно выделяется, чтобы его можно было выбросить в мусорку (или отдать позже)
 function autoServe(kind, sid, i, el) {
+  const same = G.sel && G.sel.kind === kind && G.sel.sid === sid && G.sel.i === i;
   G.sel = { kind, sid, i };
   const dish = selDish();
   const v = dish && G.vis.filter(x => x.state === 'wait' && x.order.some(o => !o.done && o.dish === dish)).sort((a, b) => a.id - b.id)[0];
-  if (!v) { G.sel = null; shake(el); Sound.play('bad'); return false; }
+  if (!v) {
+    if (same) G.sel = null; // повторный тап снимает выделение
+    shake(el); Sound.play('bad');
+    return false;
+  }
   takeSel();
   serveTo(v, dish, el);
   return true;
@@ -1986,7 +1997,7 @@ function finalize() {
   Save.data.coins += G.coins;
   checkAch();
   Save.write();
-  SDK.setScore(Save.data.stats.hearts);
+  if (!TEST) SDK.setScore(Save.data.stats.hearts);
 }
 function showResult() {
   const stars = calcStars(), win = stars > 0;
