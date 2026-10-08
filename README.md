@@ -62,7 +62,7 @@ python3 -m http.server 8000
 - `roll_wrong.png` (неправильный ролл) собран из ролла-ассорти: обесцвечен и перечёркнут.
 - Рука-указатель на картинке смотрит вниз; где у неё кончик пальца, задаёт `CONFIG.handTip`.
 
-### Уже в `img/` (83)
+### Уже в `img/` (92)
 
 | Файл | Ключи в CONFIG | Заглушка |
 |---|---|---|
@@ -149,8 +149,17 @@ python3 -m http.server 8000
 | `jug.png` | jug_0, jug_1, jug_2, jug_3 | 🫖 |
 | `glass_empty.png` | glass_empty | 🥛 |
 | `mugicha.png` | mugicha | 🥤 |
+| `up_broth_speed.png` | up_broth_speed | ⚡ |
+| `up_ramen_slots.png` | up_ramen_slots | 🍜 |
+| `up_pan_speed.png` | up_pan_speed | 🔥 |
+| `up_pan_slots.png` | up_pan_slots | 🍳 |
+| `up_boil_slots.png` | up_boil_slots | ♨️ |
+| `up_jug.png` | up_jug | 🫖 |
+| `up_price_ramen.png` | up_price_ramen | 🍜 |
+| `up_price_snack.png` | up_price_snack | 🥟 |
+| `up_price_drink.png` | up_price_drink | 🥤 |
 
-### Пока нет — рисуется эмодзи-заглушка (33)
+### Пока нет — рисуется эмодзи-заглушка (24)
 
 | Файл | Ключи в CONFIG | Заглушка |
 |---|---|---|
@@ -178,12 +187,3 @@ python3 -m http.server 8000
 | `up_price_tempura.png` | up_price_tempura | 🍤 |
 | `up_price_soup.png` | up_price_soup | 🍲 |
 | `up_auto_serve.png` | up_auto_serve | 🛎️ |
-| `up_broth_speed.png` | up_broth_speed | ⚡ |
-| `up_ramen_slots.png` | up_ramen_slots | 🍜 |
-| `up_pan_speed.png` | up_pan_speed | 🔥 |
-| `up_pan_slots.png` | up_pan_slots | 🍳 |
-| `up_boil_slots.png` | up_boil_slots | ♨️ |
-| `up_jug.png` | up_jug | 🫖 |
-| `up_price_ramen.png` | up_price_ramen | 🍜 |
-| `up_price_snack.png` | up_price_snack | 🥟 |
-| `up_price_drink.png` | up_price_drink | 🥤 |
