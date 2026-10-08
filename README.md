@@ -34,7 +34,7 @@ python3 -m http.server 8000
 - **Мусорка**: если блюдо выбрано, тап по мусорке выбрасывает его. Без выбора тап включает режим выбрасывания: следующий тап по слоту очищает его. Сгоревшее и неправильное выбрасывается и обычным тапом.
 - **Уровни**: в суши-баре 10 уровней. На уровнях 1–7 по одному добавляются блюда (лосось, мисо, огурец, темпура, авокадо, ассорти, чай), на 8–10 растут темп и длина заказов. Уровни 1–3 обучающие. Список уровней — `levels` в CONFIG, их число можно менять: карта уровней раскладывается рядами по 5.
 - **«Официант»** (зал, 1500 монет, одна ступень): тап по готовому блюду сразу отдаёт его посетителю, который ждёт дольше всех, а готовая темпура уходит прямо с огня. Если блюдо никому не нужно, оно выделяется, и тап по мусорке его выбрасывает. Бот с паузой 1 с между действиями и первыми ступенями улучшений с ним зарабатывает примерно на треть больше, поэтому улучшение дорогое.
-- **Рестораны**: по 30 звёзд на ресторан, требования к следующим — 20, 45, 70 и 95 звёзд.
+- **Рестораны**: по 30 звёзд на ресторан, требования — 20, 45, 70 и 95 звёзд. Работают «Суши-бар» и «Раменная» (рамен 4 видов, гёдза на сковороде, эдамамэ в кастрюле, ячменный чай из кувшина), остальные пока заглушки. Общие параметры зала (посетители, чаевые, комбо) вынесены в `HALL`, каждый ресторан подключает их через `...HALL`.
 - **Ширина кухни**: если станций много (поздние уровни с полной прокачкой), кухня целиком ужимается, чтобы поместиться по ширине.
 - Оплата за весь заказ; чаевые +50% при терпении выше 66% и +20% выше 33%. Сердце, если терпение выше 50%.
 - Комбо: каждая подача не позже чем через 3 с после предыдущей поднимает множитель x2 → x3 → x4 и даёт +3/+6/+10 монет. Комбо показывается крупной надписью и счётчиком в шапке.
@@ -62,7 +62,7 @@ python3 -m http.server 8000
 - `roll_wrong.png` (неправильный ролл) собран из ролла-ассорти: обесцвечен и перечёркнут.
 - Рука-указатель на картинке смотрит вниз; где у неё кончик пальца, задаёт `CONFIG.handTip`.
 
-### Уже в `img/` (56)
+### Уже в `img/` (83)
 
 | Файл | Ключи в CONFIG | Заглушка |
 |---|---|---|
@@ -117,13 +117,40 @@ python3 -m http.server 8000
 | `pot.png` | pot_0, pot_1, pot_2, pot_3 | 🥘 |
 | `teapot.png` | teapot_0, teapot_1, teapot_2, teapot_3 | 🫖 |
 | `trash.png` | trash | 🗑️ |
+| `rest_ramen.png` | rest_ramen | 🍜 |
 | `up_roll_speed.png` | up_roll_speed | ⚡ |
 | `up_mats.png` | up_mats | 🎋 |
 | `up_price_roll.png` | up_price_roll | 🍣 |
 | `up_patience.png` | up_patience | ⌛ |
 | `up_tips.png` | up_tips | 💰 |
+| `bg_levels_ramen.jpg` | bg_levels_ramen | CSS |
+| `bg_hall_ramen.jpg` | bg_hall_ramen | CSS |
+| `bg_kitchen_ramen.jpg` | bg_kitchen_ramen | CSS |
+| `counter_ramen.jpg` | counter_ramen | CSS |
+| `ramen_base.png` | ramen_base | 🍜 |
+| `chashu.png` | chashu | 🥓 |
+| `ajitama.png` | ajitama | 🥚 |
+| `corn.png` | corn | 🌽 |
+| `ramen_chashu.png` | ramen_chashu | 🍜 + 🥓 |
+| `ramen_egg.png` | ramen_egg | 🍜 + 🥚 |
+| `ramen_corn.png` | ramen_corn | 🍜 + 🌽 |
+| `ramen_full.png` | ramen_full | 🍜 + 🌈 |
+| `ramen_wrong.png` | ramen_wrong | 🍜 + ❌ |
+| `gyoza_raw.png` | gyoza_raw | 🥟 |
+| `gyoza.png` | gyoza | 🥟 + 🔥 |
+| `gyoza_burnt.png` | gyoza_burnt | 🥟 |
+| `pan.png` | pan_0, pan_1 | CSS |
+| `pan_gold.png` | pan_2, pan_3 | CSS |
+| `edamame_raw.png` | edamame_raw | 🫛 |
+| `edamame.png` | edamame | 🫛 + 🥣 |
+| `edamame_over.png` | edamame_over | 🫛 |
+| `boil_pot.png` | boilpot_0, boilpot_1 | CSS |
+| `boil_pot_gold.png` | boilpot_2, boilpot_3 | CSS |
+| `jug.png` | jug_0, jug_1, jug_2, jug_3 | 🫖 |
+| `glass_empty.png` | glass_empty | 🥛 |
+| `mugicha.png` | mugicha | 🥤 |
 
-### Пока нет — рисуется эмодзи-заглушка (25)
+### Пока нет — рисуется эмодзи-заглушка (33)
 
 | Файл | Ключи в CONFIG | Заглушка |
 |---|---|---|
@@ -141,7 +168,6 @@ python3 -m http.server 8000
 | `mood_happy.png` | mood_happy | 😊 |
 | `mood_angry.png` | mood_angry | 😠 |
 | `rest_sushi.png` | rest_sushi | 🍣 |
-| `rest_ramen.png` | rest_ramen | 🍜 |
 | `rest_wok.png` | rest_wok | 🥡 |
 | `rest_dimsum.png` | rest_dimsum | 🥟 |
 | `rest_sweets.png` | rest_sweets | 🍡 |
@@ -152,3 +178,12 @@ python3 -m http.server 8000
 | `up_price_tempura.png` | up_price_tempura | 🍤 |
 | `up_price_soup.png` | up_price_soup | 🍲 |
 | `up_auto_serve.png` | up_auto_serve | 🛎️ |
+| `up_broth_speed.png` | up_broth_speed | ⚡ |
+| `up_ramen_slots.png` | up_ramen_slots | 🍜 |
+| `up_pan_speed.png` | up_pan_speed | 🔥 |
+| `up_pan_slots.png` | up_pan_slots | 🍳 |
+| `up_boil_slots.png` | up_boil_slots | ♨️ |
+| `up_jug.png` | up_jug | 🫖 |
+| `up_price_ramen.png` | up_price_ramen | 🍜 |
+| `up_price_snack.png` | up_price_snack | 🥟 |
+| `up_price_drink.png` | up_price_drink | 🥤 |

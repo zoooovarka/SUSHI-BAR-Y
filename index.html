@@ -379,6 +379,33 @@ const M4 = [...M3, 'tempura'];
 const M5 = [...M4, 'roll_avocado'];
 const M6 = [...M5, 'roll_mix'];
 const M7 = [...M6, 'tea'];
+const RM1 = ['ramen_chashu'];
+const RM2 = [...RM1, 'gyoza'];
+const RM3 = [...RM2, 'ramen_egg'];
+const RM4 = [...RM3, 'mugicha'];
+const RM5 = [...RM4, 'edamame'];
+const RM6 = [...RM5, 'ramen_corn'];
+const RM7 = [...RM6, 'ramen_full'];
+
+// Общие параметры зала для всех ресторанов (ресторан может переопределить любое поле)
+const HALL = {
+  seats: 4,                                 // мест у стойки
+  // Посетители: весёлый и злой спрайт; shirt — цвет одежды для заглушки без картинок
+  visitors: [
+    { happy: 'visitor_1', angry: 'visitor_1_angry', shirt: '#f2b630' },
+    { happy: 'visitor_2', angry: 'visitor_2_angry', shirt: '#2f3f8f' },
+    { happy: 'visitor_3', angry: 'visitor_3_angry', shirt: '#5a7a3a' },
+    { happy: 'visitor_4', angry: 'visitor_4_angry', shirt: '#e870a8' },
+    { happy: 'visitor_5', angry: 'visitor_5_angry', shirt: '#3f8fd8' },
+    { happy: 'visitor_6', angry: 'visitor_6_angry', shirt: '#a77acb' }
+  ],
+  angryBelow: 0.33,                         // при терпении ниже 33% посетитель начинает злиться
+  tips: [ { above: 0.66, bonus: 0.5 }, { above: 0.33, bonus: 0.2 } ], // чаевые от остатка терпения
+  heartAbove: 0.5,                          // сердце, если терпение выше 50%
+  patiencePerExtraItem: 0.3,                // +30% терпения за каждую позицию заказа после первой
+  patienceRefill: 0.12,                     // доля терпения, возвращаемая при подаче блюда
+  combo: { window: 3, bonus: [3, 6, 10] },  // подачи с паузой < 3 с: x2, x3, x4 и бонус монет за подачу
+};
 
 const CONFIG = {
   imgPath: 'img/',
@@ -490,7 +517,50 @@ const CONFIG = {
     up_price_soup:   { file: 'up_price_soup.png',    emoji: '🍲' },
     up_patience:     { file: 'up_patience.png',      emoji: '⌛' },
     up_tips:         { file: 'up_tips.png',          emoji: '💰' },
-    up_auto_serve:   { file: 'up_auto_serve.png',    emoji: '🛎️' }
+    up_auto_serve:   { file: 'up_auto_serve.png',    emoji: '🛎️' },
+    // ---- Раменная ----
+    bg_levels_ramen: { file: 'bg_levels_ramen.jpg',  emoji: '' },
+    bg_hall_ramen:   { file: 'bg_hall_ramen.jpg',    emoji: '' },
+    bg_kitchen_ramen:{ file: 'bg_kitchen_ramen.jpg', emoji: '' },
+    counter_ramen:   { file: 'counter_ramen.jpg',    emoji: '' },
+    ramen_base:      { file: 'ramen_base.png',       emoji: '🍜' },   // миска лапши в бульоне — основа
+    chashu:          { file: 'chashu.png',           emoji: '🥓' },
+    ajitama:         { file: 'ajitama.png',          emoji: '🥚' },
+    corn:            { file: 'corn.png',             emoji: '🌽' },
+    ramen_chashu:    { file: 'ramen_chashu.png',     emoji: '🍜', badge: '🥓' },
+    ramen_egg:       { file: 'ramen_egg.png',        emoji: '🍜', badge: '🥚' },
+    ramen_corn:      { file: 'ramen_corn.png',       emoji: '🍜', badge: '🌽' },
+    ramen_full:      { file: 'ramen_full.png',       emoji: '🍜', badge: '🌈' },
+    ramen_wrong:     { file: 'ramen_wrong.png',      emoji: '🍜', badge: '❌', css: 'wrong' },
+    gyoza_raw:       { file: 'gyoza_raw.png',        emoji: '🥟' },
+    gyoza:           { file: 'gyoza.png',            emoji: '🥟', badge: '🔥' },
+    gyoza_burnt:     { file: 'gyoza_burnt.png',      emoji: '🥟', css: 'burnt' },
+    pan_0:           { file: 'pan.png',              emoji: '' },
+    pan_1:           { file: 'pan.png',              emoji: '' },
+    pan_2:           { file: 'pan_gold.png',         emoji: '' },
+    pan_3:           { file: 'pan_gold.png',         emoji: '' },
+    edamame_raw:     { file: 'edamame_raw.png',      emoji: '🫛' },
+    edamame:         { file: 'edamame.png',          emoji: '🫛', badge: '🥣' },
+    edamame_over:    { file: 'edamame_over.png',     emoji: '🫛', css: 'burnt' },
+    boilpot_0:       { file: 'boil_pot.png',         emoji: '' },
+    boilpot_1:       { file: 'boil_pot.png',         emoji: '' },
+    boilpot_2:       { file: 'boil_pot_gold.png',    emoji: '' },
+    boilpot_3:       { file: 'boil_pot_gold.png',    emoji: '' },
+    jug_0:           { file: 'jug.png',              emoji: '🫖' },
+    jug_1:           { file: 'jug.png',              emoji: '🫖' },
+    jug_2:           { file: 'jug.png',              emoji: '🫖' },
+    jug_3:           { file: 'jug.png',              emoji: '🫖' },
+    glass_empty:     { file: 'glass_empty.png',      emoji: '🥛', css: 'gray' },
+    mugicha:         { file: 'mugicha.png',          emoji: '🥤' },
+    up_broth_speed:  { file: 'up_broth_speed.png',   emoji: '⚡' },
+    up_ramen_slots:  { file: 'up_ramen_slots.png',   emoji: '🍜' },
+    up_pan_speed:    { file: 'up_pan_speed.png',     emoji: '🔥' },
+    up_pan_slots:    { file: 'up_pan_slots.png',     emoji: '🍳' },
+    up_boil_slots:   { file: 'up_boil_slots.png',    emoji: '♨️' },
+    up_jug:          { file: 'up_jug.png',           emoji: '🫖' },
+    up_price_ramen:  { file: 'up_price_ramen.png',   emoji: '🍜' },
+    up_price_snack:  { file: 'up_price_snack.png',   emoji: '🥟' },
+    up_price_drink:  { file: 'up_price_drink.png',   emoji: '🥤' }
   },
 
   // Декор на карте мира (только эмодзи)
@@ -526,22 +596,7 @@ const CONFIG = {
       icon: 'rest_sushi', bgLevels: 'bg_levels_sushi', bgHall: 'bg_hall_sushi', bgKitchen: 'bg_kitchen_sushi', bgCounter: 'counter_sushi',
       mapPos: { x: 250, y: 210 },
       starsRequired: 0,
-      seats: 4,                                 // мест у стойки
-      // Посетители: весёлый и злой спрайт; shirt — цвет одежды для заглушки без картинок
-      visitors: [
-        { happy: 'visitor_1', angry: 'visitor_1_angry', shirt: '#f2b630' },
-        { happy: 'visitor_2', angry: 'visitor_2_angry', shirt: '#2f3f8f' },
-        { happy: 'visitor_3', angry: 'visitor_3_angry', shirt: '#5a7a3a' },
-        { happy: 'visitor_4', angry: 'visitor_4_angry', shirt: '#e870a8' },
-        { happy: 'visitor_5', angry: 'visitor_5_angry', shirt: '#3f8fd8' },
-        { happy: 'visitor_6', angry: 'visitor_6_angry', shirt: '#a77acb' }
-      ],
-      angryBelow: 0.33,                         // при терпении ниже 33% посетитель начинает злиться
-      tips: [ { above: 0.66, bonus: 0.5 }, { above: 0.33, bonus: 0.2 } ], // чаевые от остатка терпения
-      heartAbove: 0.5,                          // сердце, если терпение выше 50%
-      patiencePerExtraItem: 0.3,                // +30% терпения за каждую позицию заказа после первой
-      patienceRefill: 0.12,                     // доля терпения, возвращаемая при подаче блюда
-      combo: { window: 3, bonus: [3, 6, 10] },  // подачи с паузой < 3 с: x2, x3, x4 и бонус монет за подачу
+      ...HALL,                                  // посетители, чаевые, сердца, комбо — общие для всех ресторанов
 
       // Блюда: цена, спрайт, параметр-множитель цены, вес в заказах
       dishes: {
@@ -567,7 +622,7 @@ const CONFIG = {
             { dish: 'roll_mix',      set: ['salmon', 'cucumber', 'avocado'] }
           ],
           wrong: 'roll_wrong' },
-        { id: 'fryer', type: 'fryer', slots: 'fryerSlots', time: 'fryTime', burn: 'burnTime', penalty: 5, look: 'fryerSlots', sprite: 'fryer',
+        { id: 'fryer', type: 'fryer', slots: 'fryerSlots', time: 'fryTime', burn: 'burnTime', penalty: 5, look: 'fryerSlots', sprite: 'fryer', stat: 'tempura',
           input: 'shrimp_raw', dish: 'tempura', burnt: 'tempura_burnt' },
         // Мисо: миска + тофу + вакамэ, тап по миске — налить бульон
         { id: 'soup', type: 'assembly', slots: 'soupSlots', time: 'soupTime', look: 'soupCap', slotClass: 'bowlslot', size: 84, stat: 'soups',
@@ -642,7 +697,104 @@ const CONFIG = {
       ]
     },
     // Заглушки будущих ресторанов: только карточка на карте
-    { id: 'ramen',  name: { ru: 'Раменная', en: 'Ramen House' },             icon: 'rest_ramen',  mapPos: { x: 830,  y: 230 }, starsRequired: 20,  comingSoon: true },
+    {
+      id: 'ramen',
+      name: { ru: 'Раменная', en: 'Ramen House' },
+      icon: 'rest_ramen', bgLevels: 'bg_levels_ramen', bgHall: 'bg_hall_ramen', bgKitchen: 'bg_kitchen_ramen', bgCounter: 'counter_ramen',
+      mapPos: { x: 830, y: 230 },
+      starsRequired: 20,
+      ...HALL,
+
+      dishes: {
+        ramen_chashu: { name: { ru: 'Рамен с чашу', en: 'Chashu ramen' },        price: 14, sprite: 'ramen_chashu', priceUp: 'priceRamen', weight: 1 },
+        ramen_egg:    { name: { ru: 'Рамен с яйцом', en: 'Egg ramen' },          price: 18, sprite: 'ramen_egg',    priceUp: 'priceRamen', weight: 1 },
+        ramen_corn:   { name: { ru: 'Рамен с кукурузой', en: 'Corn ramen' },     price: 18, sprite: 'ramen_corn',   priceUp: 'priceRamen', weight: 1 },
+        ramen_full:   { name: { ru: 'Рамен «всё сразу»', en: 'Deluxe ramen' },   price: 28, sprite: 'ramen_full',   priceUp: 'priceRamen', weight: 0.7 },
+        gyoza:        { name: { ru: 'Гёдза', en: 'Gyoza' },                      price: 14, sprite: 'gyoza',        priceUp: 'priceSnack', weight: 1 },
+        edamame:      { name: { ru: 'Эдамамэ', en: 'Edamame' },                  price: 10, sprite: 'edamame',      priceUp: 'priceSnack', weight: 1 },
+        mugicha:      { name: { ru: 'Ячменный чай', en: 'Barley tea' },          price: 8,  sprite: 'mugicha',      priceUp: 'priceDrink', weight: 0.9 }
+      },
+
+      stations: [
+        // Рамен: миска лапши + чашу, затем яйцо и/или кукуруза; тап по миске — залить бульоном
+        { id: 'ramen', type: 'assembly', slots: 'ramenSlots', time: ['brothTime', 'brothMul'], look: 'ramenSlots', slotClass: 'bowlslot', size: 88, stat: 'ramens',
+          base: 'ramen_base', toppings: ['chashu', 'ajitama', 'corn'],
+          recipes: [
+            { dish: 'ramen_chashu', set: ['chashu'] },
+            { dish: 'ramen_egg',    set: ['chashu', 'ajitama'] },
+            { dish: 'ramen_corn',   set: ['chashu', 'corn'] },
+            { dish: 'ramen_full',   set: ['chashu', 'ajitama', 'corn'] }
+          ],
+          wrong: 'ramen_wrong' },
+        // Гёдза: обжарить на сковороде и снять, пока не подгорели
+        { id: 'pan', type: 'fryer', slots: 'panSlots', time: 'panTime', burn: 'panBurn', penalty: 5, look: 'panSlots', sprite: 'pan',
+          input: 'gyoza_raw', dish: 'gyoza', burnt: 'gyoza_burnt' },
+        // Эдамамэ: сварить и снять, пока не разварились
+        { id: 'boil', type: 'fryer', slots: 'boilSlots', time: 4, burn: 'boilOver', penalty: 3, look: 'boilSlots', sprite: 'boilpot',
+          input: 'edamame_raw', dish: 'edamame', burnt: 'edamame_over' },
+        // Ячменный чай: заварить кувшин, затем наливать стаканы
+        { id: 'jug', type: 'brew', dish: 'mugicha', kettle: 'jug', cup: 'glass_empty', cups: 3, boil: 'jugTime', cap: 'jugCap', look: 'jugCap' },
+        { id: 'trash', type: 'trash', sprite: 'trash' }
+      ],
+
+      upgrades: [
+        { id: 'brothSpeed',  group: 'kitchen', icon: 'up_broth_speed', costs: [110, 270, 580],
+          name: { ru: 'Горячий бульон', en: 'Hot broth' },
+          params: { brothTime: { v: [2, 1.7, 1.4, 1.1], fmt: 'sec' } } },
+        { id: 'ramenSlots',  group: 'kitchen', icon: 'up_ramen_slots', costs: [220, 550, 820],
+          name: { ru: 'Больше мисок', en: 'More bowls' },
+          params: { ramenSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    brothMul: { v: [1, 1, 1, 0.8], fmt: 'time', label: { ru: 'бульон', en: 'broth' } } } },
+        { id: 'panSpeed',    group: 'kitchen', icon: 'up_pan_speed',   costs: [170, 360, 690],
+          name: { ru: 'Раскалённая сковорода', en: 'Hot pan' },
+          params: { panTime: { v: [5, 4.3, 3.6, 3], fmt: 'sec' } } },
+        { id: 'panSlots',    group: 'kitchen', icon: 'up_pan_slots',   costs: [270, 640, 820],
+          name: { ru: 'Большая сковорода', en: 'Big pan' },
+          params: { panSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    panBurn: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до подгорания', en: 'before burning' } } } },
+        { id: 'boilSlots',   group: 'kitchen', icon: 'up_boil_slots',  costs: [150, 380, 620],
+          name: { ru: 'Кастрюля побольше', en: 'Bigger pot' },
+          params: { boilSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    boilOver: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до разваривания', en: 'before overcooking' } } } },
+        { id: 'jugCap',      group: 'kitchen', icon: 'up_jug',         costs: [130, 320, 500],
+          name: { ru: 'Большой кувшин', en: 'Big jug' },
+          params: { jugCap: { v: [2, 3, 3, 4], fmt: 'count' },
+                    jugTime: { v: [4, 4, 3, 3], fmt: 'sec', label: { ru: 'заварка', en: 'brewing' } } } },
+        { id: 'priceRamen',  group: 'food', icon: 'up_price_ramen',    costs: [180, 440, 870],
+          name: { ru: 'Наваристый бульон', en: 'Rich broth' },
+          params: { priceRamen: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceSnack',  group: 'food', icon: 'up_price_snack',    costs: [160, 400, 780],
+          name: { ru: 'Хрустящие закуски', en: 'Crispy snacks' },
+          params: { priceSnack: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceDrink',  group: 'food', icon: 'up_price_drink',    costs: [110, 280, 560],
+          name: { ru: 'Душистый чай', en: 'Fragrant tea' },
+          params: { priceDrink: { v: [1, 1.25, 1.5, 1.8], fmt: 'mult' } } },
+        { id: 'patience',    group: 'hall', icon: 'up_patience',       costs: [180, 450, 870],
+          name: { ru: 'Уютный зал', en: 'Cozy hall' },
+          params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
+        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',     costs: [1800],
+          name: { ru: 'Официант', en: 'Waiter' },
+          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
+        { id: 'tips',        group: 'hall', icon: 'up_tips',           costs: [170, 420, 820],
+          name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
+          params: { tips: { v: [1, 1.3, 1.6, 2], fmt: 'mult' } } }
+      ],
+
+      // Каждый уровень 1–7 добавляет блюдо (подсказка-рука показывает новое), 8–10 — темп и длинные заказы
+      levels: [
+        { time: 70,  seats: 3, every: [6.5, 8.5], patience: 30, items: [1, 2], menu: RM1, intro: 'ramen_chashu', goal: [190, 235, 300] },
+        { time: 80,  seats: 3, every: [6, 8],     patience: 29, items: [1, 2], menu: RM2, intro: 'gyoza', goal: [210, 260, 370] },
+        { time: 85,  seats: 4, every: [5.5, 7.5], patience: 28, items: [1, 2], menu: RM3, intro: 'ramen_egg', goal: [225, 300, 430] },
+        { time: 90,  seats: 4, every: [5.5, 7.5], patience: 27, items: [1, 2], menu: RM4, intro: 'mugicha', goal: [230, 300, 400] },
+        { time: 95,  seats: 4, every: [5, 7],     patience: 26, items: [1, 3], menu: RM5, intro: 'edamame', goal: [240, 375, 515] },
+        { time: 100, seats: 4, every: [5, 7],     patience: 26, items: [1, 3], menu: RM6, intro: 'ramen_corn', goal: [250, 470, 660] },
+        { time: 105, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 3], menu: RM7, intro: 'ramen_full', goal: [260, 520, 800] },
+        { time: 110, seats: 4, every: [4.5, 6],   patience: 24, items: [2, 3], menu: RM7, goal: [270, 545, 815] },
+        { time: 115, seats: 4, every: [4, 5.5],   patience: 23, items: [2, 3], menu: RM7, goal: [280, 550, 825] },
+        { time: 120, seats: 4, every: [3.5, 5],   patience: 22, items: [2, 3], menu: RM7, goal: [290, 570, 840] }
+      ]
+    },
     { id: 'wok',    name: { ru: 'Вок-стрит', en: 'Wok Street' },              icon: 'rest_wok',    mapPos: { x: 1400, y: 290 }, starsRequired: 45,  comingSoon: true },
     { id: 'sweets', name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' },  icon: 'rest_sweets', mapPos: { x: 1215, y: 680 }, starsRequired: 70,  comingSoon: true },
     { id: 'dimsum', name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },         icon: 'rest_dimsum', mapPos: { x: 400,  y: 580 }, starsRequired: 95,  comingSoon: true }
@@ -1103,7 +1255,7 @@ function renderWorld() {
   }
   const stars = totalStars();
   const nodes = CONFIG.restaurants.map(r => {
-    const unlocked = stars >= r.starsRequired;
+    const unlocked = TEST || stars >= r.starsRequired;
     const cls = unlocked ? (r.comingSoon ? '' : 'open') : 'locked';
     const req = unlocked
       ? (r.comingSoon ? `<div class="req">${esc(t('comingSoon'))}</div>` : `<div class="req">${spr('star', 34)} ${restStars(r.id)}/${r.levels.length * 3}</div>`)
@@ -1544,7 +1696,7 @@ function update(dt) {
       s.slots.forEach(it => {
         if (!it) return;
         it.t += dt;
-        if (it.state === 'cook' && it.t >= s.time) { it.state = 'ready'; it.t = 0; Sound.play('ready'); stat('tempura', 1); }
+        if (it.state === 'cook' && it.t >= s.time) { it.state = 'ready'; it.t = 0; Sound.play('ready'); if (st.stat) stat(st.stat, 1); }
         else if (it.state === 'ready' && it.t >= s.burn) { it.state = 'burnt'; it.t = 0; G.burnt++; Sound.play('burn'); }
       });
     } else if (st.type === 'brew') {
@@ -2064,7 +2216,7 @@ const ACT = {
   world() { goWorld(); },
   rest(id) {
     const r = restById(id);
-    if (totalStars() < r.starsRequired) { toast(t('locked', r.starsRequired)); Sound.play('bad'); return; }
+    if (!TEST && totalStars() < r.starsRequired) { toast(t('locked', r.starsRequired)); Sound.play('bad'); return; }
     if (r.comingSoon) { toast(t('comingSoon')); return; }
     curRest = id; goLevels();
   },
@@ -2184,7 +2336,7 @@ async function boot() {
   goWorld();
   if (dailyAvailable()) setTimeout(() => { if (screen === 'world' && !modalOpen()) openDaily(); }, 400);
   requestAnimationFrame(t0 => { lastT = t0; requestAnimationFrame(loop); });
-  if (DEBUG) window.GAME = { get G() { return G; }, startLevel, Save, computeHint, setBot(v) { BOT = v; }, restById, goLevels };
+  if (DEBUG) window.GAME = { get G() { return G; }, startLevel, Save, computeHint, setBot(v) { BOT = v; }, setRest(id) { curRest = id; }, restById, goLevels };
 }
 boot();
 </script>
