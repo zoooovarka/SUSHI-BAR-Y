@@ -41,6 +41,8 @@ button{font:inherit;color:inherit}
 .btn:active{transform:translateY(4px);box-shadow:0 3px 0 var(--red-d)}
 .btn.green{background:linear-gradient(#6fd06f,var(--green));box-shadow:0 7px 0 var(--green-d),0 10px 18px rgba(0,0,0,.25)}
 .btn.blue{background:linear-gradient(#69b3f3,var(--blue));box-shadow:0 7px 0 var(--blue-d),0 10px 18px rgba(0,0,0,.25)}
+.btn.pay{background:linear-gradient(#ffd75e,#f0a92b);color:#5a3200;text-shadow:none;box-shadow:0 7px 0 #b9761a,0 10px 18px rgba(0,0,0,.25)}
+.logo-wide{height:var(--h);width:auto;flex:none;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
 .btn.ad{background:linear-gradient(#b083f0,var(--purple));box-shadow:0 7px 0 var(--purple-d),0 10px 18px rgba(0,0,0,.25)}
 .btn.off{background:linear-gradient(#b9aea0,#8f8579);box-shadow:0 7px 0 #625a51;opacity:.8;cursor:default}
 .btn.small{font-size:26px;padding:10px 20px;border-radius:18px}
@@ -434,7 +436,10 @@ const CONFIG = {
   saveKey: 'sushi_chef_save_v1',
   leaderboard: 'hearts',           // техническое имя лидерборда в консоли Яндекс Игр (сумма сердец)
   dailyRewards: [20, 30, 45, 60, 80, 110, 160], // награды за 7 дней серии
-  freeUpgradeCooldownSec: 600,     // «Бесплатное улучшение» раз в 10 минут
+  freeUpgradeCooldownSec: 600,     // «Бесплатное улучшение» раз в 10 минут (кроме улучшений с noAd)
+  // Покупки за реальные деньги (Яндекс Игры → консоль → Покупки). Цену задаёт консоль, price — только запасная надпись.
+  // Покупка «waiter» нерасходуемая: даёт «Официанта» во всех ресторанах навсегда и восстанавливается через getPurchases().
+  products: { waiter: { id: 'waiter', price: '250 ₽' } },
   addTimeSec: 20,                  // «+20 секунд» при проигрыше
   walkSpeed: 750,                  // скорость ходьбы посетителей, px/с
   // Гарантия гостей: пока до конца уровня остаётся больше tail (доля времени, но не меньше tailMin секунд),
@@ -445,7 +450,7 @@ const CONFIG = {
 
   // Спрайты: ключ -> файл в img/ и эмодзи-заглушка (badge — значок поверх, css — фильтр)
   sprites: {
-    logo:            { file: 'logo.png',             emoji: '🍣' },
+    logo:            { file: 'logo.png',             emoji: '🍣' },   // широкий логотип с надписью «Суши шеф» (только для русского)
     coin:            { file: 'coin.png',             emoji: '🪙' },
     heart:           { file: 'heart.png',            emoji: '❤️' },
     star:            { file: 'star.png',             emoji: '⭐' },
@@ -824,9 +829,9 @@ const CONFIG = {
           name: { ru: 'Уютный зал', en: 'Cozy hall' },
           params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
         // Официант: одна ступень, дорогой — тап по готовому блюду сразу отдаёт его тому, кто ждёт дольше всех
-        { id: 'autoServe',    group: 'hall', icon: 'up_auto_serve',      costs: [1500],
+        { id: 'autoServe',    group: 'hall', icon: 'up_auto_serve',      costs: [5000], noAd: true, product: 'waiter',
           name: { ru: 'Официант', en: 'Waiter' },
-          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          desc: { ru: 'Блюдо сразу уходит гостю. За ₽ — во всех ресторанах', en: 'Dishes go straight to guests. Paid version works everywhere' },
           params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
         { id: 'tips',         group: 'hall', icon: 'up_tips',            costs: [130, 320, 630],
           name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
@@ -923,9 +928,9 @@ const CONFIG = {
         { id: 'patience',    group: 'hall', icon: 'up_patience',       costs: [180, 450, 870],
           name: { ru: 'Уютный зал', en: 'Cozy hall' },
           params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
-        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',     costs: [1800],
+        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',     costs: [5000], noAd: true, product: 'waiter',
           name: { ru: 'Официант', en: 'Waiter' },
-          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          desc: { ru: 'Блюдо сразу уходит гостю. За ₽ — во всех ресторанах', en: 'Dishes go straight to guests. Paid version works everywhere' },
           params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
         { id: 'tips',        group: 'hall', icon: 'up_tips',           costs: [170, 420, 820],
           name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
@@ -1024,9 +1029,9 @@ const CONFIG = {
         { id: 'patience',    group: 'hall', icon: 'up_patience',           costs: [200, 500, 960],
           name: { ru: 'Уютный зал', en: 'Cozy hall' },
           params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
-        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',         costs: [2100],
+        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',         costs: [5000], noAd: true, product: 'waiter',
           name: { ru: 'Официант', en: 'Waiter' },
-          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          desc: { ru: 'Блюдо сразу уходит гостю. За ₽ — во всех ресторанах', en: 'Dishes go straight to guests. Paid version works everywhere' },
           params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
         { id: 'tips',        group: 'hall', icon: 'up_tips',               costs: [190, 470, 900],
           name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
@@ -1121,9 +1126,9 @@ const CONFIG = {
         { id: 'patience',     group: 'hall', icon: 'up_patience',         costs: [230, 570, 1100],
           name: { ru: 'Уютный зал', en: 'Cozy hall' },
           params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
-        { id: 'autoServe',    group: 'hall', icon: 'up_auto_serve',       costs: [2400],
+        { id: 'autoServe',    group: 'hall', icon: 'up_auto_serve',       costs: [5000], noAd: true, product: 'waiter',
           name: { ru: 'Официант', en: 'Waiter' },
-          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          desc: { ru: 'Блюдо сразу уходит гостю. За ₽ — во всех ресторанах', en: 'Dishes go straight to guests. Paid version works everywhere' },
           params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
         { id: 'tips',         group: 'hall', icon: 'up_tips',             costs: [220, 540, 1040],
           name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
@@ -1218,9 +1223,9 @@ const CONFIG = {
         { id: 'patience',    group: 'hall', icon: 'up_patience',         costs: [260, 650, 1260],
           name: { ru: 'Уютный зал', en: 'Cozy hall' },
           params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
-        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',       costs: [2700],
+        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',       costs: [5000], noAd: true, product: 'waiter',
           name: { ru: 'Официант', en: 'Waiter' },
-          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          desc: { ru: 'Блюдо сразу уходит гостю. За ₽ — во всех ресторанах', en: 'Dishes go straight to guests. Paid version works everywhere' },
           params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
         { id: 'tips',        group: 'hall', icon: 'up_tips',             costs: [250, 620, 1190],
           name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
@@ -1261,6 +1266,8 @@ const TEXT = {
     claimed: 'Возвращайтесь завтра!', leaderboard: 'Лидеры по сердцам', lbUnavailable: 'Таблица лидеров доступна в Яндекс Играх',
     you: 'Вы', loadingLb: 'Загрузка…', combo: 'КОМБО x{0}', tips: 'чаевые +{0}', adError: 'Реклама недоступна',
     adFake: 'Реклама (тестовая заглушка)', sec: '{0} с', burnt: 'Сгорело! -{0}', noAdYet: 'Подождите немного',
+    adFakeFull: 'Реклама между уровнями (тестовая заглушка)', payFake: 'Тестовая покупка за {0}. Купить?',
+    payError: 'Покупка не завершена', paid_waiter: 'Официант нанят во всех ресторанах!',
     on: 'есть', off: 'нет', achievements: 'Достижения', achUnlocked: 'Достижение: {0}', bestCombo: 'Лучшее комбо'
   },
   en: {
@@ -1277,6 +1284,8 @@ const TEXT = {
     claimed: 'Come back tomorrow!', leaderboard: 'Top hearts', lbUnavailable: 'Leaderboard is available on Yandex Games',
     you: 'You', loadingLb: 'Loading…', combo: 'COMBO x{0}', tips: 'tip +{0}', adError: 'Ad is not available',
     adFake: 'Ad (test stub)', sec: '{0} s', burnt: 'Burnt! -{0}', noAdYet: 'Please wait a bit',
+    adFakeFull: 'Ad between levels (test stub)', payFake: 'Test purchase for {0}. Buy?',
+    payError: 'Purchase was not completed', paid_waiter: 'Waiter hired in every restaurant!',
     on: 'on', off: 'off', achievements: 'Achievements', achUnlocked: 'Achievement: {0}', bestCombo: 'Best combo'
   }
 };
@@ -1328,6 +1337,11 @@ function spr(key, size, cls = '') {
     ? `<img src="${CONFIG.imgPath}${d.file}" alt="" draggable="false">`
     : `<span class="emo ${d.css || ''}">${d.emoji || ''}${d.badge ? `<i class="badge">${d.badge}</i>` : ''}</span>`;
   return `<span class="spr ${cls}" style="--s:${size}px">${inner}</span>`;
+}
+// Логотип: картинка с надписью по-русски, иначе иконка суши-бара и название текстом
+function logoHTML(h) {
+  if (SPR_OK.logo && LANG === 'ru') return `<img class="logo-wide" style="--h:${h}px" src="${CONFIG.imgPath}${CONFIG.sprites.logo.file}" alt="${esc(t('title'))}" draggable="false">`;
+  return `${spr('rest_sushi', Math.round(h * 0.9))}<div class="title-txt">${esc(t('title'))}</div>`;
 }
 const sprUrl = key => `url('${CONFIG.imgPath}${CONFIG.sprites[key].file}')`; // одинарные кавычки: строка вставляется и в атрибут style="…"
 // Фон экрана/зоны из спрайта (если файл загрузился)
@@ -1432,9 +1446,10 @@ const SDK = {
       if (api) on ? api.start() : api.stop();
     } catch (e) {}
   },
-  // Полноэкранная реклама (только между уровнями)
+  // Полноэкранная реклама (только между уровнями). Яндекс сам не показывает её чаще раза в минуту —
+  // тогда сразу приходит onClose(false), и игра просто идёт дальше
   showFullscreen(done) {
-    if (!this.ysdk) { done && done(); return; }
+    if (!this.ysdk) { this.fakeAd(done); return; }
     let fin = false;
     const finish = () => { if (fin) return; fin = true; removePause('ad'); done && done(); };
     addPause('ad');
@@ -1456,6 +1471,48 @@ const SDK = {
         onError: () => { toast(t('adError')); close(); }
       } });
     } catch (e) { toast(t('adError')); close(); }
+  },
+  // Локальная заглушка полноэкранной рекламы (без SDK, например на GitHub Pages)
+  fakeAd(done) {
+    if (BOT) { done && done(); return; }
+    addPause('ad');
+    const d = document.createElement('div');
+    d.className = 'adfake';
+    d.innerHTML = `<div>${spr('ic_ad', 120)}</div><div>${t('adFakeFull')}</div>`;
+    byId('stage').appendChild(d);
+    setTimeout(() => { d.remove(); removePause('ad'); done && done(); }, DEBUG ? 50 : 1200);
+  },
+  // ---- Покупки ----
+  payments: null, catalog: {},
+  async initPayments() {
+    if (!this.ysdk) return;
+    try {
+      this.payments = this.ysdk.payments || await withTimeout(this.ysdk.getPayments({ signed: false }), 5000);
+      const [cat, bought] = await Promise.all([
+        withTimeout(this.payments.getCatalog(), 5000).catch(() => []),
+        withTimeout(this.payments.getPurchases(), 5000).catch(() => [])
+      ]);
+      (cat || []).forEach(p => { this.catalog[p.id] = p; });
+      (bought || []).forEach(p => grantProduct(p.productID, true));  // восстановление нерасходуемых покупок
+    } catch (e) { this.payments = null; }
+  },
+  priceOf(key) {
+    const pr = CONFIG.products[key], c = pr && this.catalog[pr.id];
+    return (c && c.price) || (pr ? pr.price : '');
+  },
+  purchase(key) {
+    const pr = CONFIG.products[key];
+    if (!pr) return;
+    if (!this.ysdk) {                       // заглушка: покупка «проходит» сразу
+      if (TEST || DEBUG || confirm(t('payFake', pr.price))) grantProduct(pr.id);
+      return;
+    }
+    if (!this.payments) { toast(t('payError')); return; }
+    addPause('ad');
+    this.payments.purchase({ id: pr.id })
+      .then(() => grantProduct(pr.id))
+      .catch(() => toast(t('payError')))
+      .finally(() => removePause('ad'));
   },
   // Локальная заглушка ролика
   fakeRewarded(onReward, onDone) {
@@ -1505,7 +1562,7 @@ const SDK = {
 const Save = {
   data: null,
   fresh() {
-    return { v: 1, ts: 0, coins: 0, sound: true, rest: {}, daily: { last: '', streak: 0 }, freeUpAt: 0, ach: {},
+    return { v: 1, ts: 0, coins: 0, sound: true, rest: {}, daily: { last: '', streak: 0 }, freeUpAt: 0, ach: {}, paid: {},
       stats: { served: 0, hearts: 0, rolls: 0, soups: 0, tempura: 0, maxCombo: 0, noBurnLevels: 0, perfectLevels: 0, threeStars: 0, bigOrders: 0, upgrades: 0 } };
   },
   async load() {
@@ -1548,7 +1605,11 @@ const restById = id => CONFIG.restaurants.find(r => r.id === id);
 /* =====================================================================
    УЛУЧШЕНИЯ: параметры станций берутся из текущей ступени
    ===================================================================== */
-const upTier = (R, id) => restSave(R.id).up[id] || 0;
+// Ступень улучшения; улучшение с product считается купленным, если игрок оплатил покупку
+function upTier(R, id) {
+  const u = R.upgrades && upDef(R, id), tier = restSave(R.id).up[id] || 0;
+  return u && u.product && Save.data.paid && Save.data.paid[u.product] ? u.costs.length : tier;
+}
 const upDef = (R, id) => R.upgrades.find(u => u.id === id);
 // Индекс «имя параметра -> улучшение» (строится один раз на ресторан)
 function paramIndex(R) {
@@ -1715,7 +1776,7 @@ function renderWorld() {
     ${pic ? '' : `<svg class="map-svg" viewBox="0 0 1600 900" width="1600" height="900"><path d="${path}" fill="none" stroke="#fff" stroke-width="12" stroke-dasharray="4 26" stroke-linecap="round" opacity=".9"/></svg>`}
     ${nodes}
     <div class="topbar">
-      ${spr('logo', 84)}<div class="title-txt">${esc(t('title'))}</div>${TEST ? '<div class="pill testmark">ТЕСТ</div>' : ''}<div class="grow"></div>
+      ${logoHTML(96)}${TEST ? '<div class="pill testmark">ТЕСТ</div>' : ''}<div class="grow"></div>
       <div class="pill">${spr('star', 48)}<span>${stars}</span></div>
       ${heartPill()}${coinPill()}
       <button class="ibtn" data-act="daily">${spr('ic_gift', 56)}${dailyAvailable() ? '<span class="dot">!</span>' : ''}</button>
@@ -1796,6 +1857,16 @@ function openLevelIntro(i) {
 /* =====================================================================
    МАГАЗИН УЛУЧШЕНИЙ
    ===================================================================== */
+// Выдача покупки (restore — тихо, при запуске игры)
+function grantProduct(id, restore) {
+  const key = Object.keys(CONFIG.products).find(k => CONFIG.products[k].id === id);
+  if (!key) return;
+  Save.data.paid = Save.data.paid || {};
+  if (Save.data.paid[key]) return;
+  Save.data.paid[key] = true;
+  Save.write();
+  if (!restore) { Sound.play('coin'); toast(t('paid_' + key)); if (screen === 'shop') renderShop(); }
+}
 const freeUpLeft = () => Math.max(0, CONFIG.freeUpgradeCooldownSec - (Date.now() - (Save.data.freeUpAt || 0)) / 1000);
 // Строки «было → станет»: показываем только параметры, которые меняются на следующей ступени
 function upgradeLines(u, tier) {
@@ -1818,7 +1889,8 @@ function renderShop() {
       if (isMax) btns = `<button class="btn small off">${esc(t('max'))}</button>`;
       else {
         btns = `<button class="btn small ${Save.data.coins >= cost ? 'green' : 'off'}" data-act="buy" data-arg="${u.id}">${spr('coin', 34)}${cost}</button>`;
-        if (left <= 0) btns += `<button class="btn small ad adi" data-act="freeup" data-arg="${u.id}">${spr('ic_ad', 40)}</button>`;
+        if (u.product) btns += `<button class="btn small pay" data-act="pay" data-arg="${u.product}">${esc(SDK.priceOf(u.product))}</button>`;
+        else if (left <= 0 && !u.noAd) btns += `<button class="btn small ad adi" data-act="freeup" data-arg="${u.id}">${spr('ic_ad', 40)}</button>`;
       }
       return `<div class="ucard"><div class="ui">${spr(u.icon, 70)}</div>
         <div class="ut"><div class="un">${esc(tr(u.name))}</div>${u.desc ? `<div class="ud">${esc(tr(u.desc))}</div>` : ''}<div class="uv">${upgradeLines(u, tier)}</div><div class="dots">${dots}</div></div>
@@ -2597,9 +2669,10 @@ function endLevel() {
   G.state = 'end'; G.trash = false; G.sel = null;
   renderGame();
   const stars = calcStars();
-  if (stars > 0) { finalize(); Sound.play('win'); } else Sound.play('lose');
-  showResult();
   syncGameplay();
+  // Пройденный уровень: монеты и звёзды зачисляются сразу, затем полноэкранная реклама, затем итоги
+  if (stars > 0) { finalize(); Sound.play('win'); G.adShown = true; SDK.showFullscreen(() => { if (G.state === 'end') showResult(); }); }
+  else { Sound.play('lose'); showResult(); }
 }
 // Зачисление монет, звёзд и статистики (один раз за попытку)
 function finalize() {
@@ -2650,11 +2723,13 @@ function leaveResult(dest) {
   closeModal();
   G.state = 'done';
   syncGameplay();
-  SDK.showFullscreen(() => {
+  const go = () => {
     if (dest === 'retry') startLevel(idx);
     else if (dest === 'shop') goShop();
     else goLevels();
-  });
+  };
+  // после победы реклама уже была (перед итогами), после проигрыша — показываем при выходе
+  if (G.adShown) go(); else SDK.showFullscreen(go);
 }
 function openPause() {
   if (!G) return;
@@ -2694,7 +2769,10 @@ const ACT = {
   shop() { goShop(); },
   shopback() { goLevels(); },
   buy(id) { buyUpgrade(id, false); },
+  pay(product) { SDK.purchase(product); },
   freeup(id) {
+    const u = upDef(restById(curRest), id);
+    if (!u || u.noAd) return;
     if (freeUpLeft() > 0) { toast(t('noAdYet')); return; }
     SDK.showRewarded(() => buyUpgrade(id, true), () => renderShop());
   },
@@ -2796,7 +2874,9 @@ async function boot() {
   byId('rotate-txt').textContent = t('rotate');
   bar.style.width = '20%';
   await Promise.all([Save.load(), preloadSprites(p => { bar.style.width = (20 + p * 80) + '%'; })]);
-  byId('load-logo').innerHTML = spr('logo', 160);
+  await SDK.initPayments(); // после загрузки сохранения: восстановленные покупки записываются в него
+  byId('load-logo').innerHTML = logoHTML(200);
+  if (SPR_OK.logo && LANG === 'ru') byId('load-title').style.display = 'none';
   bar.style.width = '100%';
   SDK.ready(); // LoadingAPI.ready() — игра готова к взаимодействию
   goWorld();
