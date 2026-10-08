@@ -34,8 +34,14 @@ python3 -m http.server 8000
 - **Мусорка**: если блюдо выбрано, тап по мусорке выбрасывает его. Без выбора тап включает режим выбрасывания: следующий тап по слоту очищает его. Сгоревшее и неправильное выбрасывается и обычным тапом.
 - **Уровни**: в суши-баре 10 уровней. На уровнях 1–7 по одному добавляются блюда (лосось, мисо, огурец, темпура, авокадо, ассорти, чай), на 8–10 растут темп и длина заказов. Уровни 1–3 обучающие. Список уровней — `levels` в CONFIG, их число можно менять: карта уровней раскладывается рядами по 5.
 - **Гарантия гостей** (`CONFIG.guestPlan`): гости приходят случайно (интервал `every` уровня), но до последних 20% времени уровня (не меньше 12 с) они обязательно закажут блюд минимум на 90% от цели 3★ по цене меню. Остальное добирается чаевыми и комбо. Если случайный поток отстаёт, гости приходят чаще (не чаще раза в 1,5 с) и заказывают по максимуму позиций. Гарантия не обходит занятые места: если все места заняты, новый гость ждёт.
-- **«Официант»** (зал, 1500 монет, одна ступень): тап по готовому блюду сразу отдаёт его посетителю, который ждёт дольше всех, а готовая темпура уходит прямо с огня. Если блюдо никому не нужно, оно выделяется, и тап по мусорке его выбрасывает. Бот с паузой 1 с между действиями и первыми ступенями улучшений с ним зарабатывает примерно на треть больше, поэтому улучшение дорогое.
-- **Рестораны**: по 30 звёзд на ресторан, требования — 20, 45, 70 и 95 звёзд. Работают «Суши-бар» и «Раменная» (рамен 4 видов, гёдза на сковороде, эдамамэ в кастрюле, ячменный чай из кувшина), остальные пока заглушки. Общие параметры зала (посетители, чаевые, комбо) вынесены в `HALL`, каждый ресторан подключает их через `...HALL`.
+- **«Официант»** (зал, одна ступень: 1500 монет в суши-баре, в следующих ресторанах дороже — 1800, 2100, 2400 и 2700): тап по готовому блюду сразу отдаёт его посетителю, который ждёт дольше всех, а готовая темпура уходит прямо с огня. Если блюдо никому не нужно, оно выделяется, и тап по мусорке его выбрасывает. Бот с паузой 1 с между действиями и первыми ступенями улучшений с ним зарабатывает примерно на треть больше, поэтому улучшение дорогое.
+- **Рестораны**: пять ресторанов по 10 уровней (30 звёзд), требования — 0, 20, 45, 70 и 95 звёзд. В каждом 7 блюд и те же четыре типа станций:
+  - «Суши-бар»: роллы, темпура, мисо-суп, зелёный чай;
+  - «Раменная»: рамен 4 видов, гёдза на сковороде, эдамамэ в кастрюле, ячменный чай из кувшина;
+  - «Вок-стрит»: лапша вок 4 видов, спринг-роллы во фритюре, рис из рисоварки в коробочке, бабл-ти (стакан чая + тапиока);
+  - «Чайная сладостей»: дайфуку 4 видов, данго на гриле, тайяки в форме-рыбке, матча-латте;
+  - «Димсам-хаус»: корзинки с хар гау, шумай, сяолунбао и ассорти, баоцзы в большой пароварке, яичные тарталетки в духовке, жасминовый чай.
+- Общие параметры зала (посетители, чаевые, комбо) вынесены в `HALL`, каждый ресторан подключает их через `...HALL`.
 - **Ширина кухни**: если станций много (поздние уровни с полной прокачкой), кухня целиком ужимается, чтобы поместиться по ширине.
 - Оплата за весь заказ; чаевые +50% при терпении выше 66% и +20% выше 33%. Сердце, если терпение выше 50%.
 - Комбо: каждая подача не позже чем через 3 с после предыдущей поднимает множитель x2 → x3 → x4 и даёт +3/+6/+10 монет. Комбо показывается крупной надписью и счётчиком в шапке.
@@ -63,7 +69,7 @@ python3 -m http.server 8000
 - `roll_wrong.png` (неправильный ролл) собран из ролла-ассорти: обесцвечен и перечёркнут.
 - Рука-указатель на картинке смотрит вниз; где у неё кончик пальца, задаёт `CONFIG.handTip`.
 
-### Уже в `img/` (92)
+### Уже в `img/` (205)
 
 | Файл | Ключи в CONFIG | Заглушка |
 |---|---|---|
@@ -119,11 +125,21 @@ python3 -m http.server 8000
 | `teapot.png` | teapot_0, teapot_1, teapot_2, teapot_3 | 🫖 |
 | `trash.png` | trash | 🗑️ |
 | `rest_ramen.png` | rest_ramen | 🍜 |
+| `rest_wok.png` | rest_wok | 🥡 |
+| `rest_dimsum.png` | rest_dimsum | 🥟 |
+| `rest_sweets.png` | rest_sweets | 🍡 |
 | `up_roll_speed.png` | up_roll_speed | ⚡ |
 | `up_mats.png` | up_mats | 🎋 |
+| `up_fryer_speed.png` | up_fryer_speed | 🔥 |
+| `up_fryer_slots.png` | up_fryer_slots | 🍳 |
+| `up_soup_cap.png` | up_soup_cap | 🥣 |
+| `up_tea_cap.png` | up_tea_cap | 🫖 |
 | `up_price_roll.png` | up_price_roll | 🍣 |
+| `up_price_tempura.png` | up_price_tempura | 🍤 |
+| `up_price_soup.png` | up_price_soup | 🍲 |
 | `up_patience.png` | up_patience | ⌛ |
 | `up_tips.png` | up_tips | 💰 |
+| `up_auto_serve.png` | up_auto_serve | 🛎️ |
 | `bg_levels_ramen.jpg` | bg_levels_ramen | CSS |
 | `bg_hall_ramen.jpg` | bg_hall_ramen | CSS |
 | `bg_kitchen_ramen.jpg` | bg_kitchen_ramen | CSS |
@@ -159,8 +175,111 @@ python3 -m http.server 8000
 | `up_price_ramen.png` | up_price_ramen | 🍜 |
 | `up_price_snack.png` | up_price_snack | 🥟 |
 | `up_price_drink.png` | up_price_drink | 🥤 |
+| `bg_levels_wok.jpg` | bg_levels_wok | CSS |
+| `bg_hall_wok.jpg` | bg_hall_wok | CSS |
+| `bg_kitchen_wok.jpg` | bg_kitchen_wok | CSS |
+| `counter_wok.jpg` | counter_wok | CSS |
+| `wok_noodles.png` | wok_noodles | 🍝 |
+| `chicken.png` | chicken | 🍗 |
+| `wok_shrimp.png` | wok_shrimp | 🦐 |
+| `veggies.png` | veggies | 🥦 |
+| `wok_chicken.png` | wok_chicken | 🥡 + 🍗 |
+| `wok_shrimp_dish.png` | wok_prawn | 🥡 + 🦐 |
+| `wok_veg.png` | wok_veg | 🥡 + 🥦 |
+| `wok_mix.png` | wok_mix | 🥡 + 🌈 |
+| `wok_wrong.png` | wok_wrong | 🥡 + ❌ |
+| `wok_pan.png` | wokpan_0, wokpan_1, wokpan_2, wokpan_3 | CSS |
+| `springroll_raw.png` | springroll_raw | 🌯 |
+| `springroll.png` | springroll | 🌯 + 🔥 |
+| `springroll_burnt.png` | springroll_burnt | 🌯 |
+| `rice_cooker.png` | ricecooker_0, ricecooker_1, ricecooker_2, ricecooker_3 | 🍚 |
+| `box_empty.png` | box_empty | 🥡 |
+| `rice_box.png` | rice_box | 🍚 |
+| `bubble_cup.png` | bubble_cup | 🥛 |
+| `tapioca.png` | tapioca | ⚫ |
+| `bubble_tea.png` | bubble_tea | 🧋 |
+| `bubble_wrong.png` | bubble_wrong | 🧋 + ❌ |
+| `up_wok_speed.png` | up_wok_speed | ⚡ |
+| `up_wok_slots.png` | up_wok_slots | 🥘 |
+| `up_wok_fryer_speed.png` | up_wok_fryer_speed | 🔥 |
+| `up_wok_fryer_slots.png` | up_wok_fryer_slots | 🍳 |
+| `up_rice_cooker.png` | up_rice_cooker | 🍚 |
+| `up_bubble_slots.png` | up_bubble_slots | 🧋 |
+| `up_price_wok.png` | up_price_wok | 🥡 |
+| `up_price_springroll.png` | up_price_springroll | 🌯 |
+| `up_price_bubble.png` | up_price_bubble | 🧋 |
+| `bg_levels_sweets.jpg` | bg_levels_sweets | CSS |
+| `bg_hall_sweets.jpg` | bg_hall_sweets | CSS |
+| `bg_kitchen_sweets.jpg` | bg_kitchen_sweets | CSS |
+| `counter_sweets.jpg` | counter_sweets | CSS |
+| `mochi_dough.png` | mochi_dough | ⚪ |
+| `anko.png` | anko | 🫘 |
+| `strawberry.png` | strawberry | 🍓 |
+| `matcha_cream.png` | matcha_cream | 🍵 |
+| `daifuku_anko.png` | daifuku_anko | 🍡 + 🫘 |
+| `daifuku_strawberry.png` | daifuku_strawberry | 🍡 + 🍓 |
+| `daifuku_matcha.png` | daifuku_matcha | 🍡 + 🍵 |
+| `daifuku_mix.png` | daifuku_mix | 🍡 + 🌈 |
+| `daifuku_wrong.png` | daifuku_wrong | 🍡 + ❌ |
+| `dango_raw.png` | dango_raw | 🍡 |
+| `dango.png` | dango | 🍡 + 🔥 |
+| `dango_burnt.png` | dango_burnt | 🍡 |
+| `grill.png` | grill_0, grill_1 | CSS |
+| `grill_gold.png` | grill_2, grill_3 | CSS |
+| `taiyaki_batter.png` | taiyaki_batter | 🥛 |
+| `taiyaki.png` | taiyaki | 🐟 |
+| `taiyaki_burnt.png` | taiyaki_burnt | 🐟 |
+| `taiyaki_mold.png` | tmold_0, tmold_1 | CSS |
+| `taiyaki_mold_gold.png` | tmold_2, tmold_3 | CSS |
+| `matcha_kettle.png` | mkettle_0, mkettle_1, mkettle_2, mkettle_3 | 🫖 |
+| `latte_cup_empty.png` | latte_cup_empty | 🍵 |
+| `matcha_latte.png` | matcha_latte | 🍵 |
+| `up_daifuku_speed.png` | up_daifuku_speed | ⚡ |
+| `up_daifuku_slots.png` | up_daifuku_slots | 🍡 |
+| `up_grill_speed.png` | up_grill_speed | 🔥 |
+| `up_grill_slots.png` | up_grill_slots | 🍢 |
+| `up_taiyaki_slots.png` | up_taiyaki_slots | 🐟 |
+| `up_matcha_kettle.png` | up_matcha_kettle | 🫖 |
+| `up_price_daifuku.png` | up_price_daifuku | 🍡 |
+| `up_price_sweets.png` | up_price_sweets | 🍢 |
+| `up_price_latte.png` | up_price_latte | 🍵 |
+| `bg_levels_dimsum.jpg` | bg_levels_dimsum | CSS |
+| `bg_hall_dimsum.jpg` | bg_hall_dimsum | CSS |
+| `bg_kitchen_dimsum.jpg` | bg_kitchen_dimsum | CSS |
+| `counter_dimsum.jpg` | counter_dimsum | CSS |
+| `steamer_empty.png` | steamer_empty | 🧺 |
+| `hargau.png` | hargau | 🥟 |
+| `siumai.png` | siumai | 🥟 |
+| `xlb.png` | xlb | 🥟 |
+| `steamer_hargau.png` | steamer_hargau | 🧺 + 🦐 |
+| `steamer_siumai.png` | steamer_siumai | 🧺 + 🟡 |
+| `steamer_xlb.png` | steamer_xlb | 🧺 + 🥟 |
+| `steamer_mix.png` | steamer_mix | 🧺 + 🌈 |
+| `steamer_wrong.png` | steamer_wrong | 🧺 + ❌ |
+| `bao_raw.png` | bao_raw | ⚪ |
+| `bao.png` | bao | 🥟 + ♨️ |
+| `bao_over.png` | bao_over | 🥟 |
+| `steamer_big.png` | bigsteamer_0, bigsteamer_1 | CSS |
+| `steamer_big_gold.png` | bigsteamer_2, bigsteamer_3 | CSS |
+| `tart_raw.png` | tart_raw | 🥧 |
+| `egg_tart.png` | egg_tart | 🥧 + 🔥 |
+| `tart_burnt.png` | tart_burnt | 🥧 |
+| `oven.png` | oven_0, oven_1 | CSS |
+| `oven_gold.png` | oven_2, oven_3 | CSS |
+| `clay_teapot.png` | claypot_0, claypot_1, claypot_2, claypot_3 | 🫖 |
+| `tea_cup_small.png` | tea_cup_small | 🍵 |
+| `jasmine_tea.png` | jasmine_tea | 🍵 |
+| `up_steam_speed.png` | up_steam_speed | ⚡ |
+| `up_steamer_slots.png` | up_steamer_slots | 🧺 |
+| `up_bao_slots.png` | up_bao_slots | ♨️ |
+| `up_oven_speed.png` | up_oven_speed | 🔥 |
+| `up_oven_slots.png` | up_oven_slots | 🥧 |
+| `up_clay_teapot.png` | up_clay_teapot | 🫖 |
+| `up_price_dimsum.png` | up_price_dimsum | 🥟 |
+| `up_price_bakery.png` | up_price_bakery | 🥧 |
+| `up_price_tea.png` | up_price_tea | 🍵 |
 
-### Пока нет — рисуется эмодзи-заглушка (24)
+### Пока нет — рисуется эмодзи-заглушка (14)
 
 | Файл | Ключи в CONFIG | Заглушка |
 |---|---|---|
@@ -178,13 +297,3 @@ python3 -m http.server 8000
 | `mood_happy.png` | mood_happy | 😊 |
 | `mood_angry.png` | mood_angry | 😠 |
 | `rest_sushi.png` | rest_sushi | 🍣 |
-| `rest_wok.png` | rest_wok | 🥡 |
-| `rest_dimsum.png` | rest_dimsum | 🥟 |
-| `rest_sweets.png` | rest_sweets | 🍡 |
-| `up_fryer_speed.png` | up_fryer_speed | 🔥 |
-| `up_fryer_slots.png` | up_fryer_slots | 🍳 |
-| `up_soup_cap.png` | up_soup_cap | 🥣 |
-| `up_tea_cap.png` | up_tea_cap | 🫖 |
-| `up_price_tempura.png` | up_price_tempura | 🍤 |
-| `up_price_soup.png` | up_price_soup | 🍲 |
-| `up_auto_serve.png` | up_auto_serve | 🛎️ |

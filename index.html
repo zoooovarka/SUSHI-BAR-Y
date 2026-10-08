@@ -174,6 +174,7 @@ button{font:inherit;color:inherit}
   background:radial-gradient(circle at 50% 45%,#ffffff,#dfe9ee 70%);box-shadow:inset 0 0 0 5px #9fb8c2,0 6px 0 #6f8892}
 .bowlslot.tier-1,.bowlslot.tier-2,.bowlslot.tier-3{box-shadow:inset 0 0 0 7px var(--frame),0 6px 0 #6f8892}
 .bowlslot.wrong{box-shadow:inset 0 0 0 5px #c62e1e,0 6px 0 #7d1a10}
+.bowlslot.has-img{background-color:#f3e3c4;background-size:96% auto;background-repeat:no-repeat;background-position:center} /* вок под лапшой */
 /* Чайник и чашки */
 .z-brew{flex-direction:column;align-items:center}
 .brow{display:flex;gap:10px;align-items:center}
@@ -386,6 +387,27 @@ const RM4 = [...RM3, 'mugicha'];
 const RM5 = [...RM4, 'edamame'];
 const RM6 = [...RM5, 'ramen_corn'];
 const RM7 = [...RM6, 'ramen_full'];
+const WM1 = ['wok_chicken'];                 // Вок-стрит
+const WM2 = [...WM1, 'rice_box'];
+const WM3 = [...WM2, 'wok_veg'];
+const WM4 = [...WM3, 'springroll'];
+const WM5 = [...WM4, 'wok_prawn'];
+const WM6 = [...WM5, 'bubble_tea'];
+const WM7 = [...WM6, 'wok_mix'];
+const SM1 = ['daifuku_anko'];                // Чайная сладостей
+const SM2 = [...SM1, 'dango'];
+const SM3 = [...SM2, 'daifuku_strawberry'];
+const SM4 = [...SM3, 'matcha_latte'];
+const SM5 = [...SM4, 'taiyaki'];
+const SM6 = [...SM5, 'daifuku_matcha'];
+const SM7 = [...SM6, 'daifuku_mix'];
+const DM1 = ['steamer_hargau'];              // Димсам-хаус
+const DM2 = [...DM1, 'bao'];
+const DM3 = [...DM2, 'steamer_siumai'];
+const DM4 = [...DM3, 'jasmine_tea'];
+const DM5 = [...DM4, 'egg_tart'];
+const DM6 = [...DM5, 'steamer_xlb'];
+const DM7 = [...DM6, 'steamer_mix'];
 
 // Общие параметры зала для всех ресторанов (ресторан может переопределить любое поле)
 const HALL = {
@@ -564,7 +586,133 @@ const CONFIG = {
     up_jug:          { file: 'up_jug.png',           emoji: '🫖' },
     up_price_ramen:  { file: 'up_price_ramen.png',   emoji: '🍜' },
     up_price_snack:  { file: 'up_price_snack.png',   emoji: '🥟' },
-    up_price_drink:  { file: 'up_price_drink.png',   emoji: '🥤' }
+    up_price_drink:  { file: 'up_price_drink.png',   emoji: '🥤' },
+    // ---- Вок-стрит ----
+    bg_levels_wok:   { file: 'bg_levels_wok.jpg',    emoji: '' },
+    bg_hall_wok:     { file: 'bg_hall_wok.jpg',      emoji: '' },
+    bg_kitchen_wok:  { file: 'bg_kitchen_wok.jpg',   emoji: '' },
+    counter_wok:     { file: 'counter_wok.jpg',      emoji: '' },
+    wok_noodles:     { file: 'wok_noodles.png',      emoji: '🍝' },   // сырая лапша — основа
+    chicken:         { file: 'chicken.png',          emoji: '🍗' },
+    wok_shrimp:      { file: 'wok_shrimp.png',       emoji: '🦐' },
+    veggies:         { file: 'veggies.png',          emoji: '🥦' },
+    wok_chicken:     { file: 'wok_chicken.png',      emoji: '🥡', badge: '🍗' },
+    wok_prawn:       { file: 'wok_shrimp_dish.png',  emoji: '🥡', badge: '🦐' },
+    wok_veg:         { file: 'wok_veg.png',          emoji: '🥡', badge: '🥦' },
+    wok_mix:         { file: 'wok_mix.png',          emoji: '🥡', badge: '🌈' },
+    wok_wrong:       { file: 'wok_wrong.png',        emoji: '🥡', badge: '❌', css: 'wrong' },
+    wokpan_0:        { file: 'wok_pan.png',          emoji: '' },
+    wokpan_1:        { file: 'wok_pan.png',          emoji: '' },
+    wokpan_2:        { file: 'wok_pan.png',          emoji: '' },
+    wokpan_3:        { file: 'wok_pan.png',          emoji: '' },
+    springroll_raw:  { file: 'springroll_raw.png',   emoji: '🌯' },
+    springroll:      { file: 'springroll.png',       emoji: '🌯', badge: '🔥' },
+    springroll_burnt:{ file: 'springroll_burnt.png', emoji: '🌯', css: 'burnt' },
+    ricecooker_0:    { file: 'rice_cooker.png',      emoji: '🍚' },
+    ricecooker_1:    { file: 'rice_cooker.png',      emoji: '🍚' },
+    ricecooker_2:    { file: 'rice_cooker.png',      emoji: '🍚' },
+    ricecooker_3:    { file: 'rice_cooker.png',      emoji: '🍚' },
+    box_empty:       { file: 'box_empty.png',        emoji: '🥡', css: 'gray' },
+    rice_box:        { file: 'rice_box.png',         emoji: '🍚' },
+    bubble_cup:      { file: 'bubble_cup.png',       emoji: '🥛' },   // стакан молочного чая без шариков — основа
+    tapioca:         { file: 'tapioca.png',          emoji: '⚫' },
+    bubble_tea:      { file: 'bubble_tea.png',       emoji: '🧋' },
+    bubble_wrong:    { file: 'bubble_wrong.png',     emoji: '🧋', badge: '❌', css: 'wrong' },
+    up_wok_speed:    { file: 'up_wok_speed.png',     emoji: '⚡' },
+    up_wok_slots:    { file: 'up_wok_slots.png',     emoji: '🥘' },
+    up_wok_fryer_speed:{ file: 'up_wok_fryer_speed.png', emoji: '🔥' },
+    up_wok_fryer_slots:{ file: 'up_wok_fryer_slots.png', emoji: '🍳' },
+    up_rice_cooker:  { file: 'up_rice_cooker.png',   emoji: '🍚' },
+    up_bubble_slots: { file: 'up_bubble_slots.png',  emoji: '🧋' },
+    up_price_wok:    { file: 'up_price_wok.png',     emoji: '🥡' },
+    up_price_springroll:{ file: 'up_price_springroll.png', emoji: '🌯' },
+    up_price_bubble: { file: 'up_price_bubble.png',  emoji: '🧋' },
+    // ---- Чайная сладостей ----
+    bg_levels_sweets:{ file: 'bg_levels_sweets.jpg', emoji: '' },
+    bg_hall_sweets:  { file: 'bg_hall_sweets.jpg',   emoji: '' },
+    bg_kitchen_sweets:{ file: 'bg_kitchen_sweets.jpg', emoji: '' },
+    counter_sweets:  { file: 'counter_sweets.jpg',   emoji: '' },
+    mochi_dough:     { file: 'mochi_dough.png',      emoji: '⚪' },   // лепёшка мочи — основа
+    anko:            { file: 'anko.png',             emoji: '🫘' },
+    strawberry:      { file: 'strawberry.png',       emoji: '🍓' },
+    matcha_cream:    { file: 'matcha_cream.png',     emoji: '🍵' },
+    daifuku_anko:    { file: 'daifuku_anko.png',     emoji: '🍡', badge: '🫘' },
+    daifuku_strawberry:{ file: 'daifuku_strawberry.png', emoji: '🍡', badge: '🍓' },
+    daifuku_matcha:  { file: 'daifuku_matcha.png',   emoji: '🍡', badge: '🍵' },
+    daifuku_mix:     { file: 'daifuku_mix.png',      emoji: '🍡', badge: '🌈' },
+    daifuku_wrong:   { file: 'daifuku_wrong.png',    emoji: '🍡', badge: '❌', css: 'wrong' },
+    dango_raw:       { file: 'dango_raw.png',        emoji: '🍡' },
+    dango:           { file: 'dango.png',            emoji: '🍡', badge: '🔥' },
+    dango_burnt:     { file: 'dango_burnt.png',      emoji: '🍡', css: 'burnt' },
+    grill_0:         { file: 'grill.png',            emoji: '' },
+    grill_1:         { file: 'grill.png',            emoji: '' },
+    grill_2:         { file: 'grill_gold.png',       emoji: '' },
+    grill_3:         { file: 'grill_gold.png',       emoji: '' },
+    taiyaki_batter:  { file: 'taiyaki_batter.png',   emoji: '🥛' },
+    taiyaki:         { file: 'taiyaki.png',          emoji: '🐟' },
+    taiyaki_burnt:   { file: 'taiyaki_burnt.png',    emoji: '🐟', css: 'burnt' },
+    tmold_0:         { file: 'taiyaki_mold.png',     emoji: '' },
+    tmold_1:         { file: 'taiyaki_mold.png',     emoji: '' },
+    tmold_2:         { file: 'taiyaki_mold_gold.png', emoji: '' },
+    tmold_3:         { file: 'taiyaki_mold_gold.png', emoji: '' },
+    mkettle_0:       { file: 'matcha_kettle.png',    emoji: '🫖' },
+    mkettle_1:       { file: 'matcha_kettle.png',    emoji: '🫖' },
+    mkettle_2:       { file: 'matcha_kettle.png',    emoji: '🫖' },
+    mkettle_3:       { file: 'matcha_kettle.png',    emoji: '🫖' },
+    latte_cup_empty: { file: 'latte_cup_empty.png',  emoji: '🍵', css: 'gray' },
+    matcha_latte:    { file: 'matcha_latte.png',     emoji: '🍵' },
+    up_daifuku_speed:{ file: 'up_daifuku_speed.png', emoji: '⚡' },
+    up_daifuku_slots:{ file: 'up_daifuku_slots.png', emoji: '🍡' },
+    up_grill_speed:  { file: 'up_grill_speed.png',   emoji: '🔥' },
+    up_grill_slots:  { file: 'up_grill_slots.png',   emoji: '🍢' },
+    up_taiyaki_slots:{ file: 'up_taiyaki_slots.png', emoji: '🐟' },
+    up_matcha_kettle:{ file: 'up_matcha_kettle.png', emoji: '🫖' },
+    up_price_daifuku:{ file: 'up_price_daifuku.png', emoji: '🍡' },
+    up_price_sweets: { file: 'up_price_sweets.png',  emoji: '🍢' },
+    up_price_latte:  { file: 'up_price_latte.png',   emoji: '🍵' },
+    // ---- Димсам-хаус ----
+    bg_levels_dimsum:{ file: 'bg_levels_dimsum.jpg', emoji: '' },
+    bg_hall_dimsum:  { file: 'bg_hall_dimsum.jpg',   emoji: '' },
+    bg_kitchen_dimsum:{ file: 'bg_kitchen_dimsum.jpg', emoji: '' },
+    counter_dimsum:  { file: 'counter_dimsum.jpg',   emoji: '' },
+    steamer_empty:   { file: 'steamer_empty.png',    emoji: '🧺' },   // пустая бамбуковая корзинка — основа
+    hargau:          { file: 'hargau.png',           emoji: '🥟' },
+    siumai:          { file: 'siumai.png',           emoji: '🥟' },
+    xlb:             { file: 'xlb.png',              emoji: '🥟' },
+    steamer_hargau:  { file: 'steamer_hargau.png',   emoji: '🧺', badge: '🦐' },
+    steamer_siumai:  { file: 'steamer_siumai.png',   emoji: '🧺', badge: '🟡' },
+    steamer_xlb:     { file: 'steamer_xlb.png',      emoji: '🧺', badge: '🥟' },
+    steamer_mix:     { file: 'steamer_mix.png',      emoji: '🧺', badge: '🌈' },
+    steamer_wrong:   { file: 'steamer_wrong.png',    emoji: '🧺', badge: '❌', css: 'wrong' },
+    bao_raw:         { file: 'bao_raw.png',          emoji: '⚪' },
+    bao:             { file: 'bao.png',              emoji: '🥟', badge: '♨️' },
+    bao_over:        { file: 'bao_over.png',         emoji: '🥟', css: 'burnt' },
+    bigsteamer_0:    { file: 'steamer_big.png',      emoji: '' },
+    bigsteamer_1:    { file: 'steamer_big.png',      emoji: '' },
+    bigsteamer_2:    { file: 'steamer_big_gold.png', emoji: '' },
+    bigsteamer_3:    { file: 'steamer_big_gold.png', emoji: '' },
+    tart_raw:        { file: 'tart_raw.png',         emoji: '🥧' },
+    egg_tart:        { file: 'egg_tart.png',         emoji: '🥧', badge: '🔥' },
+    tart_burnt:      { file: 'tart_burnt.png',       emoji: '🥧', css: 'burnt' },
+    oven_0:          { file: 'oven.png',             emoji: '' },
+    oven_1:          { file: 'oven.png',             emoji: '' },
+    oven_2:          { file: 'oven_gold.png',        emoji: '' },
+    oven_3:          { file: 'oven_gold.png',        emoji: '' },
+    claypot_0:       { file: 'clay_teapot.png',      emoji: '🫖' },
+    claypot_1:       { file: 'clay_teapot.png',      emoji: '🫖' },
+    claypot_2:       { file: 'clay_teapot.png',      emoji: '🫖' },
+    claypot_3:       { file: 'clay_teapot.png',      emoji: '🫖' },
+    tea_cup_small:   { file: 'tea_cup_small.png',    emoji: '🍵', css: 'gray' },
+    jasmine_tea:     { file: 'jasmine_tea.png',      emoji: '🍵' },
+    up_steam_speed:  { file: 'up_steam_speed.png',   emoji: '⚡' },
+    up_steamer_slots:{ file: 'up_steamer_slots.png', emoji: '🧺' },
+    up_bao_slots:    { file: 'up_bao_slots.png',     emoji: '♨️' },
+    up_oven_speed:   { file: 'up_oven_speed.png',    emoji: '🔥' },
+    up_oven_slots:   { file: 'up_oven_slots.png',    emoji: '🥧' },
+    up_clay_teapot:  { file: 'up_clay_teapot.png',   emoji: '🫖' },
+    up_price_dimsum: { file: 'up_price_dimsum.png',  emoji: '🥟' },
+    up_price_bakery: { file: 'up_price_bakery.png',  emoji: '🥧' },
+    up_price_tea:    { file: 'up_price_tea.png',     emoji: '🍵' }
   },
 
   // Декор на карте мира (только эмодзи)
@@ -700,7 +848,6 @@ const CONFIG = {
         { time: 120, seats: 4, every: [3.5, 5.5], patience: 23, items: [2, 3], menu: M7, goal: [240, 440, 590] }
       ]
     },
-    // Заглушки будущих ресторанов: только карточка на карте
     {
       id: 'ramen',
       name: { ru: 'Раменная', en: 'Ramen House' },
@@ -799,9 +946,300 @@ const CONFIG = {
         { time: 120, seats: 4, every: [3.5, 5],   patience: 22, items: [2, 3], menu: RM7, goal: [290, 570, 840] }
       ]
     },
-    { id: 'wok',    name: { ru: 'Вок-стрит', en: 'Wok Street' },              icon: 'rest_wok',    mapPos: { x: 1400, y: 290 }, starsRequired: 45,  comingSoon: true },
-    { id: 'sweets', name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' },  icon: 'rest_sweets', mapPos: { x: 1215, y: 680 }, starsRequired: 70,  comingSoon: true },
-    { id: 'dimsum', name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },         icon: 'rest_dimsum', mapPos: { x: 400,  y: 580 }, starsRequired: 95,  comingSoon: true }
+    {
+      id: 'wok',
+      name: { ru: 'Вок-стрит', en: 'Wok Street' },
+      icon: 'rest_wok', bgLevels: 'bg_levels_wok', bgHall: 'bg_hall_wok', bgKitchen: 'bg_kitchen_wok', bgCounter: 'counter_wok',
+      mapPos: { x: 1400, y: 290 },
+      starsRequired: 45,
+      ...HALL,
+
+      dishes: {
+        wok_chicken: { name: { ru: 'Вок с курицей', en: 'Chicken wok' },      price: 16, sprite: 'wok_chicken', priceUp: 'priceWok',   weight: 1 },
+        wok_veg:     { name: { ru: 'Вок с овощами', en: 'Veggie wok' },       price: 16, sprite: 'wok_veg',     priceUp: 'priceWok',   weight: 1 },
+        wok_prawn:   { name: { ru: 'Вок с креветками', en: 'Shrimp wok' },    price: 20, sprite: 'wok_prawn',   priceUp: 'priceWok',   weight: 1 },
+        wok_mix:     { name: { ru: 'Вок «микс»', en: 'Mixed wok' },           price: 32, sprite: 'wok_mix',     priceUp: 'priceWok',   weight: 0.7 },
+        springroll:  { name: { ru: 'Спринг-роллы', en: 'Spring rolls' },      price: 15, sprite: 'springroll',  priceUp: 'priceSnack', weight: 1 },
+        rice_box:    { name: { ru: 'Коробочка риса', en: 'Rice box' },        price: 9,  sprite: 'rice_box',    priceUp: 'priceSnack', weight: 0.9 },
+        bubble_tea:  { name: { ru: 'Бабл-ти', en: 'Bubble tea' },             price: 14, sprite: 'bubble_tea',  priceUp: 'priceDrink', weight: 1 }
+      },
+
+      stations: [
+        // Лапша вок: лапша в вок, затем курица / креветки / овощи; тап по воку — обжарить
+        { id: 'wok', type: 'assembly', slots: 'wokSlots', time: ['wokTime', 'wokMul'], look: 'wokSlots', sprite: 'wokpan',
+          slotClass: 'bowlslot', size: 88, stat: 'woks',
+          base: 'wok_noodles', toppings: ['chicken', 'wok_shrimp', 'veggies'],
+          recipes: [
+            { dish: 'wok_chicken', set: ['chicken'] },
+            { dish: 'wok_prawn',   set: ['wok_shrimp'] },
+            { dish: 'wok_veg',     set: ['veggies'] },
+            { dish: 'wok_mix',     set: ['chicken', 'wok_shrimp', 'veggies'] }
+          ],
+          wrong: 'wok_wrong' },
+        // Спринг-роллы: во фритюр и вынуть, пока не сгорели (фритюрница из суши-бара)
+        { id: 'fryer', type: 'fryer', slots: 'fryerSlots', time: 'fryTime', burn: 'burnTime', penalty: 5, look: 'fryerSlots', sprite: 'fryer', stat: 'springrolls',
+          input: 'springroll_raw', dish: 'springroll', burnt: 'springroll_burnt' },
+        // Рис: рисоварка варит, затем каждый тап по коробочке накладывает порцию
+        { id: 'rice', type: 'brew', dish: 'rice_box', kettle: 'ricecooker', cup: 'box_empty', cups: 3, boil: 'riceTime', cap: 'riceCap', look: 'riceCap' },
+        // Бабл-ти: стакан чая + тапиока; тап по стакану — встряхнуть
+        { id: 'bubble', type: 'assembly', slots: 'bubbleSlots', time: 'shakeTime', look: 'bubbleSlots', slotClass: 'bowlslot', size: 84, stat: 'bubbles',
+          base: 'bubble_cup', toppings: ['tapioca'],
+          recipes: [ { dish: 'bubble_tea', set: ['tapioca'] } ],
+          wrong: 'bubble_wrong' },
+        { id: 'trash', type: 'trash', sprite: 'trash' }
+      ],
+
+      upgrades: [
+        { id: 'wokSpeed',    group: 'kitchen', icon: 'up_wok_speed',       costs: [130, 320, 650],
+          name: { ru: 'Сильный огонь', en: 'High flame' },
+          params: { wokTime: { v: [2.2, 1.8, 1.5, 1.2], fmt: 'sec' } } },
+        { id: 'wokSlots',    group: 'kitchen', icon: 'up_wok_slots',       costs: [250, 620, 900],
+          name: { ru: 'Ещё воки', en: 'More woks' },
+          params: { wokSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    wokMul: { v: [1, 1, 1, 0.8], fmt: 'time', label: { ru: 'обжарка', en: 'stir-fry' } } } },
+        { id: 'fryerSpeed',  group: 'kitchen', icon: 'up_wok_fryer_speed', costs: [180, 400, 760],
+          name: { ru: 'Жаркий фритюр', en: 'Hot fryer' },
+          params: { fryTime: { v: [5, 4.3, 3.6, 3], fmt: 'sec' } } },
+        { id: 'fryerSlots',  group: 'kitchen', icon: 'up_wok_fryer_slots', costs: [290, 700, 900],
+          name: { ru: 'Корзины фритюра', en: 'Fryer baskets' },
+          params: { fryerSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    burnTime: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до сгорания', en: 'before burning' } } } },
+        { id: 'riceCap',     group: 'kitchen', icon: 'up_rice_cooker',     costs: [150, 360, 560],
+          name: { ru: 'Большая рисоварка', en: 'Big rice cooker' },
+          params: { riceCap: { v: [2, 3, 3, 4], fmt: 'count' },
+                    riceTime: { v: [4, 4, 3, 3], fmt: 'sec', label: { ru: 'варка', en: 'cooking' } } } },
+        { id: 'bubbleSlots', group: 'kitchen', icon: 'up_bubble_slots',    costs: [140, 340, 560],
+          name: { ru: 'Шейкеры', en: 'Shakers' },
+          params: { bubbleSlots: { v: [1, 2, 2, 3], fmt: 'count' },
+                    shakeTime: { v: [2, 2, 1.4, 1.4], fmt: 'sec', label: { ru: 'встряхнуть', en: 'shake' } } } },
+        { id: 'priceWok',    group: 'food', icon: 'up_price_wok',          costs: [200, 490, 960],
+          name: { ru: 'Фирменный соус', en: 'Signature sauce' },
+          params: { priceWok: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceSnack',  group: 'food', icon: 'up_price_springroll',   costs: [170, 420, 820],
+          name: { ru: 'Хрустящие закуски', en: 'Crispy sides' },
+          params: { priceSnack: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceDrink',  group: 'food', icon: 'up_price_bubble',       costs: [130, 320, 620],
+          name: { ru: 'Сливочная пенка', en: 'Cream foam' },
+          params: { priceDrink: { v: [1, 1.25, 1.5, 1.8], fmt: 'mult' } } },
+        { id: 'patience',    group: 'hall', icon: 'up_patience',           costs: [200, 500, 960],
+          name: { ru: 'Уютный зал', en: 'Cozy hall' },
+          params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
+        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',         costs: [2100],
+          name: { ru: 'Официант', en: 'Waiter' },
+          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
+        { id: 'tips',        group: 'hall', icon: 'up_tips',               costs: [190, 470, 900],
+          name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
+          params: { tips: { v: [1, 1.3, 1.6, 2], fmt: 'mult' } } }
+      ],
+
+      levels: [
+        { time: 70,  seats: 3, every: [6.5, 8.5], patience: 30, items: [1, 2], menu: WM1, intro: 'wok_chicken', goal: [225, 350, 420] },
+        { time: 80,  seats: 3, every: [6, 8],     patience: 29, items: [1, 2], menu: WM2, intro: 'rice_box', goal: [230, 350, 500] },
+        { time: 85,  seats: 4, every: [5.5, 7.5], patience: 28, items: [1, 2], menu: WM3, intro: 'wok_veg', goal: [240, 450, 580] },
+        { time: 90,  seats: 4, every: [5.5, 7.5], patience: 27, items: [1, 2], menu: WM4, intro: 'springroll', goal: [270, 460, 580] },
+        { time: 95,  seats: 4, every: [5, 7],     patience: 26, items: [1, 3], menu: WM5, intro: 'wok_prawn', goal: [300, 560, 730] },
+        { time: 100, seats: 4, every: [5, 7],     patience: 25, items: [1, 3], menu: WM6, intro: 'bubble_tea', goal: [300, 520, 730] },
+        { time: 105, seats: 4, every: [4.5, 6.5], patience: 25, items: [1, 3], menu: WM7, intro: 'wok_mix', goal: [320, 600, 850] },
+        { time: 110, seats: 4, every: [4.5, 6],   patience: 24, items: [2, 3], menu: WM7, goal: [330, 600, 860] },
+        { time: 115, seats: 4, every: [4, 5.5],   patience: 23, items: [2, 3], menu: WM7, goal: [330, 640, 900] },
+        { time: 120, seats: 4, every: [3.5, 5],   patience: 22, items: [2, 3], menu: WM7, goal: [340, 640, 920] }
+      ]
+    },
+    {
+      id: 'sweets',
+      name: { ru: 'Чайная сладостей', en: 'Sweet Tea House' },
+      icon: 'rest_sweets', bgLevels: 'bg_levels_sweets', bgHall: 'bg_hall_sweets', bgKitchen: 'bg_kitchen_sweets', bgCounter: 'counter_sweets',
+      mapPos: { x: 1215, y: 680 },
+      starsRequired: 70,
+      ...HALL,
+
+      dishes: {
+        daifuku_anko:       { name: { ru: 'Дайфуку с анко', en: 'Anko daifuku' },             price: 15, sprite: 'daifuku_anko',       priceUp: 'priceDaifuku', weight: 1 },
+        daifuku_strawberry: { name: { ru: 'Дайфуку с клубникой', en: 'Strawberry daifuku' },  price: 20, sprite: 'daifuku_strawberry', priceUp: 'priceDaifuku', weight: 1 },
+        daifuku_matcha:     { name: { ru: 'Дайфуку с матча', en: 'Matcha daifuku' },          price: 17, sprite: 'daifuku_matcha',     priceUp: 'priceDaifuku', weight: 1 },
+        daifuku_mix:        { name: { ru: 'Дайфуку ассорти', en: 'Daifuku deluxe' },          price: 32, sprite: 'daifuku_mix',        priceUp: 'priceDaifuku', weight: 0.7 },
+        dango:              { name: { ru: 'Данго', en: 'Dango' },                             price: 14, sprite: 'dango',              priceUp: 'priceSweets',  weight: 1 },
+        taiyaki:            { name: { ru: 'Тайяки', en: 'Taiyaki' },                          price: 16, sprite: 'taiyaki',            priceUp: 'priceSweets',  weight: 1 },
+        matcha_latte:       { name: { ru: 'Матча-латте', en: 'Matcha latte' },                price: 10, sprite: 'matcha_latte',       priceUp: 'priceLatte',   weight: 0.9 }
+      },
+
+      stations: [
+        // Дайфуку: лепёшка мочи + начинки; тап по лепёшке — защипнуть
+        { id: 'mochi', type: 'assembly', slots: 'mochiSlots', time: ['mochiTime', 'mochiMul'], look: 'mochiSlots', slotClass: 'bowlslot', size: 88, stat: 'daifuku',
+          base: 'mochi_dough', toppings: ['anko', 'strawberry', 'matcha_cream'],
+          recipes: [
+            { dish: 'daifuku_anko',       set: ['anko'] },
+            { dish: 'daifuku_strawberry', set: ['anko', 'strawberry'] },
+            { dish: 'daifuku_matcha',     set: ['matcha_cream'] },
+            { dish: 'daifuku_mix',        set: ['anko', 'strawberry', 'matcha_cream'] }
+          ],
+          wrong: 'daifuku_wrong' },
+        // Данго: шпажки на гриль, снять, пока не сгорели
+        { id: 'grill', type: 'fryer', slots: 'grillSlots', time: 'grillTime', burn: 'grillBurn', penalty: 5, look: 'grillSlots', sprite: 'grill', stat: 'dango',
+          input: 'dango_raw', dish: 'dango', burnt: 'dango_burnt' },
+        // Тайяки: тесто в форму-рыбку, вынуть вовремя
+        { id: 'taiyaki', type: 'fryer', slots: 'taiyakiSlots', time: 5, burn: 'taiyakiBurn', penalty: 5, look: 'taiyakiSlots', sprite: 'tmold', stat: 'taiyaki',
+          input: 'taiyaki_batter', dish: 'taiyaki', burnt: 'taiyaki_burnt' },
+        // Матча-латте: вскипятить чайник, наливать чашки
+        { id: 'latte', type: 'brew', dish: 'matcha_latte', kettle: 'mkettle', cup: 'latte_cup_empty', cups: 3, boil: 'latteTime', cap: 'latteCap', look: 'latteCap' },
+        { id: 'trash', type: 'trash', sprite: 'trash' }
+      ],
+
+      upgrades: [
+        { id: 'mochiSpeed',   group: 'kitchen', icon: 'up_daifuku_speed', costs: [150, 360, 740],
+          name: { ru: 'Ловкие руки', en: 'Nimble hands' },
+          params: { mochiTime: { v: [2.2, 1.8, 1.5, 1.2], fmt: 'sec' } } },
+        { id: 'mochiSlots',   group: 'kitchen', icon: 'up_daifuku_slots', costs: [280, 700, 1000],
+          name: { ru: 'Больше досок', en: 'More boards' },
+          params: { mochiSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    mochiMul: { v: [1, 1, 1, 0.8], fmt: 'time', label: { ru: 'защипнуть', en: 'pinch' } } } },
+        { id: 'grillSpeed',   group: 'kitchen', icon: 'up_grill_speed',   costs: [200, 450, 860],
+          name: { ru: 'Жаркие угли', en: 'Hot coals' },
+          params: { grillTime: { v: [5, 4.3, 3.6, 3], fmt: 'sec' } } },
+        { id: 'grillSlots',   group: 'kitchen', icon: 'up_grill_slots',   costs: [320, 780, 1000],
+          name: { ru: 'Большой гриль', en: 'Big grill' },
+          params: { grillSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    grillBurn: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до сгорания', en: 'before burning' } } } },
+        { id: 'taiyakiSlots', group: 'kitchen', icon: 'up_taiyaki_slots', costs: [180, 450, 740],
+          name: { ru: 'Вторая форма', en: 'Second mold' },
+          params: { taiyakiSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    taiyakiBurn: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до сгорания', en: 'before burning' } } } },
+        { id: 'latteCap',     group: 'kitchen', icon: 'up_matcha_kettle', costs: [150, 360, 560],
+          name: { ru: 'Большой чайник', en: 'Big kettle' },
+          params: { latteCap: { v: [2, 3, 3, 4], fmt: 'count' },
+                    latteTime: { v: [4, 4, 3, 3], fmt: 'sec', label: { ru: 'кипячение', en: 'boiling' } } } },
+        { id: 'priceDaifuku', group: 'food', icon: 'up_price_daifuku',    costs: [230, 560, 1100],
+          name: { ru: 'Свежая клубника', en: 'Fresh berries' },
+          params: { priceDaifuku: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceSweets',  group: 'food', icon: 'up_price_sweets',     costs: [200, 480, 940],
+          name: { ru: 'Сладкий соус', en: 'Sweet glaze' },
+          params: { priceSweets: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceLatte',   group: 'food', icon: 'up_price_latte',      costs: [150, 360, 700],
+          name: { ru: 'Латте-арт', en: 'Latte art' },
+          params: { priceLatte: { v: [1, 1.25, 1.5, 1.8], fmt: 'mult' } } },
+        { id: 'patience',     group: 'hall', icon: 'up_patience',         costs: [230, 570, 1100],
+          name: { ru: 'Уютный зал', en: 'Cozy hall' },
+          params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
+        { id: 'autoServe',    group: 'hall', icon: 'up_auto_serve',       costs: [2400],
+          name: { ru: 'Официант', en: 'Waiter' },
+          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
+        { id: 'tips',         group: 'hall', icon: 'up_tips',             costs: [220, 540, 1040],
+          name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
+          params: { tips: { v: [1, 1.3, 1.6, 2], fmt: 'mult' } } }
+      ],
+
+      levels: [
+        { time: 70,  seats: 3, every: [6.5, 8.5], patience: 29, items: [1, 2], menu: SM1, intro: 'daifuku_anko', goal: [215, 335, 400] },
+        { time: 80,  seats: 3, every: [6, 8],     patience: 28, items: [1, 2], menu: SM2, intro: 'dango', goal: [250, 385, 520] },
+        { time: 85,  seats: 4, every: [5.5, 7.5], patience: 27, items: [1, 2], menu: SM3, intro: 'daifuku_strawberry', goal: [255, 440, 560] },
+        { time: 90,  seats: 4, every: [5.5, 7.5], patience: 26, items: [1, 2], menu: SM4, intro: 'matcha_latte', goal: [270, 450, 565] },
+        { time: 95,  seats: 4, every: [5, 7],     patience: 25, items: [1, 3], menu: SM5, intro: 'taiyaki', goal: [290, 500, 750] },
+        { time: 100, seats: 4, every: [5, 7],     patience: 25, items: [1, 3], menu: SM6, intro: 'daifuku_matcha', goal: [300, 540, 755] },
+        { time: 105, seats: 4, every: [4.5, 6.5], patience: 24, items: [1, 3], menu: SM7, intro: 'daifuku_mix', goal: [320, 600, 880] },
+        { time: 110, seats: 4, every: [4.5, 6],   patience: 23, items: [2, 3], menu: SM7, goal: [320, 600, 820] },
+        { time: 115, seats: 4, every: [4, 5.5],   patience: 22, items: [2, 3], menu: SM7, goal: [330, 620, 850] },
+        { time: 120, seats: 4, every: [3.5, 5],   patience: 21, items: [2, 3], menu: SM7, goal: [340, 620, 880] }
+      ]
+    },
+    {
+      id: 'dimsum',
+      name: { ru: 'Димсам-хаус', en: 'Dim Sum House' },
+      icon: 'rest_dimsum', bgLevels: 'bg_levels_dimsum', bgHall: 'bg_hall_dimsum', bgKitchen: 'bg_kitchen_dimsum', bgCounter: 'counter_dimsum',
+      mapPos: { x: 400, y: 580 },
+      starsRequired: 95,
+      ...HALL,
+
+      dishes: {
+        steamer_hargau: { name: { ru: 'Хар гау', en: 'Har gow' },                 price: 16, sprite: 'steamer_hargau', priceUp: 'priceDimsum', weight: 1 },
+        steamer_siumai: { name: { ru: 'Шумай', en: 'Siu mai' },                   price: 17, sprite: 'steamer_siumai', priceUp: 'priceDimsum', weight: 1 },
+        steamer_xlb:    { name: { ru: 'Сяолунбао', en: 'Xiao long bao' },         price: 19, sprite: 'steamer_xlb',    priceUp: 'priceDimsum', weight: 1 },
+        steamer_mix:    { name: { ru: 'Димсам ассорти', en: 'Dim sum platter' },  price: 34, sprite: 'steamer_mix',    priceUp: 'priceDimsum', weight: 0.7 },
+        bao:            { name: { ru: 'Баоцзы', en: 'Bao buns' },                 price: 15, sprite: 'bao',            priceUp: 'priceBakery', weight: 1 },
+        egg_tart:       { name: { ru: 'Яичная тарталетка', en: 'Egg tart' },      price: 16, sprite: 'egg_tart',       priceUp: 'priceBakery', weight: 1 },
+        jasmine_tea:    { name: { ru: 'Жасминовый чай', en: 'Jasmine tea' },      price: 10, sprite: 'jasmine_tea',    priceUp: 'priceTea',    weight: 0.9 }
+      },
+
+      stations: [
+        // Пароварка: пустая корзинка + пельмени; тап по корзинке — на пар
+        { id: 'steam', type: 'assembly', slots: 'steamSlots', time: ['steamTime', 'steamMul'], look: 'steamSlots', slotClass: 'bowlslot', size: 88, stat: 'dimsum',
+          base: 'steamer_empty', toppings: ['hargau', 'siumai', 'xlb'],
+          recipes: [
+            { dish: 'steamer_hargau', set: ['hargau'] },
+            { dish: 'steamer_siumai', set: ['siumai'] },
+            { dish: 'steamer_xlb',    set: ['xlb'] },
+            { dish: 'steamer_mix',    set: ['hargau', 'siumai', 'xlb'] }
+          ],
+          wrong: 'steamer_wrong' },
+        // Баоцзы: в большую пароварку, снять, пока не раскисли
+        { id: 'bao', type: 'fryer', slots: 'baoSlots', time: 5, burn: 'baoOver', penalty: 4, look: 'baoSlots', sprite: 'bigsteamer', stat: 'bao',
+          input: 'bao_raw', dish: 'bao', burnt: 'bao_over' },
+        // Тарталетки: в духовку, вынуть, пока не подгорели
+        { id: 'oven', type: 'fryer', slots: 'ovenSlots', time: 'ovenTime', burn: 'ovenBurn', penalty: 5, look: 'ovenSlots', sprite: 'oven', stat: 'tarts',
+          input: 'tart_raw', dish: 'egg_tart', burnt: 'tart_burnt' },
+        // Жасминовый чай: заварить чайник, наливать чашки
+        { id: 'tea', type: 'brew', dish: 'jasmine_tea', kettle: 'claypot', cup: 'tea_cup_small', cups: 3, boil: 'teaTime', cap: 'teaCap', look: 'teaCap' },
+        { id: 'trash', type: 'trash', sprite: 'trash' }
+      ],
+
+      upgrades: [
+        { id: 'steamSpeed',  group: 'kitchen', icon: 'up_steam_speed',   costs: [170, 410, 840],
+          name: { ru: 'Крепкий пар', en: 'Strong steam' },
+          params: { steamTime: { v: [2.2, 1.8, 1.5, 1.2], fmt: 'sec' } } },
+        { id: 'steamSlots',  group: 'kitchen', icon: 'up_steamer_slots', costs: [320, 790, 1150],
+          name: { ru: 'Ещё корзинки', en: 'More baskets' },
+          params: { steamSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    steamMul: { v: [1, 1, 1, 0.8], fmt: 'time', label: { ru: 'на пару', en: 'steaming' } } } },
+        { id: 'baoSlots',    group: 'kitchen', icon: 'up_bao_slots',     costs: [210, 520, 840],
+          name: { ru: 'Большая пароварка', en: 'Big steamer' },
+          params: { baoSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    baoOver: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до раскисания', en: 'before going soggy' } } } },
+        { id: 'ovenSpeed',   group: 'kitchen', icon: 'up_oven_speed',    costs: [230, 510, 980],
+          name: { ru: 'Жаркая духовка', en: 'Hot oven' },
+          params: { ovenTime: { v: [5, 4.3, 3.6, 3], fmt: 'sec' } } },
+        { id: 'ovenSlots',   group: 'kitchen', icon: 'up_oven_slots',    costs: [360, 880, 1150],
+          name: { ru: 'Вторая полка', en: 'Second rack' },
+          params: { ovenSlots: { v: [2, 3, 4, 4], fmt: 'count' },
+                    ovenBurn: { v: [6, 6, 6, 9], fmt: 'sec', label: { ru: 'до подгорания', en: 'before burning' } } } },
+        { id: 'teaCap',      group: 'kitchen', icon: 'up_clay_teapot',   costs: [170, 410, 640],
+          name: { ru: 'Большой чайник', en: 'Big teapot' },
+          params: { teaCap: { v: [2, 3, 3, 4], fmt: 'count' },
+                    teaTime: { v: [4, 4, 3, 3], fmt: 'sec', label: { ru: 'заварка', en: 'brewing' } } } },
+        { id: 'priceDimsum', group: 'food', icon: 'up_price_dimsum',     costs: [260, 640, 1260],
+          name: { ru: 'Тонкое тесто', en: 'Thin wrappers' },
+          params: { priceDimsum: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceBakery', group: 'food', icon: 'up_price_bakery',     costs: [230, 550, 1080],
+          name: { ru: 'Свежая выпечка', en: 'Fresh bakes' },
+          params: { priceBakery: { v: [1, 1.2, 1.4, 1.6], fmt: 'mult' } } },
+        { id: 'priceTea',    group: 'food', icon: 'up_price_tea',        costs: [170, 410, 800],
+          name: { ru: 'Отборный жасмин', en: 'Fine jasmine' },
+          params: { priceTea: { v: [1, 1.25, 1.5, 1.8], fmt: 'mult' } } },
+        { id: 'patience',    group: 'hall', icon: 'up_patience',         costs: [260, 650, 1260],
+          name: { ru: 'Уютный зал', en: 'Cozy hall' },
+          params: { patience: { v: [1, 1.15, 1.3, 1.5], fmt: 'mult' } } },
+        { id: 'autoServe',   group: 'hall', icon: 'up_auto_serve',       costs: [2700],
+          name: { ru: 'Официант', en: 'Waiter' },
+          desc: { ru: 'Тап по готовому блюду — сразу гостю', en: 'Tap a ready dish to serve it at once' },
+          params: { autoServe: { v: [0, 1], fmt: 'onoff' } } },
+        { id: 'tips',        group: 'hall', icon: 'up_tips',             costs: [250, 620, 1190],
+          name: { ru: 'Улыбка шефа', en: 'Chef\'s smile' },
+          params: { tips: { v: [1, 1.3, 1.6, 2], fmt: 'mult' } } }
+      ],
+
+      levels: [
+        { time: 70,  seats: 3, every: [6.5, 8.5], patience: 28, items: [1, 2], menu: DM1, intro: 'steamer_hargau', goal: [230, 350, 420] },
+        { time: 80,  seats: 3, every: [6, 8],     patience: 27, items: [1, 2], menu: DM2, intro: 'bao', goal: [260, 370, 485] },
+        { time: 85,  seats: 4, every: [5.5, 7.5], patience: 26, items: [1, 2], menu: DM3, intro: 'steamer_siumai', goal: [260, 480, 580] },
+        { time: 90,  seats: 4, every: [5.5, 7.5], patience: 25, items: [1, 2], menu: DM4, intro: 'jasmine_tea', goal: [250, 430, 580] },
+        { time: 95,  seats: 4, every: [5, 7],     patience: 25, items: [1, 3], menu: DM5, intro: 'egg_tart', goal: [320, 570, 780] },
+        { time: 100, seats: 4, every: [5, 7],     patience: 24, items: [1, 3], menu: DM6, intro: 'steamer_xlb', goal: [320, 600, 840] },
+        { time: 105, seats: 4, every: [4.5, 6.5], patience: 23, items: [1, 3], menu: DM7, intro: 'steamer_mix', goal: [340, 680, 940] },
+        { time: 110, seats: 4, every: [4.5, 6],   patience: 22, items: [2, 3], menu: DM7, goal: [340, 650, 940] },
+        { time: 115, seats: 4, every: [4, 5.5],   patience: 21, items: [2, 3], menu: DM7, goal: [345, 640, 925] },
+        { time: 120, seats: 4, every: [3.5, 5],   patience: 20, items: [2, 3], menu: DM7, goal: [350, 680, 990] }
+      ]
+    }
   ]
 };
 
