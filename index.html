@@ -446,6 +446,16 @@ const CONFIG = {
   // посетители должны успеть заказать блюд минимум на share от цели 3 звёзд (по цене меню, без чаевых и комбо).
   // Если случайный поток отстаёт, гости приходят чаще (но не чаще minGap секунд) и заказывают по максимуму.
   guestPlan: { share: 0.9, tail: 0.2, tailMin: 12, minGap: 1.5 },
+  // Звук: файлы из sounds/ (mp3 — играет во всех браузерах). Если файла нет, музыки нет, а эффект синтезируется как раньше.
+  // music — фоновые треки по экранам (зацикливаются); sfx — замена любого синтезированного звука файлом,
+  // массив — случайный вариант при каждом проигрывании. duck — во сколько раз приглушить музыку на время эффекта.
+  audio: {
+    path: 'sounds/',
+    musicVolume: 0.45, sfxVolume: 0.9,
+    music: { map: 'music_map.mp3', game: 'music_game.mp3' },
+    sfx: { win: ['yooo.mp3'] },
+    duck: { win: 0.25 }
+  },
   handTip: [0.62, 0.95],           // где кончик пальца на картинке руки (доли от рамки 96x96)
 
   // Спрайты: ключ -> файл в img/ и эмодзи-заглушка (badge — значок поверх, css — фильтр)
@@ -1353,7 +1363,25 @@ function applyBg(el, key) {
    ЗВУК: синтезированные эффекты WebAudio (без файлов)
    ===================================================================== */
 const Sound = {
-  ctx: null, master: null,
+  ctx: null, master: null, sfxGain: null, musicGain: null,
+  raw: {}, buf: {},          // файлы эффектов: скачанные байты и раскодированные буферы
+  tracks: {}, track: null,   // музыка: <audio> по ключу и текущий трек
+  // Файлы эффектов скачиваются сразу (не задерживая загрузку игры), раскодируются после первого касания
+  preload() {
+    const A = CONFIG.audio;
+    for (const name in A.sfx) {
+      [].concat(A.sfx[name]).forEach(f => {
+        fetch(A.path + f).then(r => r.ok ? r.arrayBuffer() : null).then(b => { if (b) { this.raw[f] = b; this.decode(); } }).catch(() => {});
+      });
+    }
+  },
+  decode() {
+    if (!this.ctx) return;
+    for (const f in this.raw) {
+      const b = this.raw[f]; delete this.raw[f];
+      try { this.ctx.decodeAudioData(b, d => { this.buf[f] = d; }, () => {}); } catch (e) {}
+    }
+  },
   unlock() {
     if (!this.ctx) {
       try {
@@ -1362,6 +1390,9 @@ const Sound = {
         this.master = this.ctx.createGain();
         this.master.gain.value = 0.35;
         this.master.connect(this.ctx.destination);
+        this.sfxGain = this.ctx.createGain(); this.sfxGain.gain.value = CONFIG.audio.sfxVolume; this.sfxGain.connect(this.ctx.destination);
+        this.musicGain = this.ctx.createGain(); this.musicGain.gain.value = CONFIG.audio.musicVolume; this.musicGain.connect(this.ctx.destination);
+        this.decode();
       } catch (e) { this.ctx = null; }
     }
     this.sync();
@@ -1372,6 +1403,40 @@ const Sound = {
     const want = Save.data.sound && pauseReasons.size === 0;
     if (want && this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
     else if (!want && this.ctx.state === 'running') this.ctx.suspend().catch(() => {});
+    this.syncMusic(want);
+  },
+  // Музыка: на уровне — трек game, на остальных экранах — map. Трек создаётся при первом запросе;
+  // если файла нет, <audio> просто не играет
+  syncMusic(want) {
+    const key = screen === 'game' ? 'game' : 'map', file = CONFIG.audio.music[key];
+    if (this.track && this.track !== this.tracks[key]) { this.track.pause(); this.track = null; }
+    if (!want || !file || screen === 'loading') { if (this.track) this.track.pause(); return; }
+    let a = this.tracks[key];
+    if (!a) {
+      a = this.tracks[key] = new Audio(CONFIG.audio.path + file);
+      a.loop = true; a.preload = 'auto';
+      a.addEventListener('error', () => { a.broken = true; });
+      try { this.ctx.createMediaElementSource(a).connect(this.musicGain); } catch (e) { a.volume = CONFIG.audio.musicVolume; }
+    }
+    this.track = a;
+    if (!a.broken && a.paused) a.play().catch(() => {});
+  },
+  // Эффект из файла (если загружен); возвращает false, чтобы сыграть синтезированный вариант
+  playFile(name) {
+    const list = [].concat(CONFIG.audio.sfx[name] || []).filter(f => this.buf[f]);
+    if (!list.length) return false;
+    const src = this.ctx.createBufferSource();
+    src.buffer = this.buf[pick(list)];
+    src.connect(this.sfxGain); src.start();
+    const duck = CONFIG.audio.duck[name];
+    if (duck) {
+      const g = this.musicGain.gain, t0 = this.ctx.currentTime, v = CONFIG.audio.musicVolume;
+      g.cancelScheduledValues(t0); g.setValueAtTime(g.value, t0);
+      g.linearRampToValueAtTime(v * duck, t0 + 0.15);
+      g.setValueAtTime(v * duck, t0 + src.buffer.duration);
+      g.linearRampToValueAtTime(v, t0 + src.buffer.duration + 0.6);
+    }
+    return true;
   },
   tone(f, dur, type = 'sine', vol = 0.3, delay = 0, f2 = 0) {
     const c = this.ctx, t0 = c.currentTime + delay;
@@ -1386,6 +1451,7 @@ const Sound = {
   play(name, arg) {
     if (!this.ctx || !Save.data.sound || this.ctx.state !== 'running') return;
     try {
+      if (this.playFile(name)) return;
       switch (name) {
         case 'click': this.tone(660, 0.07, 'triangle', 0.2); break;
         case 'place': this.tone(420, 0.08, 'triangle', 0.25, 0, 520); break;
@@ -2671,7 +2737,8 @@ function endLevel() {
   const stars = calcStars();
   syncGameplay();
   // Пройденный уровень: монеты и звёзды зачисляются сразу, затем полноэкранная реклама, затем итоги
-  if (stars > 0) { finalize(); Sound.play('win'); G.adShown = true; SDK.showFullscreen(() => { if (G.state === 'end') showResult(); }); }
+  // (победный звук — после рекламы, вместе с окном итогов, чтобы реклама его не обрывала)
+  if (stars > 0) { finalize(); G.adShown = true; SDK.showFullscreen(() => { if (G.state === 'end') { Sound.play('win'); showResult(); } }); }
   else { Sound.play('lose'); showResult(); }
 }
 // Зачисление монет, звёзд и статистики (один раз за попытку)
@@ -2873,6 +2940,7 @@ async function boot() {
   byId('load-title').textContent = t('title');
   byId('rotate-txt').textContent = t('rotate');
   bar.style.width = '20%';
+  Sound.preload();
   await Promise.all([Save.load(), preloadSprites(p => { bar.style.width = (20 + p * 80) + '%'; })]);
   await SDK.initPayments(); // после загрузки сохранения: восстановленные покупки записываются в него
   byId('load-logo').innerHTML = logoHTML(200);
