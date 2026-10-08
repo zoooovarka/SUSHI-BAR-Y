@@ -415,6 +415,10 @@ const CONFIG = {
   freeUpgradeCooldownSec: 600,     // «Бесплатное улучшение» раз в 10 минут
   addTimeSec: 20,                  // «+20 секунд» при проигрыше
   walkSpeed: 750,                  // скорость ходьбы посетителей, px/с
+  // Гарантия гостей: пока до конца уровня остаётся больше tail (доля времени, но не меньше tailMin секунд),
+  // посетители должны успеть заказать блюд минимум на share от цели 3 звёзд (по цене меню, без чаевых и комбо).
+  // Если случайный поток отстаёт, гости приходят чаще (но не чаще minGap секунд) и заказывают по максимуму.
+  guestPlan: { share: 0.9, tail: 0.2, tailMin: 12, minGap: 1.5 },
   handTip: [0.62, 0.95],           // где кончик пальца на картинке руки (доли от рамки 96x96)
 
   // Спрайты: ключ -> файл в img/ и эмодзи-заглушка (badge — значок поверх, css — фильтр)
@@ -1511,6 +1515,7 @@ function startLevel(idx) {
   G = {
     R, L, idx, time: L.time, elapsed: 0, coins: 0, hearts: 0, served: 0, angry: 0, burnt: 0, vid: 0,
     seats: new Array(nSeats).fill(null), vis: [], spawnT: 0.8,
+    planBase: Math.ceil(L.goal[2] * CONFIG.guestPlan.share), arrBase: 0, rush: false,
     comboN: 0, lastServe: -99, bestCombo: 0,
     st: {}, stations: [], dishStation: {}, trash: false, sel: null, selElId: null,
     state: 'play', paused: false, addUsed: false, finalized: false, doubled: false,
@@ -1637,10 +1642,32 @@ function pickDish() {
   for (const m of L.menu) { r -= (R.dishes[m].weight || 1); if (r <= 0) return m; }
   return L.menu[0];
 }
+// Средняя цена одной позиции заказа на этом уровне (с учётом веса блюд и частого нового блюда)
+function avgDishPrice() {
+  const R = G.R, L = G.L;
+  const total = L.menu.reduce((a, m) => a + (R.dishes[m].weight || 1), 0);
+  const avg = L.menu.reduce((a, m) => a + dishPrice(R, m) * (R.dishes[m].weight || 1), 0) / total;
+  return L.intro ? 0.4 * dishPrice(R, L.intro) + 0.6 * avg : avg;
+}
+// Пауза до следующего гостя. Обычно случайная из L.every, но если до гарантии (G.planBase) не хватает,
+// гости идут так часто, чтобы успеть её набрать до последних tail секунд уровня
+function nextGuestDelay() {
+  const L = G.L, P = CONFIG.guestPlan;
+  const normal = rnd(L.every[0], L.every[1]);
+  const rest = G.planBase - G.arrBase;
+  G.rush = false;
+  if (rest <= 0) return normal;
+  const window = G.time - Math.max(P.tailMin, L.time * P.tail);
+  const guests = rest / (avgDishPrice() * (L.items[0] + L.items[1]) / 2);
+  const gap = window / guests;
+  if (gap >= normal) return normal;
+  G.rush = true;
+  return Math.max(P.minGap, gap);
+}
 // Посетитель входит слева и идёт к свободному месту
 function spawnVisitor(seat) {
   const R = G.R, L = G.L;
-  const n = rndInt(L.items[0], L.items[1]);
+  const n = G.rush ? L.items[1] : rndInt(L.items[0], L.items[1]); // поток отстаёт — заказ побольше
   const order = []; for (let i = 0; i < n; i++) order.push({ dish: pickDish(), done: false });
   const max = L.patience * paramVal(R, 'patience') * (1 + (n - 1) * R.patiencePerExtraItem);
   // Выбираем персонажа, которого сейчас нет в зале, чтобы не было двойников
@@ -1650,6 +1677,7 @@ function spawnVisitor(seat) {
     look: pick(free.length ? free : R.visitors), order, pat: max, max };
   G.seats[seat] = v.id;
   G.vis.push(v);
+  G.arrBase += order.reduce((a, o) => a + dishPrice(R, o.dish), 0);
 }
 function update(dt) {
   if (!G || G.state !== 'play') return;
@@ -1660,8 +1688,8 @@ function update(dt) {
     G.spawnT -= dt;
     if (G.spawnT <= 0) {
       const free = []; G.seats.forEach((id, i) => { if (!id) free.push(i); });
-      if (free.length) { spawnVisitor(pick(free)); G.spawnT = rnd(L.every[0], L.every[1]); }
-      else G.spawnT = 0.6;
+      if (free.length) { spawnVisitor(pick(free)); G.spawnT = nextGuestDelay(); }
+      else G.spawnT = 0.6; // мест нет — гость подождёт у входа
     }
   }
   // Посетители: ходьба и терпение
